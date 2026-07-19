@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TerminalBlock from "../components/TerminalBlock.astro";
+---
+<BaseLayout title="OFFLINE — DigiResiThon" description="目前離線。手冊仍可離線使用。">
+  <div class="offline-page">
+    <TerminalBlock
+      title="digiresithon@tw:~"
+      lines={[
+        { prompt: "$", text: "curl https://digiresi.g0v.tw" },
+        { text: "connection failed — OFFLINE", tone: "red" },
+        { text: "目前離線，這一頁還沒被快取。", tone: "dim" },
+        { text: "手冊仍可離線使用：", tone: "green" },
+      ]}
+      cursor={true}
+    />
+    <a class="btn btn-primary btn-lg" href="/handbook/">開啟手冊</a>
+    <p class="offline-note">回到線上之後，重新整理即可載入原本要看的頁面。</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .offline-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 64px var(--gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-5);
+  }
+  .offline-note {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+    margin: 0;
+  }
+</style>

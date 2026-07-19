@@ -1,0 +1,64 @@
+---
+---
+<div class="install-hint" data-install-hint hidden>
+  <button class="btn btn-secondary btn-sm" type="button" data-install-btn hidden>
+    安裝離線手冊
+  </button>
+  <span class="install-hint-ios" data-ios-hint hidden>
+    iOS：用 Safari 的分享選單「加入主畫面」，即可離線使用手冊
+  </span>
+</div>
+
+<script>
+  const root = document.querySelector("[data-install-hint]") as HTMLElement | null;
+  const btn = document.querySelector("[data-install-btn]") as HTMLButtonElement | null;
+  const ios = document.querySelector("[data-ios-hint]") as HTMLElement | null;
+
+  interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>;
+  }
+
+  // Already installed → nothing to hint.
+  const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true;
+
+  let deferred: BeforeInstallPromptEvent | null = null;
+
+  if (!standalone && root) {
+    // iOS Safari never fires beforeinstallprompt — show manual instructions.
+    if (/iphone|ipad|ipod/i.test(navigator.userAgent) && ios) {
+      root.hidden = false;
+      ios.hidden = false;
+    }
+    // Android/desktop Chromium path: capture the prompt, offer a button.
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferred = e as BeforeInstallPromptEvent;
+      if (ios) ios.hidden = true;
+      if (btn) btn.hidden = false;
+      root.hidden = false;
+    });
+    btn?.addEventListener("click", async () => {
+      if (!deferred) return;
+      await deferred.prompt();
+      deferred = null;
+      if (btn) btn.hidden = true;
+    });
+    window.addEventListener("appinstalled", () => {
+      root.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .install-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+  .install-hint[hidden] { display: none; }
+</style>

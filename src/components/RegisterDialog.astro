@@ -1,0 +1,101 @@
+---
+// Native <dialog>, terminal-ACK style. Open state (an announced next round
+// with a registerUrl) shows a kit-Card panel linking out to KKTIX; otherwise
+// an honest TerminalBlock. ESC closes natively; backdrop click and the 關閉
+// button are wired below. All [data-open-register] buttons site-wide open it.
+import TerminalBlock from "./TerminalBlock.astro";
+import { loadEvents, upcomingEvent } from "../lib/events";
+
+const events = loadEvents();
+const todayISO = new Date().toISOString().slice(0, 10);
+const upcoming = upcomingEvent(events, todayISO);
+const open = Boolean(upcoming && upcoming.registerUrl);
+---
+<dialog id="register-dialog" aria-label="報名">
+  <div class="reg-inner">
+    {open && upcoming ? (
+      <div class="card card-lifted">
+        <div class="card-head">
+          <span class="card-title">REGISTER</span>
+          <span class="card-meta">{upcoming.date!.replaceAll("-", ".")}</span>
+        </div>
+        <div class="card-body reg-body">
+          <div class="reg-row"><span class="label">下一場</span><span>{upcoming.name}</span></div>
+          <div class="reg-row"><span class="label">時間</span><span>{upcoming.date!.replaceAll("-", ".")}</span></div>
+          <div class="reg-row"><span class="label">地點</span><span>{upcoming.venue ?? "T.B.D."}</span></div>
+          <div class="reg-row">
+            <span class="label">費用</span>
+            <span>免費——遵守<a href="https://g0v.hackmd.io/s/COC">行為守則</a></span>
+          </div>
+          <a class="btn btn-primary" href={upcoming.registerUrl!} target="_blank" rel="noopener">
+            前往報名 →
+          </a>
+        </div>
+        <div class="card-foot">
+          <span>FREE · COC APPLIES</span>
+          <span>G0V SLACK #DIGIRESITHON</span>
+        </div>
+      </div>
+    ) : (
+      <TerminalBlock
+        title="register"
+        lines={[
+          { prompt: "$", text: "register --next" },
+          { text: "報名尚未開放", tone: "dim" },
+          { text: "watch g0v slack", tone: "green" },
+        ]}
+      />
+    )}
+    <button class="btn btn-sm reg-close" type="button" data-close-register>關閉</button>
+  </div>
+</dialog>
+<style>
+  /* The dialog is an invisible positioning box: the kit floats a bare lifted
+     Card / TerminalBlock directly on the dark overlay, so the panel provides
+     its own chrome — no outer border or surface (no frame-within-frame). */
+  dialog {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    padding: 0;
+    width: 460px;
+    max-width: calc(100vw - 48px);
+  }
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  .reg-inner {
+    padding: 0;
+  }
+  .reg-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: var(--font-mono);
+  }
+  .reg-row {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .reg-close {
+    margin-top: var(--sp-3);
+  }
+</style>
+<script>
+  const dialog = document.getElementById("register-dialog") as HTMLDialogElement | null;
+  if (dialog) {
+    for (const opener of document.querySelectorAll("[data-open-register]")) {
+      opener.addEventListener("click", () => dialog.showModal());
+    }
+    dialog
+      .querySelector("[data-close-register]")
+      ?.addEventListener("click", () => dialog.close());
+    // Backdrop click: .reg-inner spans the dialog's full box (dialog and
+    // .reg-inner both have zero padding), so a click whose target is the
+    // <dialog> itself can only be on the ::backdrop.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+</script>

@@ -1,0 +1,95 @@
+---
+---
+<div class="offline-status" data-offline-status>
+  <span
+    class="offline-status-dot"
+    data-dot
+    data-state="checking"
+    aria-hidden="true"></span>
+  <span class="offline-status-msg" data-msg aria-live="polite">檢查離線快取…</span>
+</div>
+
+<script>
+  const root = document.querySelector("[data-offline-status]");
+  const dot = root?.querySelector("[data-dot]") as HTMLElement | null;
+  const msg = root?.querySelector("[data-msg]") as HTMLElement | null;
+  // Any precached handbook page works as a probe; go-bag is order 1, section 1.
+  const PROBE_URL = "/handbook/prepare/go-bag/";
+
+  function setState(state: string, text: string) {
+    if (!dot || !msg) return;
+    dot.dataset.state = state;
+    msg.textContent = text;
+  }
+
+  async function handbookCached(): Promise<boolean> {
+    if (!("caches" in window)) return false;
+    const hit = await caches.match(PROBE_URL, { ignoreSearch: true });
+    return hit !== undefined;
+  }
+
+  async function refresh() {
+    if (!navigator.onLine) {
+      const cached = await handbookCached();
+      setState(
+        "offline",
+        cached ? "OFFLINE — 手冊已下載，離線可用" : "OFFLINE — 手冊尚未下載完成",
+      );
+      return;
+    }
+    if (!("serviceWorker" in navigator)) {
+      setState("unsupported", "此瀏覽器不支援離線快取");
+      return;
+    }
+    if (await handbookCached()) {
+      setState("ok", "✓ 手冊已完整下載，離線可用");
+      return;
+    }
+    // U+2193 DOWNWARDS ARROW (text presentation) — not the emoji-capable
+    // U+2B07 variant; the design system bans emoji in UI copy.
+    setState("downloading", "↓ 手冊下載中…");
+    await navigator.serviceWorker.ready;
+    let tries = 0;
+    const timer = window.setInterval(async () => {
+      tries += 1;
+      if (await handbookCached()) {
+        window.clearInterval(timer);
+        setState("ok", "✓ 手冊已完整下載，離線可用");
+      } else if (tries >= 30) {
+        window.clearInterval(timer); // give up quietly after ~60s
+      }
+    }, 2000);
+  }
+
+  window.addEventListener("offline", () => void refresh());
+  window.addEventListener("online", () => void refresh());
+  void refresh();
+</script>
+
+<style>
+  .offline-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    color: var(--ink-2);
+  }
+  .offline-status-dot {
+    width: 10px;
+    height: 10px;
+    flex: none;
+    background: var(--ink-3);
+  }
+  .offline-status-dot[data-state="ok"] { background: var(--status-online); }
+  .offline-status-dot[data-state="downloading"] {
+    background: var(--status-degraded);
+    animation: drt-blink 1.2s steps(1) infinite;
+  }
+  .offline-status-dot[data-state="offline"] { background: var(--status-offline); }
+  @media (prefers-reduced-motion: reduce) {
+    .offline-status-dot { animation: none; }
+  }
+</style>

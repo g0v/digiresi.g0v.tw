@@ -1,0 +1,23 @@
+<!-- @dsCard group="Event Site" viewport="1440x900" subtitle="Landing / schedule / projects — interactive" name="Event site" -->
+<!-- @startingPoint section="Screens" subtitle="DigiResiThon event site shell" viewport="1440x900" -->
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DigiResiThon — Digital Resilience Hackathon</title>
+<link rel="stylesheet" href="../../styles.css"></head>
+<body style="margin:0;background:var(--bg)">
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script src="../../ds-runtime-fallback.js"></script>
+<script type="text/babel">
+const root = ReactDOM.createRoot(document.getElementById("root"));
+(async () => {
+  let NS = {};
+  try { NS = await window.loadDSFallback("../../"); } catch (e) { console.error("component load failed", e); }
+  const { Website } = NS;
+  const pending = <div style={{ fontFamily: "var(--font-mono)", padding: 20, color: "var(--ink-3)", fontSize: 12 }}>COMPONENT SOURCES UNAVAILABLE — CHECK CONSOLE</div>;
+  root.render(Website ? <Website /> : pending);
+})();
+</script>
+</body></html>

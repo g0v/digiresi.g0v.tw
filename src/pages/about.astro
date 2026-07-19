@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+---
+<BaseLayout
+  title="關於｜數位韌性松 DigiResiThon"
+  description="為什麼要辦「假設網路斷光光」的黑客松：數位韌性松的緣起、正在做的事、參加方式。"
+>
+  <div class="container page">
+    <SectionHeader label="關於" right="ABOUT" />
+    <article class="prose-mono">
+      <h1 class="pixel-h-tc pixel-h-tc--2">IG 不能動，<br />還有什麼值得我心痛</h1>
+      <p>
+        2023 年 2 月，馬祖僅有的兩條海底電纜同時被中國籍船隻切斷。台灣的對外網路
+        幾乎全靠海纜；華府智庫研究員 Elisabeth Braw 在《外交政策》撰文警告：想把
+        台灣網路與世界隔開，只需要切斷十五條海纜。
+      </p>
+      <p>
+        真的斷了會怎樣？LINE 的主要資料中心在日本與韓國；Instagram、Facebook、
+        YouTube 的機房也都不在台灣——連外一斷，這些服務全部跟著失聯。低軌衛星在
+        頻寬有限時會優先給救災人員與公部門，一般人分不到多少。
+      </p>
+      <p>
+        所以 g0v 社群夥伴把「假設網路斷光光」的黑客松辦了起來。完整的發起宣言
+        請讀共筆：<a href="https://g0v.hackmd.io/qkj6dwSFS0q8zpZO4-GxOQ">〈IG 不能動，還有什麼值得我心痛〉</a>。
+      </p>
+
+      <h2 class="pixel-h-tc pixel-h-tc--1">我們在做什麼</h2>
+      <ul>
+        <li>
+          <span class="strong">備援通訊</span>——建立平常用不到、斷網時救命的備用
+          網路：Meshtastic 台灣鏈網、g0mesh。備用系統越多，越不怕斷線。
+        </li>
+        <li>
+          <span class="strong">離線資訊</span>——彙整斷網時上不了 Google 也要查得到
+          的資訊：急救、避難、物資清單——也就是本站的<a href="/handbook/">離線手冊</a>。
+        </li>
+        <li>
+          <span class="strong">情境盤點</span>——從海纜中斷到島內機房受損，分級分析
+          各種斷網情境的影響與對策。
+        </li>
+      </ul>
+
+      <h2 class="pixel-h-tc pixel-h-tc--1">怎麼參加</h2>
+      <p>
+        不會寫程式也幫得上忙——資料彙整、文件、翻譯、實測都缺人。缺乏有用的資料，
+        通訊再順也枉然。
+      </p>
+      <ol>
+        <li>
+          加入 <a href="https://g0v.hackmd.io/fKrjZ3BlRfWmQ471wcSdBg">g0v Slack</a> 的
+          #civil-defense 頻道打聲招呼。
+        </li>
+        <li>
+          翻 <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">數位韌性松大全</a>
+          找一個想跳的坑。
+        </li>
+        <li>
+          下一場小松公布後到 KKTIX 報名——時間看<a href="/schedule/">時程頁</a>。
+        </li>
+      </ol>
+      <p>
+        參加活動即代表同意 <a href="https://g0v.tw/intl/zh-TW/manifesto/zh-TW/">g0v 宣言</a>
+        並遵守<a href="https://g0v.hackmd.io/s/COC">行為守則</a>。也可以寫信到
+        <a href="mailto:g0v-digiresi@googlegroups.com">g0v-digiresi@googlegroups.com</a>。
+      </p>
+
+      <h2 class="pixel-h-tc pixel-h-tc--1">授權</h2>
+      <p>
+        手冊內容同步自 g0v 社群共筆（CC BY 4.0）；網站原始碼在
+        <a href="https://github.com/g0v/digiresi.g0v.tw">GitHub</a>。
+      </p>
+    </article>
+  </div>
+</BaseLayout>
+<style>
+  .page { padding-block: 48px 64px; }
+  .prose-mono {
+    max-width: 68ch;
+    margin-top: 24px;
+  }
+  .prose-mono p,
+  .prose-mono li {
+    color: var(--ink-2);
+  }
+  .prose-mono h1 { margin: 0 0 24px; }
+  .prose-mono h2 { margin: 40px 0 12px; }
+  .strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>

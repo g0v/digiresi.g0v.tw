@@ -1,0 +1,289 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import TerminalBlock from "../components/TerminalBlock.astro";
+import { featuredEvent, loadEvents } from "../lib/events";
+import type { SessionTag } from "../lib/events";
+
+const events = loadEvents();
+const todayISO = new Date().toISOString().slice(0, 10);
+const featured = featuredEvent(events, todayISO);
+const days = featured?.days ?? null;
+const hasDrill = Boolean(
+  days?.some((d) => d.sessions.some((s) => s.tag === "DRILL")),
+);
+const archive = [...events].sort((a, b) => b.number - a.number);
+
+// zh-TW packing list, ported from the kit's OFFLINE SURVIVAL KIT.
+const kit = [
+  "筆電＋充電器",
+  "行動電源（大顆的）",
+  "存好 repo 鏡像的 USB",
+  "紙本筆記本、筆",
+  "無線電、LoRa 板、奇怪的天線——如果你有",
+];
+
+const tagDot = (tag: SessionTag) =>
+  tag === "DRILL" ? "dot--offline" : tag === "HACK" ? "dot--online" : "";
+// Archive rows show "Th15n 第拾伍次" style short names.
+const shortName = (name: string) =>
+  name.replace(/^DigiResiTh\d+n\s*/, "").replace(/數位韌性松$/, "");
+---
+<BaseLayout
+  title="時程｜數位韌性松 DigiResiThon"
+  description="數位韌性松的活動時程與歷次小松紀錄，每場都連到當天的 HackMD 共筆。"
+>
+  <div class="container page">
+    <SectionHeader label="時程" right="ALL TIMES GMT+8" />
+
+    {featured && (
+      <div class="featured">
+        <div class="featured-head">
+          <span class="pixel-h-tc pixel-h-tc--1">{featured.name}</span>
+          <span class="featured-meta">
+            {featured.date ? featured.date.replaceAll("-", ".") : "T.B.D."}
+            {featured.venue && ` · ${featured.venue}`}
+            {" · "}
+            <a href={featured.url}>共筆</a>
+          </span>
+        </div>
+
+        {days ? (
+          <>
+            <div class="tabs" role="tablist" aria-label="活動日">
+              {days.map((d, i) => (
+                <button
+                  class:list={["tab", { "tab-active": i === 0 }]}
+                  role="tab"
+                  aria-selected={i === 0 ? "true" : "false"}
+                  data-day-tab={String(i)}
+                  type="button"
+                >{d.label}</button>
+              ))}
+            </div>
+            {days.map((d, i) => (
+              <section
+                class="timetable"
+                data-day-panel={String(i)}
+                hidden={i !== 0}
+                aria-label={d.label}
+              >
+                {d.sessions.map((s, j) => (
+                  <div class:list={["tt-row", { "tt-drill": s.tag === "DRILL" }]}>
+                    <span class="tt-time">{s.t}</span>
+                    <span class="tt-tree">{j === d.sessions.length - 1 ? "└─" : "├─"}</span>
+                    <span class="tt-title">{s.title}</span>
+                    <span class="badge"><span class:list={["dot", tagDot(s.tag)]}></span>{s.tag}</span>
+                    <span class="tt-loc">{s.loc}</span>
+                  </div>
+                ))}
+              </section>
+            ))}
+          </>
+        ) : (
+          <div class="no-days">
+            <TerminalBlock
+              title="schedule"
+              lines={[
+                { prompt: "$", text: "schedule --next" },
+                { text: "時程尚未公布", tone: "dim" },
+                { text: "watch g0v slack #digiresithon", tone: "green" },
+              ]}
+            />
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="panels">
+      {hasDrill && (
+        <div class="alert alert-degraded">
+          <div class="alert-title">斷網演練 BLACKOUT DRILL</div>
+          <div class="alert-body">
+            場地骨幹會被「剪斷」——這不是故障，是重點。斷網也能動的專案，
+            成果發表加倍加分。
+          </div>
+        </div>
+      )}
+      <div class="pack">
+        <span class="label pack-label">OFFLINE SURVIVAL KIT — PACK CHECK</span>
+        <div class="pack-list">
+          {kit.map((item, i) => (
+            <label class="check">
+              <input type="checkbox" data-pack-idx={String(i)} />
+              <span class="check-box"></span>
+              {item}
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="archive-head">
+      <SectionHeader label="歷次活動" right={`ARCHIVE · ${archive.length} ROUNDS`} />
+    </div>
+    <div class="archive" role="list">
+      {archive.map((e, i) => (
+        <div class="ar-row" role="listitem">
+          <span class="ar-tree">{i === archive.length - 1 ? "└─" : "├─"}</span>
+          <span class="ar-code">Th{e.number}n</span>
+          <span class="ar-name">{shortName(e.name)}</span>
+          <span class="ar-meta">
+            {e.date ? e.date.replaceAll("-", ".") : "日期未定"}
+            {e.venue && ` · ${e.venue}`}
+          </span>
+          <a class="ar-link" href={e.url}>└ 共筆 →</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .page { padding-block: 48px 64px; }
+  .featured { margin-top: 24px; }
+  .featured-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .featured-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .tabs { margin-bottom: 20px; }
+  .timetable {
+    border: var(--border);
+    background: var(--surface);
+  }
+  .tt-row {
+    display: grid;
+    grid-template-columns: 72px 24px 1fr auto 140px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-top: var(--border-soft);
+    font-family: var(--font-mono);
+  }
+  .tt-row:first-child { border-top: none; }
+  .tt-time {
+    color: var(--accent-2);
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+  .tt-tree {
+    color: var(--ink-3);
+    font-size: var(--text-sm);
+  }
+  .tt-title { font-size: var(--text-base); }
+  .tt-drill .tt-title {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tt-loc {
+    font-size: var(--text-xs);
+    color: var(--ink-3);
+    letter-spacing: var(--tracking-label);
+    text-align: right;
+  }
+  .no-days { max-width: 520px; }
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+    align-items: start;
+  }
+  .pack {
+    border: var(--border);
+    background: var(--surface);
+    padding: 16px 18px;
+  }
+  .pack-label {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .pack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .archive-head { margin-top: 64px; }
+  .archive {
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ar-row {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .ar-tree { color: var(--ink-3); }
+  .ar-code {
+    color: var(--accent-2);
+    font-weight: 600;
+  }
+  .ar-name { color: var(--ink); }
+  .ar-meta {
+    color: var(--ink-3);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+  .ar-link { margin-left: auto; }
+  @media (max-width: 800px) {
+    .panels { grid-template-columns: 1fr; }
+    .tt-row { grid-template-columns: 64px 1fr auto; }
+    .tt-tree,
+    .tt-loc { display: none; }
+    .ar-link { margin-left: 0; }
+  }
+</style>
+<script>
+  // Day tabs: all panels are pre-rendered; JS only toggles the hidden
+  // attribute. No framework, no hydration.
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-day-tab]"));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-day-panel]"));
+  for (const tab of tabs) {
+    tab.addEventListener("click", () => {
+      const id = tab.getAttribute("data-day-tab");
+      for (const t of tabs) {
+        const active = t === tab;
+        t.classList.toggle("tab-active", active);
+        t.setAttribute("aria-selected", String(active));
+      }
+      for (const p of panels) {
+        p.hidden = p.getAttribute("data-day-panel") !== id;
+      }
+    });
+  }
+
+  // Packing checklist: persisted as a JSON boolean array under
+  // localStorage "drt-packcheck".
+  const KEY = "drt-packcheck";
+  const boxes = Array.from(document.querySelectorAll<HTMLInputElement>("[data-pack-idx]"));
+  try {
+    const saved: boolean[] = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+    boxes.forEach((box, i) => {
+      box.checked = Boolean(saved[i]);
+    });
+  } catch {
+    /* corrupted or unavailable storage: start unchecked */
+  }
+  for (const box of boxes) {
+    box.addEventListener("change", () => {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(boxes.map((b) => b.checked)));
+      } catch {
+        /* storage unavailable: checkbox still works, just not persisted */
+      }
+    });
+  }
+</script>

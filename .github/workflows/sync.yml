@@ -1,0 +1,41 @@
+name: Content sync
+
+on:
+  schedule:
+    # Friday 21:00 UTC = Saturday 05:00 Asia/Taipei
+    - cron: "0 21 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run sync
+      - uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          branch: content-sync
+          delete-branch: true
+          commit-message: |
+            content: weekly HackMD sync
+
+            Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+          title: "content: weekly HackMD sync"
+          body: |
+            每週自動同步：g0v-data/g0v-hackmd-archive → src/content/handbook/。
+
+            **合併前必須人工審核。** HackMD 共筆任何人皆可編輯；
+            這個 PR 的 diff 就是安全審核點——請確認內容變更合理、
+            沒有惡意連結或被竄改的段落，再行合併。
+
+            同步腳本：scripts/sync-content.mjs（manifest：sync.config.yaml）。
+            同步失敗時此 workflow 直接失敗、不會開 PR，也不影響已部署網站。

@@ -1,0 +1,91 @@
+---
+// Terminal panel: traffic squares header, sunken scanlined body, blinking
+// block cursor. Prompts/statuses stay EN (brand voice); free text may be zh.
+export interface TermLine {
+  prompt?: string;
+  text: string;
+  tone?: "green" | "red" | "dim";
+}
+interface Props {
+  title?: string;
+  lines: TermLine[];
+  cursor?: boolean;
+}
+const { title = "digiresithon@tw:~", lines, cursor = true } = Astro.props;
+---
+<div class="term">
+  <div class="term-bar">
+    <span class="sq sq-r"></span>
+    <span class="sq sq-a"></span>
+    <span class="sq sq-g"></span>
+    <span class="term-title">{title}</span>
+  </div>
+  <div class="term-body">
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="term-lines">
+      {lines.map((l) => (
+        <div class={`term-line${l.tone ? ` tone-${l.tone}` : ""}`}>
+          {l.prompt && <span class="term-prompt">{l.prompt}</span>}
+          {l.text}
+        </div>
+      ))}
+      <slot />
+      {cursor && <span class="term-cursor" aria-hidden="true"></span>}
+    </div>
+  </div>
+</div>
+<style>
+  .term {
+    border: var(--border);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: var(--border);
+  }
+  .sq { width: 10px; height: 10px; flex: none; }
+  .sq-r { background: var(--accent); }
+  .sq-a { background: var(--status-degraded); }
+  .sq-g { background: var(--accent-2); }
+  .term-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    color: var(--ink-2);
+    margin-left: 6px;
+  }
+  .term-body {
+    position: relative;
+    background: var(--surface-sunken);
+    flex: 1;
+    overflow: hidden;
+  }
+  .term-lines {
+    position: relative;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.8;
+  }
+  .term-line {
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .tone-green { color: var(--accent-2); }
+  .tone-red { color: var(--accent); }
+  .tone-dim { color: var(--ink-3); }
+  .term-prompt { color: var(--accent-2); margin-right: 8px; }
+  .term-cursor {
+    display: inline-block;
+    width: 9px;
+    height: 16px;
+    background: var(--accent-2);
+    vertical-align: -3px;
+    animation: drt-blink 1s steps(1) infinite;
+  }
+</style>

@@ -1,0 +1,29 @@
+/* Edges, shadows, patterns, motion.
+   Rules of the world: no border-radius, no blur, no soft shadows, no gradients-as-decoration.
+   Shadows are hard pixel offsets. Motion is stepped, not eased. */
+:root {
+  --radius: 0px;
+  --border-w: 2px;
+  --border: 2px solid var(--line);
+  --border-soft: 1px solid var(--line-soft);
+  --border-offline: 2px dashed var(--line-soft);   /* offline / pending states */
+
+  --shadow-1: 3px 3px 0 var(--line);
+  --shadow-2: 6px 6px 0 var(--line);
+  --shadow-accent: 6px 6px 0 var(--accent);
+
+  --focus-ring: 2px dashed var(--accent);
+  --focus-offset: 2px;
+
+  /* patterns */
+  --stripe-red: repeating-linear-gradient(-45deg, var(--accent) 0 10px, transparent 10px 20px);      /* the slash, repeated */
+  --stripe-caution: repeating-linear-gradient(-45deg, var(--ink) 0 10px, transparent 10px 20px);
+  --checker: repeating-conic-gradient(var(--line-soft) 0% 25%, transparent 0% 50%);                   /* dither texture; size with background-size: 8px 8px */
+  --scanlines: repeating-linear-gradient(0deg, var(--scanline-color) 0 1px, transparent 1px 3px);     /* CRT texture — hero/terminal panels */
+
+  /* motion — stepped like a low-fps sprite */
+  --dur-1: 100ms;
+  --dur-2: 200ms;
+  --ease-step-2: steps(2, end);
+  --ease-step-4: steps(4, end);
+}

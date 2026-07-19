@@ -1,0 +1,313 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TerminalBlock from "../components/TerminalBlock.astro";
+import SignalBars from "../components/SignalBars.astro";
+import Marquee from "../components/Marquee.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import NextEvent from "../components/NextEvent.astro";
+import Px from "../components/Px.astro";
+import { loadEvents, upcomingEvent } from "../lib/events";
+
+const events = loadEvents();
+const todayISO = new Date().toISOString().slice(0, 10);
+const upcoming = upcomingEvent(events, todayISO);
+const countdown = upcoming?.date
+  ? Math.max(0, Math.ceil((Date.parse(upcoming.date) - Date.parse(todayISO)) / 86400000))
+  : null;
+const heroMeta = upcoming?.date
+  ? `${upcoming.date.replaceAll("-", ".")} · ${upcoming.venue ?? "T.B.D."}`
+  : "NEXT · T.B.D.";
+const regOpen = Boolean(upcoming && upcoming.registerUrl);
+
+// Four tracks — footers deep-link into the most relevant handbook section
+// (first/most-relevant page; per-section index routes do not exist).
+const tracks = [
+  {
+    icon: "radio-signal",
+    name: "離線通訊",
+    desc: "鏈網、LoRa、業餘無線電——骨幹斷了也能傳話。",
+    href: "/handbook/mesh/intro/",
+    foot: "→ 通訊網手冊",
+  },
+  {
+    icon: "server",
+    name: "資料備援",
+    desc: "鏡像、離線快取、分散式備份。機房掛了，資料還在。",
+    href: "/handbook/selfhost/alternatives/",
+    foot: "→ 自架服務手冊",
+  },
+  {
+    icon: "alert",
+    name: "資訊真實",
+    desc: "緊急資訊查證、謠言分流、低頻寬廣播。斷網時更要求真。",
+    href: "/handbook/respond/communication/",
+    foot: "→ 應變手冊",
+  },
+  {
+    icon: "users",
+    name: "公民協作",
+    desc: "避難地圖、互助看板、紙本相容的流程。鄰居就是基礎設施。",
+    href: "/handbook/prepare/certifications/",
+    foot: "→ 準備手冊",
+  },
+];
+
+// Verified facts: 16 rounds Th0n–Th15n (master doc); 55 archive pads under the
+// digital-resilience tag (design-spec background index); 20 synced handbook
+// pages (sync.config.yaml); 0 CLOUDS is the brand fact and stays. The round
+// count is DERIVED from events.length so it tracks events.yaml automatically.
+const stats = [
+  { n: String(events.length), label: "場次 ROUNDS", accent: false },
+  { n: "55+", label: "共筆 PADS", accent: false },
+  { n: "0", label: "CLOUDS", accent: true },
+  { n: "20", label: "頁離線手冊 PAGES", accent: false },
+];
+
+const marqueeItems = [
+  "SIGNAL LOST",
+  `${events.length} ROUNDS`,
+  "台北 TAIPEI",
+  "NO CLOUD",
+  "斷網也能查",
+  "OFFLINE FIRST",
+  "自己的網路自己架",
+];
+---
+<BaseLayout
+  title="數位韌性松 DigiResiThon｜g0v"
+  description="g0v 數位韌性松：假設網路斷光光，我們還能怎麼傳遞資訊？備援通訊、離線手冊、斷網情境盤點。"
+>
+  <section class="hero">
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="slash" aria-hidden="true" style="left:62%;"></div>
+    <div class="container hero-grid">
+      <div>
+        <div class="kicker-row">
+          <span class="kicker">[ G0V 社群黑客松 ]</span>
+          <span class="kicker-meta">{heroMeta}</span>
+        </div>
+        <h1 class="pixel-h-tc pixel-h-tc--3 hero-title">
+          網路斷了<br />我們<br /><span class="t-accent">不斷</span>
+        </h1>
+        <p class="hero-copy">
+          數位韌性松是 g0v 社群發起的黑客松：假設海纜斷了、基地台倒了，
+          我們還能用什麼傳遞訊息？一起動手做斷網也能用的工具——
+          鏈網、離線資料、紙本，什麼撐得住就用什麼。
+        </p>
+        <div class="hero-actions">
+          <button
+            class:list={["btn", "btn-primary", "btn-lg", { "btn-inert": !regOpen }]}
+            type="button"
+            data-open-register
+          >報名</button>
+          <a class="btn btn-lg" href="/schedule/">看時程</a>
+          {countdown !== null && <span class="hero-count">T-{countdown}D</span>}
+        </div>
+      </div>
+      <div class="hero-side">
+        <TerminalBlock
+          title="digiresithon@tw:~"
+          lines={[
+            { prompt: "$", text: "ping intl.backbone.tw" },
+            { text: "Request timeout ×3", tone: "red" },
+            { text: "# 沒關係，我們自己架。", tone: "dim" },
+            { prompt: "$", text: "join digiresithon --offline", tone: "green" },
+            { text: "OK — 斷網那天見。", tone: "green" },
+          ]}
+        />
+        <div class="uplink">
+          <span class="label">VENUE UPLINK</span>
+          <SignalBars animated height={22} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee items={marqueeItems} speed={26} />
+
+  <section class="stats">
+    <div class="container stats-grid">
+      {stats.map((s) => (
+        <div class="stat">
+          <div class:list={["pixel-h", "pixel-h--3", { "t-accent": s.accent }]}>{s.n}</div>
+          <div class="stat-l">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container block">
+    <NextEvent />
+  </section>
+
+  <section class="container block">
+    <SectionHeader label="主題軌" right="TRACKS · 4 WAYS TO BE USEFUL" />
+    <div class="tracks-grid">
+      {tracks.map((t) => (
+        <div class="card">
+          <div class="card-body track-body">
+            <Px name={t.icon} size={28} color="var(--accent-2)" />
+            <div class="pixel-h-tc pixel-h-tc--1">{t.name}</div>
+            <div class="track-desc">{t.desc}</div>
+          </div>
+          <div class="card-foot">
+            <span>OPEN</span>
+            <a class="track-link" href={t.href}>{t.foot}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container block block-last">
+    <SectionHeader label="誰該來" right="EVERYONE" />
+    <div class="who-grid">
+      <div class="who-copy">
+        <p>
+          會寫程式的當然歡迎，但韌性大多不是程式碼：田野調查、設計、文件、
+          翻譯、業餘無線電、社區組織——都用得上。
+        </p>
+        <p>
+          g0v 老話一句——不要問為何沒有人做這個，先承認<span class="who-strong">你就是「沒有人」</span>。
+        </p>
+      </div>
+      {regOpen && upcoming ? (
+        <div class="alert alert-online">
+          <div class="alert-title">報名進行中</div>
+          <div class="alert-body">
+            {upcoming.name} · {upcoming.date!.replaceAll("-", ".")}。免費參加，遵守
+            <a href="https://g0v.hackmd.io/s/COC">行為守則</a>。
+          </div>
+          <a class="btn btn-primary btn-sm" href={upcoming.registerUrl!} target="_blank" rel="noopener">前往報名</a>
+        </div>
+      ) : (
+        <div class="alert">
+          <div class="alert-title">下一場尚未公布</div>
+          <div class="alert-body">
+            日期敲定會公布在
+            <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">大全共筆</a> 與 g0v
+            Slack——先把 <a href="/handbook/">手冊</a> 存進手機也不錯。
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: var(--border);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+    padding-block: 72px 64px;
+    position: relative;
+  }
+  .kicker-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    color: var(--ink-2);
+  }
+  .kicker { color: var(--accent); }
+  .hero-title { margin-top: 20px; }
+  .hero-copy {
+    max-width: 52ch;
+    color: var(--ink-2);
+    margin: 20px 0 0;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 28px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .hero-count {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--accent-2);
+    font-weight: 600;
+  }
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .uplink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: var(--border);
+    background: var(--surface);
+    padding: 10px 14px;
+  }
+  .stats { border-bottom: var(--border); }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    padding: 28px 20px;
+    text-align: center;
+    border-left: var(--border);
+  }
+  .stat:first-child { border-left: none; }
+  .stat-l {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 8px;
+  }
+  .block { padding-block: 64px 0; }
+  .block-last { padding-bottom: 64px; }
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .track-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .track-desc {
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .track-link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+    align-items: start;
+  }
+  .who-copy { color: var(--ink-2); }
+  .who-copy p { margin: 0 0 12px; }
+  .who-strong { color: var(--ink); }
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .tracks-grid { grid-template-columns: repeat(2, 1fr); }
+    .who-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(3) { border-left: none; }
+  }
+  @media (max-width: 520px) {
+    .tracks-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,149 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import SignalBars from "../../components/SignalBars.astro";
+import { SECTION_NAMES, SECTION_ORDER } from "../../lib/sections";
+import Search from "../../components/Search.astro";
+import OfflineStatus from "../../components/OfflineStatus.astro";
+import InstallHint from "../../components/InstallHint.astro";
+
+const SECTION_BLURBS: Record<string, string> = {
+  prepare: "救難包、常備物資、避難位置——斷網之前就該做完的事。",
+  respond: "通訊、交通、保健——災害當下怎麼行動。",
+  mesh: "從 Meshtastic 入門到台灣鏈網——不靠基地台也能通訊。",
+  scenarios: "海纜斷光會怎樣？用情境分級理解風險。",
+  selfhost: "離線替代品與 self-host 指南——自己的服務自己架。",
+};
+
+const IDEA_POOL_URL = "https://g0v.hackmd.io/PMiMLc-JT3yFrAs3CL6rzw";
+
+const pages = await getCollection("handbook");
+const sections = SECTION_ORDER.map((section) => {
+  const items = pages
+    .filter((p) => p.data.section === section)
+    .sort((a, b) => a.data.order - b.data.order);
+  return {
+    section,
+    name: SECTION_NAMES[section],
+    blurb: SECTION_BLURBS[section],
+    items,
+  };
+});
+---
+<BaseLayout
+  title="手冊 HANDBOOK — DigiResiThon"
+  description="數位韌性手冊：斷網也能查的準備、應變、通訊網指南。"
+>
+  <div class="handbook-index">
+    <SectionHeader label="手冊" right="OFFLINE-FIRST" />
+    <div class="handbook-status-row">
+      <OfflineStatus />
+      <InstallHint />
+    </div>
+    <Search />
+    <div class="handbook-grid">
+      {sections.map(({ section: _section, name, blurb, items }) => (
+        <div class="card card-lifted">
+          <div class="card-head">
+            <span class="pixel-h-tc">{name}</span>
+            <span class="card-meta">{items.length} 頁</span>
+          </div>
+          <div class="card-body">
+            <p class="blurb">{blurb}</p>
+            <ul class="page-tree">
+              {items.map((p, i) => (
+                <li>
+                  <span class="tree-glyph" aria-hidden="true">
+                    {i === items.length - 1 ? "└─" : "├─"}
+                  </span>
+                  <a href={`/handbook/${p.id}/`}>{p.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="card-foot">
+            <span>→ <a href={`/handbook/${items[0].id}/`}>開始閱讀</a></span>
+            <span class="sync">SYNC <SignalBars level={4} height={14} /></span>
+          </div>
+        </div>
+      ))}
+      <div class="card card-offline">
+        <div class="card-head">
+          <span class="pixel-h-tc">你的主題</span>
+          <span class="card-meta">EMPTY SLOT</span>
+        </div>
+        <div class="card-body">
+          <p class="blurb">
+            這一格是空的。不要問為什麼沒有人寫——你就是那個「沒有人」。
+          </p>
+          <a class="btn btn-secondary btn-sm" href={IDEA_POOL_URL} rel="external">
+            → 到共筆提案
+          </a>
+        </div>
+        <div class="card-foot">
+          <span>0 頁</span>
+          <span>→ pitch it</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .handbook-index {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 48px var(--gutter) 64px;
+  }
+  .handbook-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-4);
+    margin-top: var(--sp-4);
+  }
+  .handbook-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+    margin-top: var(--sp-5);
+  }
+  @media (max-width: 900px) {
+    .handbook-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .handbook-grid { grid-template-columns: 1fr; }
+  }
+  .card-head .pixel-h-tc {
+    font-size: var(--tc-1);
+    line-height: var(--leading-pixel);
+  }
+  .card-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .card-offline .card-meta { color: var(--ink-3); }
+  .blurb { margin: 0 0 var(--sp-3); }
+  .page-tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  .page-tree li {
+    display: flex;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-1);
+  }
+  .tree-glyph { color: var(--ink-3); flex: none; }
+  .page-tree a { color: var(--ink); text-decoration: none; }
+  .page-tree a:hover { color: var(--accent); }
+  .sync { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .card-foot a { color: var(--ink-2); text-decoration: none; }
+  .card-foot a:hover { color: var(--accent); }
+</style>

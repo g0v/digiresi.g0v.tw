@@ -1,0 +1,111 @@
+---
+---
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+
+<div class="drt-search">
+  <span class="drt-search-prefix" aria-hidden="true">$</span>
+  <div id="search" class="drt-search-ui"></div>
+</div>
+
+<script>
+  async function initSearch() {
+    try {
+      // Non-literal specifier: TypeScript resolves string-literal dynamic
+      // imports and would fail `npm run check` with TS2307 (/pagefind/ only
+      // exists post-build). Vite still needs the @vite-ignore comment to skip
+      // bundle-time analysis.
+      const PAGEFIND_UI_SRC = "/pagefind/pagefind-ui.js";
+      await import(/* @vite-ignore */ PAGEFIND_UI_SRC);
+      const PagefindUI = (
+        window as unknown as {
+          PagefindUI: new (opts: Record<string, unknown>) => unknown;
+        }
+      ).PagefindUI;
+      new PagefindUI({ element: "#search", showSubResults: true });
+    } catch {
+      console.warn(
+        "[search] /pagefind/pagefind-ui.js not found — run `npm run build` to generate the index; search is disabled under `astro dev`.",
+      );
+    }
+  }
+  void initSearch();
+</script>
+
+<style>
+  .drt-search {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    border: 2px solid var(--line-soft);
+    background: var(--surface-sunken);
+    padding: var(--sp-2) var(--sp-3);
+    margin-top: var(--sp-5);
+  }
+  .drt-search:focus-within { border-color: var(--line); }
+  .drt-search-prefix {
+    color: var(--accent-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    padding-top: 14px; /* aligns the $ with the PagefindUI input text line */
+  }
+  .drt-search-ui { flex: 1; min-width: 0; }
+
+  /* PagefindUI renders its own DOM at runtime — override via :global(). */
+  .drt-search :global(.pagefind-ui) {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--accent-2);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--surface-sunken);
+    --pagefind-ui-border: var(--line-soft);
+    --pagefind-ui-border-width: 2px;
+    --pagefind-ui-border-radius: 0px;
+    --pagefind-ui-image-border-radius: 0px;
+    --pagefind-ui-font: var(--font-mono);
+    font-family: var(--font-mono);
+  }
+  .drt-search :global(.pagefind-ui__search-input) {
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-weight: 400;
+  }
+  .drt-search :global(.pagefind-ui__search-input::placeholder) {
+    color: var(--ink-3);
+    opacity: 1;
+  }
+  .drt-search :global(.pagefind-ui__search-clear) {
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+  }
+  .drt-search :global(.pagefind-ui__result) {
+    border-top: 1px solid var(--line-soft);
+    padding: var(--sp-3) 0;
+  }
+  .drt-search :global(.pagefind-ui__result-link) {
+    color: var(--accent);
+    font-family: var(--font-mono);
+  }
+  .drt-search :global(.pagefind-ui__result-excerpt) {
+    color: var(--ink-2);
+    font-family: var(--font-sans);
+  }
+  .drt-search :global(.pagefind-ui__result-excerpt mark) {
+    background: var(--selection-bg);
+    color: var(--selection-ink);
+  }
+  .drt-search :global(.pagefind-ui__message) {
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+  }
+  .drt-search :global(.pagefind-ui__button) {
+    border-radius: 0;
+    border: 2px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-mono);
+  }
+</style>

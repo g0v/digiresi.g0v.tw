@@ -1,0 +1,105 @@
+# Curation manifest: one entry per handbook page.
+# Adding a doc to the handbook = one entry here, then `npm run sync` (opens as a review PR via sync.yml).
+archiveBase: https://raw.githubusercontent.com/g0v-data/g0v-hackmd-archive/main/notes
+hackmdBase: https://g0v.hackmd.io
+pages:
+  - id: "Ojw57urwQ1O8Bs9NJH_NfA"
+    slug: prepare/go-bag
+    section: prepare
+    order: 1
+    title: "準備救難包"
+  - id: "bpj79hk8TamOdG4PaYXh1A"
+    slug: prepare/household-supplies
+    section: prepare
+    order: 2
+    title: "家庭常備物資清單"
+  - id: "kh_Qh0WEQQ6kAbaFhvuEjQ"
+    slug: prepare/comms-backup
+    section: prepare
+    order: 3
+    title: "預防通訊中斷"
+  - id: "nRcyyTFNQLqIk1dYwccLCg"
+    slug: prepare/shelter-locations
+    section: prepare
+    order: 4
+    title: "了解避難位置"
+  - id: "vbliKPdyQ12V7QfoR8YJPg"
+    slug: prepare/first-aid
+    section: prepare
+    order: 5
+    title: "學習急救資訊"
+  - id: "B-ky08JbR4-HD3lFDwynLQ"
+    slug: prepare/certifications
+    section: prepare
+    order: 6
+    title: "民防/防災相關證照"
+  - id: "dxFHfKK-Rj2BXd_J1gx1aQ"
+    slug: respond/communication
+    section: respond
+    order: 1
+    title: "災難時的通訊"
+  - id: "jxLUGcNUTwm0qNHl6GZvLg"
+    slug: respond/transport
+    section: respond
+    order: 2
+    title: "災害時的交通"
+  - id: "VXWnM_jqQMqPdd_H2HmzVw"
+    slug: respond/health
+    section: respond
+    order: 3
+    title: "災害時保健"
+  - id: "V8ozO9RQS4ieWC1th3fleg"
+    slug: mesh/intro
+    section: mesh
+    order: 1
+    title: "寫給還不熟悉 Meshtastic 的朋友"
+  - id: "rW7Kbi7AR1uTMtuy8YAahA"
+    slug: mesh/buying
+    section: mesh
+    order: 2
+    title: "如何購買 Meshtastic 裝置"
+  - id: "BCNqWGEeRJms5A77oGewaw"
+    slug: mesh/firmware
+    section: mesh
+    order: 3
+    title: "購買後如何設定與刷韌體"
+  - id: "ZGuA7fUZQi-fbD06EenmGQ"
+    slug: mesh/taiwan-mesh
+    section: mesh
+    order: 4
+    title: "台灣鏈網"
+  - id: "_WnRRY4sRZOIBxgAMpz1-w"
+    slug: mesh/g0mesh
+    section: mesh
+    order: 5
+    title: "g0mesh 介紹"
+  - id: "2p681378QaypIOy1NVj2aw"
+    slug: mesh/g0mesh-quickstart
+    section: mesh
+    order: 6
+    title: "g0mesh 快速上手"
+  - id: "SYTBWVohTyuCgPGUqfAl9g"
+    slug: scenarios/levels
+    section: scenarios
+    order: 1
+    title: "數位韌性情境分級"
+  - id: "vN3UkdeyS7KqUw1QneQVRw"
+    slug: scenarios/submarine-cables
+    section: scenarios
+    order: 2
+    title: "海纜斷光會怎樣？"
+  - id: "xs79Cd6QTBefX8zoxhesOg"
+    slug: scenarios/outage-risks
+    section: scenarios
+    order: 3
+    title: "台灣全國性斷網災害風險"
+  - id: "vMiVU4G2RqqbY0tVJ9YaRg"
+    slug: selfhost/alternatives
+    section: selfhost
+    order: 1
+    title: "數位服務離線替代品"
+  - id: "9Z2EhRAFQq-jfsoixrwD5A"
+    slug: selfhost/saas-guide
+    section: selfhost
+    order: 2
+    title: "SaaS 韌性產品 self-host 指南"

@@ -1,0 +1,68 @@
+/* DigiResiTh0n color tokens — DARK ("blackout") is the default theme.
+   Ink discipline: near-black, paper, signal red (#C40000 family, from the logo slash),
+   plus ONE second accent: terminal green. Amber exists only as the DEGRADED status. */
+:root {
+  /* base palette */
+  --black: #0a0a09;
+  --paper: #fafaf8;
+  --white: #ffffff;
+  --gray-900: #1c1c1a;
+  --gray-700: #4a4a45;
+  --gray-500: #807f77;
+  --gray-300: #c9c8bf;
+  --gray-150: #e6e5dd;
+  --gray-100: #f0efe9;
+  --red: #c40000;        /* brand signal red (logo slash), light-theme accent */
+  --red-deep: #8e0000;
+  --red-bright: #ff4633; /* red on dark bg */
+  --green: #00813d;      /* terminal green, light-theme flavor */
+  --green-bright: #2bd576; /* terminal green on dark — phosphor */
+  --amber: #9a6b00;
+  --amber-bright: #ffb020;
+
+  /* semantic — theme-flipping aliases. Components must use these, not the base palette. */
+  --bg: #0c0c0b;
+  --surface: #151513;
+  --surface-sunken: #000000;
+  --surface-ink: var(--paper);      /* inverted panels (paper blocks on dark) */
+  --ink: #f2f1ea;
+  --ink-2: #b4b3a8;
+  --ink-3: #85847a;
+  --ink-on-accent: #ffffff;
+  --ink-on-ink: var(--black);       /* text on --surface-ink */
+  --line: #f2f1ea;                  /* structural 2px borders */
+  --line-soft: #3a3934;             /* hairlines, dashed offline borders */
+  --accent: var(--red-bright);      /* signal red — actions, alerts, the slash */
+  --accent-hover: #ff6f5e;
+  --accent-2: var(--green-bright);  /* terminal green — live data, prompts, ok-states */
+  --status-online: var(--green-bright);
+  --status-degraded: var(--amber-bright);
+  --status-offline: var(--red-bright);
+  --selection-bg: var(--red-bright);
+  --selection-ink: #0c0c0b;
+  --scanline-color: rgba(242, 241, 234, 0.055);
+}
+
+/* Paper theme — daylight mode. Set data-theme="light" on <html> or any subtree. */
+[data-theme="light"] {
+  --bg: var(--paper);
+  --surface: var(--white);
+  --surface-sunken: var(--gray-100);
+  --surface-ink: var(--black);
+  --ink: var(--black);
+  --ink-2: var(--gray-700);
+  --ink-3: var(--gray-500);
+  --ink-on-accent: var(--white);
+  --ink-on-ink: var(--paper);
+  --line: var(--black);
+  --line-soft: var(--gray-300);
+  --accent: var(--red);
+  --accent-hover: var(--red-deep);
+  --accent-2: var(--green);
+  --status-online: var(--green);
+  --status-degraded: var(--amber);
+  --status-offline: var(--red);
+  --selection-bg: var(--red);
+  --selection-ink: var(--white);
+  --scanline-color: rgba(10, 10, 9, 0.05);
+}

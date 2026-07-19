@@ -1,0 +1,60 @@
+---
+import "../styles/global.css";
+import "@fontsource/press-start-2p";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/600.css";
+import "@fontsource/ibm-plex-mono/700.css";
+import "@fontsource/noto-sans-tc/400.css";
+import "@fontsource/noto-sans-tc/700.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: string;
+}
+const { title, description, lang = "zh-Hant-TW" } = Astro.props;
+---
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="theme-color" content="#0c0c0b" />
+    <link rel="icon" href="/icons/icon-64.png" />
+    <script is:inline>
+      // Blocking theme init — must run before first paint.
+      // Dark ("blackout") is the default (no attribute). Light ONLY when the
+      // visitor chose it via the nav toggle. No prefers-color-scheme switch.
+      (function () {
+        try {
+          if (localStorage.getItem("drt-theme") === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {
+          /* storage disabled: stay dark */
+        }
+      })();
+    </script>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      // Register the offline service worker. Production only — `astro dev`
+      // does not generate /sw.js (registering there would just log an error).
+      // Processed scripts are deferred modules, so registering immediately is
+      // safe (no need to wait for window load).
+      if (import.meta.env.PROD && "serviceWorker" in navigator) {
+        void navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要內容</a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

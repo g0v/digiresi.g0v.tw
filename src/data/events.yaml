@@ -1,0 +1,161 @@
+# 數位韌性松歷次活動（手動維護，最新在前）。
+# 來源：大全 https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w 與各場次共筆。
+# 規則：
+# - date 一律加引號 "YYYY-MM-DD"（js-yaml 依 YAML 1.1 會把裸日期轉成 Date 物件）；
+#   查不到的欄位一律 null，不用猜的。
+# - Th13n/Th14n 共筆內文年份為複製貼上筆誤（寫 2025），以大全的日期前綴
+#   20260118 / 20260308 為準。
+# - days 只在共筆留有「活動流程」時間表時填（Th0n/Th1n/Th2n），其餘 null。
+# - registerUrl 為各場 KKTIX 頁（歷史場次頁面仍在，是否開放由程式依日期判斷）。
+- number: 15
+  name: DigiResiTh15n 第拾伍次數位韌性松
+  date: "2026-06-21"
+  venue: 摩茲工寮 MozTW Space
+  summary: null
+  url: https://g0v.hackmd.io/II9U3fe8RcqNWqpIfz8qpA
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith15n
+  days: null
+- number: 14
+  name: DigiResiTh14n 第拾肆次數位韌性松
+  date: "2026-03-08"
+  venue: g0v 台北社群空間
+  summary: null
+  url: https://g0v.hackmd.io/aoUgv0mUQL-pPQVHVh5tvQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith14n
+  days: null
+- number: 13
+  name: DigiResiTh13n 第拾參次數位韌性松
+  date: "2026-01-18"
+  venue: g0v 台北社群空間
+  summary: null
+  url: https://g0v.hackmd.io/dzEjfFD_RLe9DJzOMQ2C8A
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith13n
+  days: null
+- number: 12
+  name: DigiResiTh12n 第拾貳次數位韌性松
+  date: "2025-12-21"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/iuYFrLclS0CQKczvnZWDPQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith12n
+  days: null
+- number: 11
+  name: DigiResiTh11n 第拾壹次數位韌性松
+  date: "2024-10-31"
+  venue: 線上（Jitsi 視訊）
+  summary: 線上場，透過 Jitsi 視訊進行。
+  url: https://g0v.hackmd.io/3GFbzMscScSYuuRsVshbaw
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith11n
+  days: null
+- number: 10
+  name: DigiResiTh10n 第拾次數位韌性松
+  date: "2024-09-21"
+  venue: 摩茲工寮 MozTW Space
+  summary: null
+  url: https://g0v.hackmd.io/uLwn1o0AQ-qikfUdyPVbrw
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith10n
+  days: null
+- number: 9
+  name: DigiResiTh9n 第玖次數位韌性松
+  date: "2024-08-31"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/MouuawY4S5SRLtBYG1QIbQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith9n
+  days: null
+- number: 8
+  name: DigiResiTh8n 第捌次數位韌性松
+  date: "2024-07-27"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/H3ffGKZKSrmAAShdc2Cx9Q
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith8n
+  days: null
+- number: 7
+  name: DigiResiTh7n 第柒次數位韌性松
+  date: "2024-06-15"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/_WHs9N0eS3mzFHn5QzjvRg
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith7n
+  days: null
+- number: 6
+  name: DigiResiTh6n 第陸次數位韌性松
+  date: "2024-05-25"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/CLbAeY3wTZCaLr-YCYqafw
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith6n
+  days: null
+- number: 5
+  name: DigiResiTh5n 第伍次數位韌性松
+  date: "2024-04-27"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/ugNkTFLARwK4rmH7jCdO-g
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith5n
+  days: null
+- number: 4
+  name: DigiResiTh4n 第肆次數位韌性松
+  date: "2024-03-23"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/qcDX1C5mTE24UcCUkfTthQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith4n
+  days: null
+- number: 3
+  name: DigiResiTh3n 第參次數位韌性松
+  date: "2024-02-24"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/Xt7FoiZgTYq-7x20iNGN4A
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith3n
+  days: null
+- number: 2
+  name: DigiResiTh2n 第貳次數位韌性松
+  date: "2024-01-20"
+  venue: 國立臺灣大學霖澤館 1701 研討室
+  summary: 場地由 IORG 台灣資訊環境研究中心贊助。
+  url: https://g0v.hackmd.io/iC-7ZtqJTqG75GxUY3aiAQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith2n
+  days:
+    - label: SAT 01.20
+      date: "2024-01-20"
+      sessions:
+        - { t: "12:30", title: 活動入場, tag: ALL, loc: 1701 研討室 }
+        - { t: "13:00", title: 介紹, tag: TALK, loc: 1701 研討室 }
+        - { t: "13:15", title: 提案, tag: PITCH, loc: 1701 研討室 }
+        - { t: "13:45", title: Hacking, tag: HACK, loc: 1701 研討室 }
+        - { t: "16:00", title: 成果發表, tag: DEMO, loc: 1701 研討室 }
+- number: 1
+  name: DigiResiTh1n 第壹次數位韌性松
+  date: "2023-12-30"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: null
+  url: https://g0v.hackmd.io/mKkOC9PLSXi0GZg7uGm1xA
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith1n
+  days:
+    - label: SAT 12.30
+      date: "2023-12-30"
+      sessions:
+        - { t: "12:30", title: 活動入場, tag: ALL, loc: 4F 廚房 }
+        - { t: "13:00", title: 介紹, tag: TALK, loc: 4F 廚房 }
+        - { t: "13:15", title: 提案, tag: PITCH, loc: 4F 廚房 }
+        - { t: "13:45", title: Hacking, tag: HACK, loc: 4F 廚房 }
+        - { t: "16:30", title: 成果發表, tag: DEMO, loc: 4F 廚房 }
+- number: 0
+  name: DigiResiTh0n 第零次數位韌性松
+  date: "2023-11-04"
+  venue: NPO HUB Taipei 台北NPO聚落
+  summary: 一切的起點：第一場「假設網路斷光光」的黑客松。
+  url: https://g0v.hackmd.io/oyNRfe4lTuaZ5RbcPSS7TQ
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith0n
+  days:
+    - label: SAT 11.04
+      date: "2023-11-04"
+      sessions:
+        - { t: "12:30", title: 活動入場, tag: ALL, loc: 4F 廚房 }
+        - { t: "13:00", title: 介紹, tag: TALK, loc: 4F 廚房 }
+        - { t: "13:15", title: 提案, tag: PITCH, loc: 4F 廚房 }
+        - { t: "13:45", title: Hacking, tag: HACK, loc: 4F 廚房 }
+        - { t: "16:30", title: 成果發表, tag: DEMO, loc: 4F 廚房 }

@@ -1,0 +1,41 @@
+---
+// Box-drawing section header: ┌─ LABEL ────────── RIGHT ┐
+// Label is set in the TC pixel face so zh-TW labels (時程/手冊/關於…) render
+// on the pixel grid; Cubic 11 covers Latin too.
+interface Props {
+  label: string;
+  right?: string;
+}
+const { label, right } = Astro.props;
+---
+<div class="section-header">
+  <span class="sh-corner">┌─</span>
+  <span class="sh-label pixel-h-tc pixel-h-tc--1">{label}</span>
+  <span class="sh-rule" aria-hidden="true"></span>
+  {right && <span class="sh-right">{right}</span>}
+  <span class="sh-corner">┐</span>
+</div>
+<style>
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    color: var(--ink-2);
+  }
+  .sh-corner { font-size: var(--text-sm); }
+  .sh-label {
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .sh-rule {
+    flex: 1;
+    border-top: 2px solid var(--line-soft);
+    transform: translateY(1px);
+  }
+  .sh-right {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+</style>

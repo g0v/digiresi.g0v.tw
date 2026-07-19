@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SECTION_NAMES } from "../../lib/sections";
+import Search from "../../components/Search.astro";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("handbook");
+  return pages.map((page) => ({
+    params: { slug: page.id },
+    props: { page, pages },
+  }));
+}
+
+const { page, pages } = Astro.props;
+const { Content } = await render(page);
+
+const siblings = pages
+  .filter((p) => p.data.section === page.data.section)
+  .sort((a, b) => a.data.order - b.data.order);
+const idx = siblings.findIndex((p) => p.id === page.id);
+const prev = idx > 0 ? siblings[idx - 1] : null;
+const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
+const sectionName = SECTION_NAMES[page.data.section];
+---
+<BaseLayout
+  title={`${page.data.title} — 數位韌性手冊`}
+  description={page.data.description ?? `數位韌性手冊 · ${sectionName}`}
+>
+  <div class="handbook-page">
+    <nav class="handbook-breadcrumb" aria-label="breadcrumb">
+      <a href="/handbook/">手冊</a>
+      <span class="glyph" aria-hidden="true">├─</span>
+      <span>{sectionName}</span>
+    </nav>
+    <Search />
+    <article class="handbook-article" data-pagefind-body>
+      <h1 class="pixel-h-tc">{page.data.title}</h1>
+      <Content />
+    </article>
+    <aside class="article-attribution">
+      <span>本頁同步自 <a href={page.data.sourceUrl} rel="external">HackMD 共筆</a></span>
+      <span class="synced">SYNCED {page.data.syncedAt}</span>
+    </aside>
+    <nav class="article-nav" aria-label="前後頁">
+      <span>
+        {prev && <a href={`/handbook/${prev.id}/`}>├─ 上一頁 {prev.data.title}</a>}
+      </span>
+      <span>
+        {next && <a href={`/handbook/${next.id}/`}>└─ 下一頁 {next.data.title}</a>}
+      </span>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .handbook-page {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 48px var(--gutter) 64px;
+  }
+</style>

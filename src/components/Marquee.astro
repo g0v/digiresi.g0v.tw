@@ -1,0 +1,46 @@
+---
+// Ticker strip. Content is duplicated inline so drt-marquee's -50% translate
+// loops seamlessly. Paused under prefers-reduced-motion.
+interface Props {
+  items: string[];
+  speed?: number;
+}
+const { items, speed = 30 } = Astro.props;
+const content = items.join(" /// ") + " /// ";
+---
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" style={`animation-duration:${speed}s;`}>
+    <span class="marquee-chunk">{content}</span>
+    <span class="marquee-chunk">{content}</span>
+  </div>
+</div>
+<style>
+  .marquee {
+    overflow: hidden;
+    border-top: var(--border);
+    border-bottom: var(--border);
+    background: var(--surface);
+  }
+  .marquee-track {
+    display: inline-flex;
+    white-space: nowrap;
+    padding: 8px 0;
+    animation-name: drt-marquee;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink);
+    will-change: transform;
+  }
+  .marquee-chunk {
+    white-space: nowrap;
+    padding-right: 24px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+  }
+</style>

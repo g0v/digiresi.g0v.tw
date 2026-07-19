@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="DigiResiThon — Digital Resilience Hackathon | g0v"
+  description="A g0v community hackathon prototyping what still works when Taiwan's internet goes dark: mesh networks, an offline handbook, shutdown scenario mapping."
+  lang="en"
+>
+  <div class="container page">
+    <div class="kicker">[ G0V COMMUNITY HACKATHON ]</div>
+    <h1 class="pixel-h pixel-h--2">
+      WHEN THE NET<br />GOES DOWN,<br />WE STAY <span class="t-accent">UP</span>.
+    </h1>
+    <p>
+      Taiwan's internet rides on submarine cables. Earthquakes, typhoons, dredging
+      ships — or a blockade — could cut them, and most services people use daily
+      (LINE, Instagram, YouTube) run in data centers outside Taiwan. Satellites
+      won't cover everyone: limited bandwidth goes to first responders.
+    </p>
+    <p>
+      <strong>DigiResiThon (數位韌性松)</strong> is a recurring hackathon from the
+      <a href="https://g0v.tw/intl/en/">g0v civic-tech community</a>. We prototype
+      what still works on the worst day: community mesh networks (Meshtastic),
+      offline knowledge — the <a href="/handbook/">handbook on this site</a>
+      installs as an app and works with no connection at all — and inventories of
+      internet-shutdown scenarios and self-hosted fallbacks. Sixteen rounds and
+      counting since 2023.
+    </p>
+    <ul>
+      <li>Join the <a href="https://g0v.hackmd.io/fKrjZ3BlRfWmQ471wcSdBg">g0v Slack</a> — channel #civil-defense.</li>
+      <li>Browse the <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">master doc</a> on HackMD (mostly zh-TW).</li>
+      <li>Come to the next round — see the <a href="/schedule/">schedule</a>.</li>
+    </ul>
+    <p class="fine">
+      Handbook content is CC BY 4.0 from g0v community pads. Site source on
+      <a href="https://github.com/g0v/digiresi.g0v.tw">GitHub</a>. Code of Conduct applies.
+    </p>
+  </div>
+</BaseLayout>
+<style>
+  .page {
+    padding-block: 48px 64px;
+    max-width: calc(68ch + 2 * var(--gutter));
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    color: var(--accent);
+  }
+  h1 { margin: 16px 0 24px; }
+  p, li { color: var(--ink-2); }
+  strong { color: var(--ink); }
+  .fine {
+    font-size: var(--text-xs);
+    color: var(--ink-3);
+  }
+</style>

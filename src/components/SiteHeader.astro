@@ -1,0 +1,130 @@
+---
+import Px from "./Px.astro";
+import RegisterDialog from "./RegisterDialog.astro";
+import StatusDot from "./StatusDot.astro";
+
+const nav = [
+  { href: "/", label: "首頁 HOME" },
+  { href: "/schedule/", label: "時程 SCHEDULE" },
+  { href: "/handbook/", label: "手冊 HANDBOOK" },
+];
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href.replace(/\/$/, ""));
+---
+<header class="site-header">
+  <div class="container inner">
+    <a class="brand" href="/" aria-label="DigiResiThon 首頁">
+      <img class="only-dark" src="/brand/mark-dark.png" alt="" height="32" />
+      <img class="only-dark wordmark" src="/brand/wordmark-dark.png" alt="DIGIRESITHON" height="16" />
+      <img class="only-light" src="/brand/mark.png" alt="" height="32" />
+      <img class="only-light wordmark" src="/brand/wordmark.png" alt="DIGIRESITHON" height="16" />
+    </a>
+    <nav aria-label="主選單">
+      {nav.map((n) => (
+        <a
+          href={n.href}
+          class:list={["nav-link", { "nav-active": isActive(n.href) }]}
+          aria-current={isActive(n.href) ? "page" : undefined}
+        >{n.label}</a>
+      ))}
+    </nav>
+    <StatusDot status="online" label="ONLINE" />
+    <button id="theme-toggle" type="button" aria-label="切換主題" title="blackout / paper">
+      <span class="only-dark ticon"><Px name="sun" size={16} /></span>
+      <span class="only-light ticon"><Px name="moon" size={16} /></span>
+    </button>
+    <button class="btn btn-primary btn-sm" type="button" data-open-register>報名</button>
+  </div>
+</header>
+<RegisterDialog />
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--bg);
+    border-bottom: var(--border);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    min-height: 64px;
+    padding-block: var(--sp-2);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+  }
+  .brand:hover { background: none; }
+  .brand img {
+    display: block;
+    width: auto;
+  }
+  nav {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 8px 12px;
+  }
+  .nav-link:hover,
+  .nav-active {
+    background: var(--ink);
+    color: var(--ink-on-ink);
+  }
+  #theme-toggle {
+    background: transparent;
+    border: 2px solid var(--line);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .ticon { display: flex; }
+  /* Theme swap: default (dark) shows the *-dark assets + sun icon. */
+  .only-light { display: none; }
+  :global(html[data-theme="light"]) .only-light { display: flex; }
+  :global(html[data-theme="light"]) .only-dark { display: none; }
+  :global(html[data-theme="light"]) img.only-light { display: block; }
+  :global(html[data-theme="light"]) img.only-dark { display: none; }
+  @media (max-width: 760px) {
+    .wordmark { display: none; }
+    .nav-link { padding: 8px 8px; }
+  }
+</style>
+<script>
+  // Theme toggle. Dark ("blackout") = no attribute; light = data-theme="light".
+  // Persisted to localStorage "drt-theme"; the blocking script in BaseLayout
+  // <head> re-applies the choice before first paint.
+  const btn = document.getElementById("theme-toggle");
+  btn?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const toLight = root.getAttribute("data-theme") !== "light";
+    if (toLight) {
+      root.setAttribute("data-theme", "light");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+    try {
+      localStorage.setItem("drt-theme", toLight ? "light" : "dark");
+    } catch {
+      /* storage unavailable — toggle still works for this page view */
+    }
+  });
+</script>

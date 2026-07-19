@@ -1,0 +1,35 @@
+---
+interface Props {
+  status: "online" | "degraded" | "offline";
+  label?: string;
+  blink?: boolean;
+}
+const { status, label, blink } = Astro.props;
+const doBlink = blink ?? status === "online";
+---
+<span class={`status-dot status-dot--${status}`}>
+  <span class:list={["sd-dot", { "sd-blink": doBlink }]}></span>
+  {label ?? status}
+</span>
+<style>
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .sd-dot {
+    width: 10px;
+    height: 10px;
+    flex: none;
+  }
+  .status-dot--online .sd-dot { background: var(--status-online); }
+  .status-dot--degraded .sd-dot { background: var(--status-degraded); }
+  .status-dot--offline .sd-dot { background: var(--status-offline); }
+  .sd-blink { animation: drt-blink 1.2s steps(1) infinite; }
+</style>

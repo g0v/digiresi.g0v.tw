@@ -1,0 +1,57 @@
+---
+// Footer chrome: mark logo, mono-caps attribution, community links.
+---
+<footer class="site-footer">
+  <div class="container inner">
+    <img class="only-dark" src="/brand/mark-dark.png" alt="DigiResiThon mark" height="40" />
+    <img class="only-light" src="/brand/mark.png" alt="DigiResiThon mark" height="40" />
+    <div class="lines">
+      A G0V COMMUNITY PROJECT · 內容 CC BY 4.0 ·
+      <a href="https://g0v.hackmd.io/s/COC">CODE OF CONDUCT</a> APPLIES<br />
+      NOBODY OWNS THIS. THAT MEANS YOU DO.
+    </div>
+    <div class="links">
+      <a href="https://g0v.hackmd.io/fKrjZ3BlRfWmQ471wcSdBg">SLACK #DIGIRESITHON</a>
+      <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">大全</a>
+      <a href="https://github.com/g0v/digiresi.g0v.tw">GIT</a>
+      <a href="/about/">關於</a>
+      <a href="/en/">EN</a>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    border-top: var(--border);
+    margin-top: auto;
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-5);
+    flex-wrap: wrap;
+    padding-block: 28px;
+  }
+  .inner img {
+    display: block;
+    width: auto;
+  }
+  .lines {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-3);
+    letter-spacing: var(--tracking-label);
+    line-height: 2;
+  }
+  .links {
+    margin-left: auto;
+    display: flex;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+  .only-light { display: none; }
+  :global(html[data-theme="light"]) .only-light { display: block; }
+  :global(html[data-theme="light"]) .only-dark { display: none; }
+</style>

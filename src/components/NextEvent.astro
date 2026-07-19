@@ -1,0 +1,72 @@
+---
+// Homepage callout for the next round. With no announced date (the current
+// state), it renders the honest fallback: last round + where to watch.
+import { featuredEvent, loadEvents, upcomingEvent } from "../lib/events";
+
+const events = loadEvents();
+const todayISO = new Date().toISOString().slice(0, 10);
+const upcoming = upcomingEvent(events, todayISO);
+const featured = featuredEvent(events, todayISO);
+const countdown = upcoming?.date
+  ? Math.max(0, Math.ceil((Date.parse(upcoming.date) - Date.parse(todayISO)) / 86400000))
+  : null;
+---
+<aside class="next-event" aria-label="下一場活動">
+  <div class="ne-label label">[ NEXT EVENT ]</div>
+  {upcoming ? (
+    <div class="ne-body">
+      <div class="ne-name pixel-h-tc pixel-h-tc--1">{upcoming.name}</div>
+      <div class="ne-meta">
+        {upcoming.date!.replaceAll("-", ".")}
+        {upcoming.venue && ` · ${upcoming.venue}`}
+        {countdown !== null && <span class="ne-count">T-{countdown}D</span>}
+      </div>
+      <div class="ne-actions">
+        <button class="btn btn-primary btn-sm" type="button" data-open-register>報名</button>
+        <a class="btn btn-ghost btn-sm" href="/schedule/">看時程</a>
+      </div>
+    </div>
+  ) : (
+    <div class="ne-body">
+      <div class="ne-line">
+        下一場時間未定——日期敲定會公布在
+        <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">大全共筆</a> 與 g0v Slack。
+      </div>
+      {featured && (
+        <div class="ne-meta">
+          上一場：{featured.name} · {featured.date?.replaceAll("-", ".")} ·
+          <a href={featured.url}>共筆</a>
+        </div>
+      )}
+    </div>
+  )}
+</aside>
+<style>
+  .next-event {
+    border: var(--border);
+    background: var(--surface);
+    padding: var(--sp-4) var(--sp-5);
+  }
+  .ne-label { display: block; margin-bottom: var(--sp-3); }
+  .ne-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .ne-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .ne-count {
+    color: var(--accent-2);
+    font-weight: 600;
+    margin-left: var(--sp-3);
+  }
+  .ne-actions {
+    display: flex;
+    gap: var(--sp-3);
+    margin-top: var(--sp-2);
+  }
+  .ne-line { color: var(--ink-2); }
+</style>

@@ -1,0 +1,18 @@
+/* DigiResiTh0n webfonts
+   - Press Start 2P : EN pixel display (logo-adjacent chunky pixel caps)
+   - Cubic 11 (俐方體11號) : TC pixel display, OFL, via jsDelivr from github.com/ACh-K/Cubic-11
+   - IBM Plex Mono : labels, meta, code, UI chrome
+   - IBM Plex Sans TC : body text (zh-TW + Latin)
+   - DotGothic16 : CJK pixel fallback if Cubic 11 fails to load */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans+TC:wght@400;500;700&display=swap");
+
+@font-face {
+  font-family: "Cubic 11";
+  src: url("https://cdn.jsdelivr.net/gh/ACh-K/Cubic-11@main/fonts/Cubic_11.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/gh/ACh-K/Cubic-11@main/fonts/Cubic_11_1.013_R.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/gh/ACh-K/Cubic-11@main/fonts/Cubic_11.ttf") format("truetype"),
+       url("https://cdn.jsdelivr.net/gh/ACh-K/Cubic-11@main/fonts/Cubic_11_1.013_R.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
