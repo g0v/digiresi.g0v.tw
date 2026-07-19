@@ -11,8 +11,8 @@ async function warmPrecache(page: Page): Promise<void> {
   });
   await page.waitForFunction(
     async () => {
-      const pretty = await caches.match("/handbook/prepare/go-bag/", { ignoreSearch: true });
-      const file = await caches.match("/handbook/prepare/go-bag/index.html", {
+      const pretty = await caches.match("/digiresi.g0v.tw/handbook/prepare/go-bag/", { ignoreSearch: true });
+      const file = await caches.match("/digiresi.g0v.tw/handbook/prepare/go-bag/index.html", {
         ignoreSearch: true,
       });
       return Boolean(pretty || file);
