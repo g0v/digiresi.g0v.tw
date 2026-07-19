@@ -2,11 +2,12 @@
 import Px from "./Px.astro";
 import RegisterDialog from "./RegisterDialog.astro";
 import StatusDot from "./StatusDot.astro";
+import { withBase } from "../lib/base";
 
 const nav = [
-  { href: "/", label: "首頁 HOME" },
-  { href: "/schedule/", label: "時程 SCHEDULE" },
-  { href: "/handbook/", label: "手冊 HANDBOOK" },
+  { href: withBase("/"), label: "首頁 HOME" },
+  { href: withBase("/schedule/"), label: "時程 SCHEDULE" },
+  { href: withBase("/handbook/"), label: "手冊 HANDBOOK" },
 ];
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -14,11 +15,11 @@ const isActive = (href: string) =>
 ---
 <header class="site-header">
   <div class="container inner">
-    <a class="brand" href="/" aria-label="DigiResiThon 首頁">
-      <img class="only-dark" src="/brand/mark-dark.png" alt="" height="32" />
-      <img class="only-dark wordmark" src="/brand/wordmark-dark.png" alt="DIGIRESITHON" height="16" />
-      <img class="only-light" src="/brand/mark.png" alt="" height="32" />
-      <img class="only-light wordmark" src="/brand/wordmark.png" alt="DIGIRESITHON" height="16" />
+    <a class="brand" href={withBase("/")} aria-label="DigiResiThon 首頁">
+      <img class="only-dark" src={withBase("/brand/mark-dark.png")} alt="" height="32" />
+      <img class="only-dark wordmark" src={withBase("/brand/wordmark-dark.png")} alt="DIGIRESITHON" height="16" />
+      <img class="only-light" src={withBase("/brand/mark.png")} alt="" height="32" />
+      <img class="only-light wordmark" src={withBase("/brand/wordmark.png")} alt="DIGIRESITHON" height="16" />
     </a>
     <nav aria-label="主選單">
       {nav.map((n) => (
