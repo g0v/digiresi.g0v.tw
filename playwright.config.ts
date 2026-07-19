@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import { getBase } from "./scripts/lib/deploy-base.mjs";
 
-const SITE_BASE = process.env.SITE_BASE ?? "/digiresi.g0v.tw/";
+const SITE_BASE = getBase();
 
 export default defineConfig({
   testDir: "./tests/e2e",

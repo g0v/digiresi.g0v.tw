@@ -1,4 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
+import { getBase } from "../../scripts/lib/deploy-base.mjs";
+
+const BASE = getBase();
 
 // Warm the offline cache: visit the handbook shell, wait for the service
 // worker to activate, then poll until the go-bag article is precached.
@@ -10,14 +13,14 @@ async function warmPrecache(page: Page): Promise<void> {
     await navigator.serviceWorker.ready;
   });
   await page.waitForFunction(
-    async () => {
-      const pretty = await caches.match("/digiresi.g0v.tw/handbook/prepare/go-bag/", { ignoreSearch: true });
-      const file = await caches.match("/digiresi.g0v.tw/handbook/prepare/go-bag/index.html", {
+    async (base) => {
+      const pretty = await caches.match(`${base}handbook/prepare/go-bag/`, { ignoreSearch: true });
+      const file = await caches.match(`${base}handbook/prepare/go-bag/index.html`, {
         ignoreSearch: true,
       });
       return Boolean(pretty || file);
     },
-    undefined,
+    BASE,
     { timeout: 30_000 }
   );
 }
