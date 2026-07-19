@@ -5,7 +5,7 @@ import { test, expect, type Page } from "@playwright/test";
 // Workbox keys precache entries by file URL + __WB_REVISION__ query param,
 // so we match both the pretty URL and the index.html form, ignoring search.
 async function warmPrecache(page: Page): Promise<void> {
-  await page.goto("/handbook/");
+  await page.goto("handbook/");
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
@@ -25,7 +25,7 @@ async function warmPrecache(page: Page): Promise<void> {
 test("handbook article renders fully offline", async ({ page, context }) => {
   await warmPrecache(page);
   await context.setOffline(true);
-  await page.goto("/handbook/prepare/go-bag/");
+  await page.goto("handbook/prepare/go-bag/");
   const h1 = page.locator("h1").first();
   await expect(h1).toBeVisible();
   expect((await h1.innerText()).trim().length).toBeGreaterThan(0);
@@ -36,14 +36,14 @@ test("uncached portal route falls back to the offline page", async ({ page, cont
   await context.setOffline(true);
   // /schedule/ is portal zone: network-first, never precached, never visited
   // in this context — the service worker must serve the /offline/ fallback.
-  await page.goto("/schedule/");
+  await page.goto("schedule/");
   await expect(page.getByText("目前離線").first()).toBeVisible();
 });
 
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
-  await page.goto("/");
+  await page.goto("");
   const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   expect(bg).toBe("rgb(12, 12, 11)");
 });

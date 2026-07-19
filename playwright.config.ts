@@ -8,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: "list",
   use: {
-    baseURL: `http://localhost:4321${SITE_BASE.replace(/\/$/, "")}`,
+    baseURL: `http://localhost:4321${SITE_BASE}`,
   },
   webServer: {
     command: "npm run preview",
