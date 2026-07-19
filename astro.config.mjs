@@ -80,9 +80,15 @@ export default defineConfig({
           {
             // Portal pages: network-first; when offline and uncached, the
             // precacheFallback plugin serves the precached /offline/ page.
-            urlPattern: ({ request, url }) =>
-              request.destination === "document" &&
-              !url.pathname.startsWith(`${BASE}handbook/`),
+            //
+            // urlPattern is a function whose body is toString'd into sw.js by workbox-build,
+            // so it CANNOT close over the build-time `BASE` const (ReferenceError at runtime).
+            // Look up the base from the SW's own registration scope instead — same value,
+            // resolved at runtime.
+            urlPattern: ({ request, url }) => {
+              const scope = new URL(self.registration.scope).pathname;
+              return request.destination === "document" && !url.pathname.startsWith(`${scope}handbook/`);
+            },
             handler: "NetworkFirst",
             options: {
               cacheName: "portal-pages",
