@@ -13,6 +13,15 @@ async function process(html) {
   return String(out);
 }
 
+async function processApex(html) {
+  const out = await unified()
+    .use(rehypeParse, { fragment: true })
+    .use(rehypeBaseUrl, { base: "/" })
+    .use(rehypeStringify)
+    .process(html);
+  return String(out);
+}
+
 describe("rehype-base-url", () => {
   it("prefixes root-absolute src", async () => {
     const out = await process('<img src="/handbook-assets/x.png">');
@@ -37,5 +46,11 @@ describe("rehype-base-url", () => {
   it("rewrites srcset entries", async () => {
     const out = await process('<img srcset="/a.png 1x, /b.png 2x">');
     expect(out).toBe('<img srcset="/digiresi.g0v.tw/a.png 1x, /digiresi.g0v.tw/b.png 2x">');
+  });
+  it("is a no-op when base is '/'", async () => {
+    const out = await processApex(
+      '<img src="/handbook-assets/x.png"><a href="/handbook/">go</a>',
+    );
+    expect(out).toBe('<img src="/handbook-assets/x.png"><a href="/handbook/">go</a>');
   });
 });
