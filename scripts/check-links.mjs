@@ -6,11 +6,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { walk } from "./lib/walk.mjs";
+import { getBase } from "./lib/deploy-base.mjs";
 
 // Returns the dist-relative file path a href should resolve to, or null
 // when the ref is not an internal absolute path (external URL, fragment,
-// mailto:, data:, tel:, protocol-relative, or relative path).
-export function resolveHref(href) {
+// mailto:, data:, tel:, protocol-relative, or relative path), or when it
+// doesn't fall under the given base.
+export function resolveHref(href, base = "/") {
   if (typeof href !== "string" || !href.startsWith("/") || href.startsWith("//")) return null;
   let p = href.split("#")[0].split("?")[0];
   try {
@@ -18,6 +20,8 @@ export function resolveHref(href) {
   } catch {
     // malformed percent-escape: keep the raw path; the existence check will flag it
   }
+  if (base !== "/" && p.startsWith(base)) p = "/" + p.slice(base.length);
+  else if (base !== "/") return null; // in-scope base mismatch: not one of ours
   if (p.endsWith("/")) p += "index.html";
   return p.replace(/^\//, "");
 }
@@ -46,13 +50,14 @@ function main() {
     process.exitCode = 1;
     return;
   }
+  const base = getBase();
   const htmlFiles = walk(distDir).filter((f) => f.endsWith(".html"));
   const broken = [];
   let checked = 0;
   for (const file of htmlFiles) {
     const html = fs.readFileSync(path.join(distDir, file), "utf8");
     for (const ref of extractRefs(html)) {
-      const target = resolveHref(ref);
+      const target = resolveHref(ref, base);
       if (target === null) continue;
       checked += 1;
       if (!targetExists(distDir, target)) broken.push({ file, ref });

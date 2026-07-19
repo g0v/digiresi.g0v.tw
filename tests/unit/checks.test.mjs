@@ -38,35 +38,38 @@ describe("globToRegExp", () => {
 });
 
 describe("resolveHref", () => {
-  it("maps trailing-slash pages to index.html", () => {
-    expect(resolveHref("/handbook/prepare/go-bag/")).toBe("handbook/prepare/go-bag/index.html");
-    expect(resolveHref("/")).toBe("index.html");
+  const BASE = "/digiresi.g0v.tw/";
+
+  it("resolves handbook path", () => {
+    expect(resolveHref("/digiresi.g0v.tw/handbook/prepare/go-bag/", BASE))
+      .toBe("handbook/prepare/go-bag/index.html");
+    expect(resolveHref("/digiresi.g0v.tw/", BASE)).toBe("index.html");
   });
 
-  it("keeps file paths as-is", () => {
-    expect(resolveHref("/icons/px/zap.svg")).toBe("icons/px/zap.svg");
-    expect(resolveHref("/brand/mark-dark.png")).toBe("brand/mark-dark.png");
+  it("resolves asset paths", () => {
+    expect(resolveHref("/digiresi.g0v.tw/icons/px/zap.svg", BASE)).toBe("icons/px/zap.svg");
+    expect(resolveHref("/digiresi.g0v.tw/brand/mark-dark.png", BASE)).toBe("brand/mark-dark.png");
   });
 
-  it("strips query strings and fragments", () => {
-    expect(resolveHref("/handbook/mesh/intro/#firmware")).toBe("handbook/mesh/intro/index.html");
-    expect(resolveHref("/handbook/?q=mesh")).toBe("handbook/index.html");
+  it("strips hash and query", () => {
+    expect(resolveHref("/digiresi.g0v.tw/handbook/mesh/intro/#firmware", BASE))
+      .toBe("handbook/mesh/intro/index.html");
+    expect(resolveHref("/digiresi.g0v.tw/handbook/?q=mesh", BASE)).toBe("handbook/index.html");
   });
 
-  it("decodes percent-encoded paths", () => {
-    expect(resolveHref("/handbook-assets/go-bag/%E5%9C%B0%E5%9C%96-1a2b3c4d.png")).toBe(
-      "handbook-assets/go-bag/地圖-1a2b3c4d.png"
-    );
+  it("decodes percent-escapes", () => {
+    expect(resolveHref("/digiresi.g0v.tw/handbook-assets/go-bag/%E5%9C%B0%E5%9C%96-1a2b3c4d.png", BASE))
+      .toBe("handbook-assets/go-bag/地圖-1a2b3c4d.png");
   });
 
-  it("returns null for anything that is not an internal absolute path", () => {
-    expect(resolveHref("#top")).toBe(null);
-    expect(resolveHref("mailto:hello@example.org")).toBe(null);
-    expect(resolveHref("https://g0v.hackmd.io/abc")).toBe(null);
-    expect(resolveHref("http://example.com/")).toBe(null);
-    expect(resolveHref("data:image/png;base64,AAAA")).toBe(null);
-    expect(resolveHref("tel:119")).toBe(null);
-    expect(resolveHref("//cdn.example.com/x.js")).toBe(null);
-    expect(resolveHref("relative/page/")).toBe(null);
+  it("returns null for out-of-scope, protocol-relative, and non-string values", () => {
+    expect(resolveHref("//cdn.example.com/x.js", BASE)).toBe(null);
+    expect(resolveHref("/some-other-app/x", BASE)).toBe(null); // base mismatch
+    expect(resolveHref("relative/path", BASE)).toBe(null);
+    expect(resolveHref(undefined, BASE)).toBe(null);
+  });
+
+  it("apex base still works", () => {
+    expect(resolveHref("/handbook/", "/")).toBe("handbook/index.html");
   });
 });
