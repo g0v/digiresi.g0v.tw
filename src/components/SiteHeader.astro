@@ -10,8 +10,9 @@ const nav = [
   { href: withBase("/handbook/"), label: "手冊 HANDBOOK" },
 ];
 const pathname = Astro.url.pathname;
+const home = withBase("/");
 const isActive = (href: string) =>
-  href === "/" ? pathname === "/" : pathname.startsWith(href.replace(/\/$/, ""));
+  href === home ? pathname === home : pathname.startsWith(href.replace(/\/$/, ""));
 ---
 <header class="site-header">
   <div class="container inner">
