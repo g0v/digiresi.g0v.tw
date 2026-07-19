@@ -71,7 +71,7 @@ export default defineConfig({
         // denylist "/" and "/schedule/" would serve the precached /offline/
         // page even when online. Portal documents fall through to the
         // NetworkFirst route below instead.
-        navigateFallbackDenylist: [new RegExp(`^${BASE.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")}(?!handbook/)`)],
+        navigateFallbackDenylist: [new RegExp(`^${BASE.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}(?!handbook/)`)],
         runtimeCaching: [
           {
             // Portal pages: network-first; when offline and uncached, the
