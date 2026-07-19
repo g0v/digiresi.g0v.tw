@@ -8,6 +8,7 @@ import "@fontsource/noto-sans-tc/400.css";
 import "@fontsource/noto-sans-tc/700.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { withBase } from "../lib/base";
 
 interface Props {
   title: string;
@@ -23,7 +24,7 @@ const { title, description, lang = "zh-Hant-TW" } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <meta name="theme-color" content="#0c0c0b" />
-    <link rel="icon" href="/icons/icon-64.png" />
+    <link rel="icon" href={withBase("/icons/icon-64.png")} />
     <script is:inline>
       // Blocking theme init — must run before first paint.
       // Dark ("blackout") is the default (no attribute). Light ONLY when the
@@ -38,14 +39,17 @@ const { title, description, lang = "zh-Hant-TW" } = Astro.props;
         }
       })();
     </script>
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="manifest" href={withBase("/manifest.webmanifest")} />
     <script>
       // Register the offline service worker. Production only — `astro dev`
       // does not generate /sw.js (registering there would just log an error).
       // Processed scripts are deferred modules, so registering immediately is
       // safe (no need to wait for window load).
+      import { withBase } from "../lib/base";
       if (import.meta.env.PROD && "serviceWorker" in navigator) {
-        void navigator.serviceWorker.register("/sw.js");
+        void navigator.serviceWorker.register(withBase("/sw.js"), {
+          scope: withBase("/"),
+        });
       }
     </script>
   </head>
