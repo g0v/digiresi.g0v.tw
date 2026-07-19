@@ -14,7 +14,7 @@
   const dot = root?.querySelector("[data-dot]") as HTMLElement | null;
   const msg = root?.querySelector("[data-msg]") as HTMLElement | null;
   // Any precached handbook page works as a probe; go-bag is order 1, section 1.
-  const PROBE_URL = "/handbook/prepare/go-bag/";
+  const PROBE_URL = `${import.meta.env.BASE_URL}handbook/prepare/go-bag/`;
 
   function setState(state: string, text: string) {
     if (!dot || !msg) return;

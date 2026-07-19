@@ -1,6 +1,7 @@
 ---
+import { withBase } from "../lib/base";
 ---
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<link rel="stylesheet" href={withBase("/pagefind/pagefind-ui.css")} />
 
 <div class="drt-search">
   <span class="drt-search-prefix" aria-hidden="true">$</span>
@@ -14,7 +15,7 @@
       // imports and would fail `npm run check` with TS2307 (/pagefind/ only
       // exists post-build). Vite still needs the @vite-ignore comment to skip
       // bundle-time analysis.
-      const PAGEFIND_UI_SRC = "/pagefind/pagefind-ui.js";
+      const PAGEFIND_UI_SRC = `${import.meta.env.BASE_URL}pagefind/pagefind-ui.js`;
       await import(/* @vite-ignore */ PAGEFIND_UI_SRC);
       const PagefindUI = (
         window as unknown as {

@@ -2,6 +2,7 @@
 // Homepage callout for the next round. With no announced date (the current
 // state), it renders the honest fallback: last round + where to watch.
 import { featuredEvent, loadEvents, upcomingEvent } from "../lib/events";
+import { withBase } from "../lib/base";
 
 const events = loadEvents();
 const todayISO = new Date().toISOString().slice(0, 10);
@@ -23,7 +24,7 @@ const countdown = upcoming?.date
       </div>
       <div class="ne-actions">
         <button class="btn btn-primary btn-sm" type="button" data-open-register>報名</button>
-        <a class="btn btn-ghost btn-sm" href="/schedule/">看時程</a>
+        <a class="btn btn-ghost btn-sm" href={withBase("/schedule/")}>看時程</a>
       </div>
     </div>
   ) : (
