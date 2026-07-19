@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/base";
 ---
 <BaseLayout
   title="DigiResiThon — Digital Resilience Hackathon | g0v"
@@ -21,7 +22,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <strong>DigiResiThon (數位韌性松)</strong> is a recurring hackathon from the
       <a href="https://g0v.tw/intl/en/">g0v civic-tech community</a>. We prototype
       what still works on the worst day: community mesh networks (Meshtastic),
-      offline knowledge — the <a href="/handbook/">handbook on this site</a>
+      offline knowledge — the <a href={withBase("/handbook/")}>handbook on this site</a>
       installs as an app and works with no connection at all — and inventories of
       internet-shutdown scenarios and self-hosted fallbacks. Sixteen rounds and
       counting since 2023.
@@ -29,7 +30,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <ul>
       <li>Join the <a href="https://g0v.hackmd.io/fKrjZ3BlRfWmQ471wcSdBg">g0v Slack</a> — channel #civil-defense.</li>
       <li>Browse the <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">master doc</a> on HackMD (mostly zh-TW).</li>
-      <li>Come to the next round — see the <a href="/schedule/">schedule</a>.</li>
+      <li>Come to the next round — see the <a href={withBase("/schedule/")}>schedule</a>.</li>
     </ul>
     <p class="fine">
       Handbook content is CC BY 4.0 from g0v community pads. Site source on

@@ -7,6 +7,7 @@ import { SECTION_NAMES, SECTION_ORDER } from "../../lib/sections";
 import Search from "../../components/Search.astro";
 import OfflineStatus from "../../components/OfflineStatus.astro";
 import InstallHint from "../../components/InstallHint.astro";
+import { withBase } from "../../lib/base";
 
 const SECTION_BLURBS: Record<string, string> = {
   prepare: "救難包、常備物資、避難位置——斷網之前就該做完的事。",
@@ -57,13 +58,13 @@ const sections = SECTION_ORDER.map((section) => {
                   <span class="tree-glyph" aria-hidden="true">
                     {i === items.length - 1 ? "└─" : "├─"}
                   </span>
-                  <a href={`/handbook/${p.id}/`}>{p.data.title}</a>
+                  <a href={withBase(`/handbook/${p.id}/`)}>{p.data.title}</a>
                 </li>
               ))}
             </ul>
           </div>
           <div class="card-foot">
-            <span>→ <a href={`/handbook/${items[0].id}/`}>開始閱讀</a></span>
+            <span>→ <a href={withBase(`/handbook/${items[0].id}/`)}>開始閱讀</a></span>
             <span class="sync">SYNC <SignalBars level={4} height={14} /></span>
           </div>
         </div>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
+import { withBase } from "../lib/base";
 ---
 <BaseLayout title="OFFLINE — DigiResiThon" description="目前離線。手冊仍可離線使用。">
   <div class="offline-page">
@@ -14,7 +15,7 @@ import TerminalBlock from "../components/TerminalBlock.astro";
       ]}
       cursor={true}
     />
-    <a class="btn btn-primary btn-lg" href="/handbook/">開啟手冊</a>
+    <a class="btn btn-primary btn-lg" href={withBase("/handbook/")}>開啟手冊</a>
     <p class="offline-note">回到線上之後，重新整理即可載入原本要看的頁面。</p>
   </div>
 </BaseLayout>

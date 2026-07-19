@@ -7,6 +7,7 @@ import SectionHeader from "../components/SectionHeader.astro";
 import NextEvent from "../components/NextEvent.astro";
 import Px from "../components/Px.astro";
 import { loadEvents, upcomingEvent } from "../lib/events";
+import { withBase } from "../lib/base";
 
 const events = loadEvents();
 const todayISO = new Date().toISOString().slice(0, 10);
@@ -26,28 +27,28 @@ const tracks = [
     icon: "radio-signal",
     name: "離線通訊",
     desc: "鏈網、LoRa、業餘無線電——骨幹斷了也能傳話。",
-    href: "/handbook/mesh/intro/",
+    href: withBase("/handbook/mesh/intro/"),
     foot: "→ 通訊網手冊",
   },
   {
     icon: "server",
     name: "資料備援",
     desc: "鏡像、離線快取、分散式備份。機房掛了，資料還在。",
-    href: "/handbook/selfhost/alternatives/",
+    href: withBase("/handbook/selfhost/alternatives/"),
     foot: "→ 自架服務手冊",
   },
   {
     icon: "alert",
     name: "資訊真實",
     desc: "緊急資訊查證、謠言分流、低頻寬廣播。斷網時更要求真。",
-    href: "/handbook/respond/communication/",
+    href: withBase("/handbook/respond/communication/"),
     foot: "→ 應變手冊",
   },
   {
     icon: "users",
     name: "公民協作",
     desc: "避難地圖、互助看板、紙本相容的流程。鄰居就是基礎設施。",
-    href: "/handbook/prepare/certifications/",
+    href: withBase("/handbook/prepare/certifications/"),
     foot: "→ 準備手冊",
   },
 ];
@@ -100,7 +101,7 @@ const marqueeItems = [
             type="button"
             data-open-register
           >報名</button>
-          <a class="btn btn-lg" href="/schedule/">看時程</a>
+          <a class="btn btn-lg" href={withBase("/schedule/")}>看時程</a>
           {countdown !== null && <span class="hero-count">T-{countdown}D</span>}
         </div>
       </div>
@@ -186,7 +187,7 @@ const marqueeItems = [
           <div class="alert-body">
             日期敲定會公布在
             <a href="https://g0v.hackmd.io/mGQcbKRDShmvyeGV74w_0w">大全共筆</a> 與 g0v
-            Slack——先把 <a href="/handbook/">手冊</a> 存進手機也不錯。
+            Slack——先把 <a href={withBase("/handbook/")}>手冊</a> 存進手機也不錯。
           </div>
         </div>
       )}

@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { SECTION_NAMES } from "../../lib/sections";
 import Search from "../../components/Search.astro";
+import { withBase } from "../../lib/base";
 
 export async function getStaticPaths() {
   const pages = await getCollection("handbook");
@@ -29,7 +30,7 @@ const sectionName = SECTION_NAMES[page.data.section];
 >
   <div class="handbook-page">
     <nav class="handbook-breadcrumb" aria-label="breadcrumb">
-      <a href="/handbook/">手冊</a>
+      <a href={withBase("/handbook/")}>手冊</a>
       <span class="glyph" aria-hidden="true">├─</span>
       <span>{sectionName}</span>
     </nav>
@@ -44,10 +45,10 @@ const sectionName = SECTION_NAMES[page.data.section];
     </aside>
     <nav class="article-nav" aria-label="前後頁">
       <span>
-        {prev && <a href={`/handbook/${prev.id}/`}>├─ 上一頁 {prev.data.title}</a>}
+        {prev && <a href={withBase(`/handbook/${prev.id}/`)}>├─ 上一頁 {prev.data.title}</a>}
       </span>
       <span>
-        {next && <a href={`/handbook/${next.id}/`}>└─ 下一頁 {next.data.title}</a>}
+        {next && <a href={withBase(`/handbook/${next.id}/`)}>└─ 下一頁 {next.data.title}</a>}
       </span>
     </nav>
   </div>
