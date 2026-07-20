@@ -15,6 +15,11 @@ describe("custom-domain deployment", () => {
     expect(config).toContain('const BASE = "/";');
   });
 
+  it("pins Astro's canonical site URL to the custom domain root", () => {
+    const config = fs.readFileSync("astro.config.mjs", "utf8");
+    expect(config).toContain('site: "https://digiresi.g0v.tw/",');
+  });
+
   it("publishes the GitHub Pages custom domain", () => {
     expect(fs.readFileSync("public/CNAME", "utf8")).toBe("digiresi.g0v.tw\n");
   });

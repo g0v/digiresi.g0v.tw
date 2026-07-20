@@ -28,7 +28,7 @@ const pagefindBeforeServiceWorker = {
 };
 
 export default defineConfig({
-  site: "https://digiresi.g0v.tw",
+  site: "https://digiresi.g0v.tw/",
   base: BASE,
   // "always" makes @vite-pwa/astro's precache manifest URLs end in "/"
   // ("handbook/prepare/go-bag/", "offline/") — exactly what the browser
