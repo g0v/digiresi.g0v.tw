@@ -6,10 +6,10 @@ import { precacheGlobs } from "./scripts/precache-globs.mjs";
 import rehypeBaseUrl from "./scripts/rehype-base-url.mjs";
 
 // Single source of truth for the deployment base path.
-//   "/"                    → custom apex domain (needs public/CNAME)
+//   "/"                    → custom domain (needs public/CNAME)
 //   "/digiresi.g0v.tw/"    → GitHub Pages project subpath
 // Everything else in the codebase derives from this value.
-const BASE = "/digiresi.g0v.tw/";
+const BASE = "/";
 
 // Runs Pagefind BEFORE @vite-pwa/astro's own astro:build:done hook (Astro runs
 // same-name hooks in integrations-array order) so sw.js precaches /pagefind/**.

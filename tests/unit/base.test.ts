@@ -1,17 +1,17 @@
 import { describe, it, expect, vi } from "vitest";
 
-vi.stubEnv("BASE_URL", "/digiresi.g0v.tw/");
+vi.stubEnv("BASE_URL", "/");
 
 const { withBase } = await import("../../src/lib/base.ts");
 
 describe("withBase", () => {
   it("prefixes root-absolute paths", () => {
-    expect(withBase("/handbook/")).toBe("/digiresi.g0v.tw/handbook/");
-    expect(withBase("/icons/icon-64.png")).toBe("/digiresi.g0v.tw/icons/icon-64.png");
-    expect(withBase("/")).toBe("/digiresi.g0v.tw/");
+    expect(withBase("/handbook/")).toBe("/handbook/");
+    expect(withBase("/icons/icon-64.png")).toBe("/icons/icon-64.png");
+    expect(withBase("/")).toBe("/");
   });
   it("prefixes bare paths without a leading slash", () => {
-    expect(withBase("handbook/")).toBe("/digiresi.g0v.tw/handbook/");
+    expect(withBase("handbook/")).toBe("/handbook/");
   });
   it("passes through external and non-path refs unchanged", () => {
     expect(withBase("https://example.com/x")).toBe("https://example.com/x");

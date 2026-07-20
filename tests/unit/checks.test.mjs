@@ -38,38 +38,33 @@ describe("globToRegExp", () => {
 });
 
 describe("resolveHref", () => {
-  const BASE = "/digiresi.g0v.tw/";
+  const BASE = "/";
 
   it("resolves handbook path", () => {
-    expect(resolveHref("/digiresi.g0v.tw/handbook/prepare/go-bag/", BASE))
+    expect(resolveHref("/handbook/prepare/go-bag/", BASE))
       .toBe("handbook/prepare/go-bag/index.html");
-    expect(resolveHref("/digiresi.g0v.tw/", BASE)).toBe("index.html");
+    expect(resolveHref("/", BASE)).toBe("index.html");
   });
 
   it("resolves asset paths", () => {
-    expect(resolveHref("/digiresi.g0v.tw/icons/px/zap.svg", BASE)).toBe("icons/px/zap.svg");
-    expect(resolveHref("/digiresi.g0v.tw/brand/mark-dark.png", BASE)).toBe("brand/mark-dark.png");
+    expect(resolveHref("/icons/px/zap.svg", BASE)).toBe("icons/px/zap.svg");
+    expect(resolveHref("/brand/mark-dark.png", BASE)).toBe("brand/mark-dark.png");
   });
 
   it("strips hash and query", () => {
-    expect(resolveHref("/digiresi.g0v.tw/handbook/mesh/intro/#firmware", BASE))
+    expect(resolveHref("/handbook/mesh/intro/#firmware", BASE))
       .toBe("handbook/mesh/intro/index.html");
-    expect(resolveHref("/digiresi.g0v.tw/handbook/?q=mesh", BASE)).toBe("handbook/index.html");
+    expect(resolveHref("/handbook/?q=mesh", BASE)).toBe("handbook/index.html");
   });
 
   it("decodes percent-escapes", () => {
-    expect(resolveHref("/digiresi.g0v.tw/handbook-assets/go-bag/%E5%9C%B0%E5%9C%96-1a2b3c4d.png", BASE))
+    expect(resolveHref("/handbook-assets/go-bag/%E5%9C%B0%E5%9C%96-1a2b3c4d.png", BASE))
       .toBe("handbook-assets/go-bag/地圖-1a2b3c4d.png");
   });
 
-  it("returns null for out-of-scope, protocol-relative, and non-string values", () => {
+  it("returns null for protocol-relative and non-string values", () => {
     expect(resolveHref("//cdn.example.com/x.js", BASE)).toBe(null);
-    expect(resolveHref("/some-other-app/x", BASE)).toBe(null); // base mismatch
     expect(resolveHref("relative/path", BASE)).toBe(null);
     expect(resolveHref(undefined, BASE)).toBe(null);
-  });
-
-  it("apex base still works", () => {
-    expect(resolveHref("/handbook/", "/")).toBe("handbook/index.html");
   });
 });
