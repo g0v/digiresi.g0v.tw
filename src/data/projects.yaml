@@ -1,0 +1,37 @@
+projects:
+  - name: MESHBOX
+    track: comms
+    tag: COMMS
+    sync: 4
+    people: 12
+    desc: "Solar-powered mesh node in a lunchbox. Flooding-resistant firmware, 2km hops."
+  - name: PAPERSYNC
+    track: civic
+    tag: CIVIC
+    sync: 3
+    people: 7
+    desc: "QR-batched forms that reconcile with the database when power returns."
+  - name: MIRROR-MIRROR
+    track: data
+    tag: DATA
+    sync: 4
+    people: 5
+    desc: "One-command community mirrors for critical repos and docs, rsync over anything."
+  - name: RUMOR TRIAGE
+    track: info
+    tag: INFO
+    sync: 2
+    people: 9
+    desc: "Low-bandwidth verification queue for emergency info, SMS-first."
+  - name: SHELTERMAP
+    track: civic
+    tag: CIVIC
+    sync: 3
+    people: 11
+    desc: "Offline-cached shelter map with bluetooth sync between devices."
+  - name: HAMBRIDGE
+    track: comms
+    tag: COMMS
+    sync: 1
+    people: 4
+    desc: "Packet-radio gateway that speaks boring, reliable 1980s protocols."
