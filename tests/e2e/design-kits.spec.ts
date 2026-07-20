@@ -18,3 +18,9 @@ test("/design-kits/colors/ returns 200 and shows SEMANTIC TOKENS heading", async
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'SEMANTIC TOKENS' })).toBeVisible();
 });
+
+test("/design-kits/typography/ returns 200 and shows PRESS START 2P heading", async ({ page }) => {
+  const response = await page.goto("design-kits/typography/");
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('h2').filter({ hasText: 'PRESS START 2P' })).toBeVisible();
+});

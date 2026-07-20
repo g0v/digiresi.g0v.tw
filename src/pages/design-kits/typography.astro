@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+
+const pixelSizes = [
+  { step: "--px-1", px: 16, label: "px-1 / 16px — body pixel heading, buttons, nav" },
+  { step: "--px-2", px: 24, label: "px-2 / 24px — section heading" },
+  { step: "--px-3", px: 32, label: "px-3 / 32px — page heading" },
+  { step: "--px-4", px: 48, label: "px-4 / 48px — hero display" },
+  { step: "--px-5", px: 64, label: "px-5 / 64px — max display" },
+];
+---
+<BaseLayout
+  title="Typography — Design Kits — DigiResiThon"
+  description="Press Start 2P pixel grid and IBM Plex Mono type specimens."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-type" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">TYPOGRAPHY</h1>
+
+    <div class="callout" style="margin-top: var(--sp-5);">
+      <strong>Pixel grid rule:</strong> Press Start 2P must NEVER be rendered below 16px
+      (<code>--px-1</code>). Sizes are fixed to the 8px grid: 16 / 24 / 32 / 48 / 64.
+      Use <code>-webkit-font-smoothing: none</code> on all pixel text.
+      IBM Plex Mono handles everything else: body, labels, tables, buttons, logs.
+    </div>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">PRESS START 2P</h2>
+    <DesignSpecimen label="press-start-2p — pixel sizes" viewport="AUTO">
+      <div class="type-stack">
+        {pixelSizes.map(({ step, label }) => (
+          <div class="type-row">
+            <div class="type-meta t-dim">{label}</div>
+            <div
+              class="type-sample"
+              style={`font-family: var(--font-pixel); font-size: var(${step}); -webkit-font-smoothing: none; line-height: var(--leading-pixel); text-transform: uppercase;`}
+            >
+              DIGIRESITHON
+            </div>
+          </div>
+        ))}
+      </div>
+    </DesignSpecimen>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">IBM PLEX MONO</h2>
+    <DesignSpecimen label="ibm-plex-mono — roles" viewport="AUTO">
+      <div class="type-stack">
+        <div class="type-row">
+          <div class="type-meta t-dim">body — 15px / 1.7</div>
+          <div style="font-family: var(--font-mono); font-size: var(--text-base); line-height: var(--leading-body);">
+            When digital infrastructure fails — cut sea cables, downed towers, blackouts —
+            the community keeps moving. Seriously. You are the nobody.
+          </div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta t-dim">label caps — text-xs / tracking-label / uppercase</div>
+          <div style="font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: 600; color: var(--ink-2);">
+            STATUS &nbsp;&middot;&nbsp; ONLINE &nbsp;&middot;&nbsp; [ DAY 0 ] &nbsp;&middot;&nbsp; T-42 DAYS &nbsp;&middot;&nbsp; 2026.10.24 SAT
+          </div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta t-dim">table row — text-sm / tracking-label / uppercase</div>
+          <div style="font-family: var(--font-mono); font-size: var(--text-sm); border: var(--border); display: flex; gap: var(--sp-4); padding: 8px 12px; letter-spacing: var(--tracking-label); text-transform: uppercase;">
+            <span>MESHBOX</span>
+            <span class="t-dim">COMMS</span>
+            <span style="color: var(--accent-2);">SYNC 4/4</span>
+            <span class="t-dim">12 PEOPLE</span>
+          </div>
+        </div>
+      </div>
+    </DesignSpecimen>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">TC FALLBACK</h2>
+    <DesignSpecimen label="pixel-tc — cubic-11" viewport="AUTO">
+      <div class="type-stack">
+        <div class="type-row">
+          <div class="type-meta t-dim">--font-pixel-tc (Cubic 11) — TC pixel display, tc-2 / 33px</div>
+          <div style="font-family: var(--font-pixel-tc); font-size: var(--tc-2); -webkit-font-smoothing: none; line-height: var(--leading-pixel);">
+            數位韌性松 DIGIRESITHON
+          </div>
+        </div>
+        <div class="type-row t-dim" style="font-size: var(--text-xs); line-height: var(--leading-body);">
+          <strong>Note:</strong> <code>--font-pixel-tc</code> = "Cubic 11", "Press Start 2P", monospace.
+          Self-hosted via <code>public/fonts/Cubic_11.woff2</code> (vendored by <code>npm run assets</code>).
+          Sizes: <code>--tc-1</code> (22px) &middot; <code>--tc-2</code> (33px) &middot; <code>--tc-3</code> (44px) &middot; <code>--tc-4</code> (66px).
+          Use for pixel-set TC strings only; all system copy is EN.
+        </div>
+      </div>
+    </DesignSpecimen>
+  </div>
+</BaseLayout>
+<style>
+  .dk-type { padding-block: var(--sp-7) var(--sp-9); }
+  .callout {
+    background: var(--surface);
+    border: var(--border);
+    border-left: 4px solid var(--line-soft);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+  }
+  .type-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+  }
+  .type-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+</style>
