@@ -37,3 +37,9 @@ test("/design-kits/components/ returns 200 and shows group labels", async ({ pag
   await expect(page.locator('h2').filter({ hasText: 'MARQUEE' })).toBeVisible();
   await expect(page.locator('h2').filter({ hasText: 'TABS' })).toBeVisible();
 });
+
+test("/design-kits/patterns/ returns 200 and shows SCANLINES heading", async ({ page }) => {
+  const response = await page.goto("design-kits/patterns/");
+  expect(response?.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'SCANLINES' })).toBeVisible();
+});

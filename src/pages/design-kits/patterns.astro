@@ -1,0 +1,205 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+---
+<BaseLayout
+  title="Patterns — Design Kits — DigiResiThon"
+  description="Scanlines, box-drawing, slash, motion tokens, stripe-caution, and checker patterns."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-patterns" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">PATTERNS</h1>
+
+    <!-- SCANLINES -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">SCANLINES</h2>
+    <DesignSpecimen label="--scanlines over dark panel" viewport="AUTO">
+      <div class="scanlines-demo">
+        <div class="scanlines-overlay" aria-hidden="true"></div>
+        <p class="scanlines-text t-dim">CRT TEXTURE &middot; repeating-linear-gradient &middot; 6% alpha</p>
+        <p class="scanlines-text t-dim">Applied to hero sections and terminal panels. Never over long body text.</p>
+      </div>
+    </DesignSpecimen>
+
+    <!-- BOX-DRAWING -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">BOX-DRAWING HEADERS</h2>
+    <DesignSpecimen label="SectionHeader component — box-drawing + mono ornament" viewport="AUTO">
+      <div class="spec-stack">
+        <SectionHeader label="PROJECTS" right="SAMPLE DATA · YEAR 0" />
+        <SectionHeader label="SCHEDULE" right="2026.10.24–25" />
+        <SectionHeader label="HANDBOOK" />
+      </div>
+      <p class="t-dim" style="font-size: var(--text-xs); margin-top: var(--sp-4);">
+        Characters: <code>┌─ SECTION ─────┐</code> — set in <code>--font-mono</code>, never <code>--font-pixel</code>.
+        Dividers: <code>── // ──</code>. Tree lists: <code>├─</code> <code>└─</code>.
+      </p>
+    </DesignSpecimen>
+
+    <!-- SLASH -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">SLASH</h2>
+    <DesignSpecimen label="45° red divider — one per view" viewport="AUTO">
+      <div class="slash-demo">
+        <div class="slash-band" aria-hidden="true"></div>
+        <p class="slash-text t-dim">
+          The 45° red slash echoes the logo mark. At most <strong>one</strong> per screen.
+          Implemented with <code>transform: rotate(45deg)</code> on a positioned element.
+        </p>
+      </div>
+    </DesignSpecimen>
+
+    <!-- MOTION -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">MOTION TOKENS</h2>
+    <DesignSpecimen label="--dur-* + --ease-step-* — stepped blink" viewport="AUTO">
+      <div class="spec-row" style="align-items: center; gap: var(--sp-6);">
+        <div class="motion-demo-cell">
+          <div class="motion-blink motion-blink--1"></div>
+          <span class="t-dim">drt-blink &middot; steps(1) &middot; 1s</span>
+        </div>
+        <div class="motion-demo-cell">
+          <div class="motion-blink motion-blink--step2"></div>
+          <span class="t-dim">steps(2) &middot; dur-1 (100ms)</span>
+        </div>
+        <div class="motion-demo-cell">
+          <div class="motion-blink motion-blink--step4"></div>
+          <span class="t-dim">steps(4) &middot; dur-2 (200ms)</span>
+        </div>
+      </div>
+      <p class="t-dim" style="font-size: var(--text-xs); margin-top: var(--sp-4);">
+        Motion rules: <code>--dur-1</code> (100ms) &middot; <code>--dur-2</code> (200ms) &middot;
+        <code>--ease-step-2</code> (steps(2, end)) &middot; <code>--ease-step-4</code> (steps(4, end)).
+        No parallax, no soft fades, no bounce.
+      </p>
+    </DesignSpecimen>
+
+    <!-- STRIPE-CAUTION -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">STRIPE-CAUTION</h2>
+    <DesignSpecimen label="--stripe-caution — hazard band" viewport="AUTO">
+      <div class="stripe-demo" aria-label="stripe-caution pattern">
+        <span class="t-dim" style="position: relative; z-index: 1;">--stripe-caution: repeating-linear-gradient(-45deg, --ink 0 10px, transparent 10px 20px)</span>
+      </div>
+    </DesignSpecimen>
+
+    <!-- CHECKER -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">CHECKER</h2>
+    <DesignSpecimen label="--checker — image placeholder" viewport="AUTO">
+      <div class="checker-demo" aria-label="checker placeholder pattern">
+        <span class="checker-caption t-dim">IMAGE PLACEHOLDER · 8px CHECKER</span>
+      </div>
+    </DesignSpecimen>
+  </div>
+</BaseLayout>
+<style>
+  .dk-patterns { padding-block: var(--sp-7) var(--sp-9); }
+  .spec-stack { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .spec-row { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: flex-start; }
+
+  /* Scanlines demo */
+  .scanlines-demo {
+    position: relative;
+    background: var(--surface-sunken);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--sp-5);
+    gap: var(--sp-2);
+  }
+  .scanlines-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--scanlines);
+    pointer-events: none;
+  }
+  .scanlines-text {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    margin: 0;
+    z-index: 1;
+  }
+
+  /* Slash demo */
+  .slash-demo {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-sunken);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    padding: var(--sp-5);
+  }
+  .slash-band {
+    position: absolute;
+    left: 52%;
+    top: -40px;
+    width: 6px;
+    height: calc(100% + 80px);
+    background: var(--accent);
+    transform: rotate(45deg);
+    transform-origin: center center;
+  }
+  .slash-text {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    margin: 0;
+    max-width: 50%;
+  }
+
+  /* Motion demo */
+  .motion-demo-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+  .motion-blink {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-2);
+  }
+  .motion-blink--1 { animation: drt-blink 1s steps(1) infinite; }
+  .motion-blink--step2 { animation: drt-blink var(--dur-1) var(--ease-step-2) infinite alternate; }
+  .motion-blink--step4 { animation: drt-blink var(--dur-2) var(--ease-step-4) infinite alternate; }
+  @media (prefers-reduced-motion: reduce) {
+    .motion-blink { animation: none; opacity: 0.6; }
+  }
+
+  /* Stripe demo */
+  .stripe-demo {
+    background: var(--stripe-caution);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding: var(--sp-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    opacity: 0.5;
+  }
+
+  /* Checker demo */
+  .checker-demo {
+    background: var(--checker);
+    background-size: 16px 16px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .checker-caption {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    background: var(--surface);
+    padding: 4px 8px;
+    border: var(--border-soft);
+  }
+</style>
