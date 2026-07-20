@@ -1,0 +1,65 @@
+---
+import { withBase } from "../lib/base";
+
+const pathname = Astro.url.pathname;
+const overviewHref = withBase("/design-kits/");
+
+const links = [
+  { href: overviewHref, label: "Overview" },
+  { href: withBase("/design-kits/logo/"), label: "Logo" },
+  { href: withBase("/design-kits/colors/"), label: "Colors" },
+  { href: withBase("/design-kits/typography/"), label: "Typography" },
+  { href: withBase("/design-kits/components/"), label: "Components" },
+  { href: withBase("/design-kits/patterns/"), label: "Patterns" },
+  { href: withBase("/design-kits/website/"), label: "Website" },
+];
+
+const isActive = (href: string) =>
+  href === overviewHref
+    ? pathname === overviewHref
+    : pathname.startsWith(href.replace(/\/$/, ""));
+---
+<nav class="dkn" aria-label="Design Kits navigation">
+  {links.map((l) => (
+    <a
+      href={l.href}
+      class:list={["dkn-link", { "dkn-active": isActive(l.href) }]}
+      aria-current={isActive(l.href) ? "page" : undefined}
+    >{l.label}</a>
+  ))}
+</nav>
+<style>
+  .dkn {
+    display: flex;
+    border-bottom: var(--border);
+    background: var(--bg);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dkn::-webkit-scrollbar { display: none; }
+  .dkn-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: var(--sp-3) var(--sp-4);
+    white-space: nowrap;
+    flex: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+  }
+  .dkn-link:hover {
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .dkn-active {
+    border-bottom-color: var(--accent);
+  }
+  .dkn-active:hover {
+    background: transparent;
+  }
+</style>

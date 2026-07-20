@@ -1,0 +1,52 @@
+---
+interface Props {
+  label?: string;
+  viewport?: string;
+}
+const { label, viewport = "AUTO" } = Astro.props;
+---
+<div class="specimen">
+  <div class="specimen-head">
+    {label
+      ? <span class="specimen-label">{label}</span>
+      : <span></span>
+    }
+    <span class="specimen-viewport">[ VIEWPORT: {viewport} ]</span>
+  </div>
+  <div class="specimen-body">
+    <slot />
+  </div>
+</div>
+<style>
+  .specimen {
+    border: var(--border);
+    background: var(--bg);
+  }
+  .specimen-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-2) var(--sp-4);
+    border-bottom: var(--border);
+    background: var(--surface);
+    gap: var(--sp-4);
+  }
+  .specimen-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    color: var(--ink-2);
+    text-transform: uppercase;
+  }
+  .specimen-viewport {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    color: var(--ink-3);
+    text-transform: uppercase;
+    flex: none;
+  }
+  .specimen-body {
+    padding: var(--sp-4);
+  }
+</style>
