@@ -3,3 +3,4 @@ node_modules/
 dist/
 .astro/
 .sync-tmp/
+docs/superpowers/
