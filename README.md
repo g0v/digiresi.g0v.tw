@@ -74,6 +74,8 @@ Claude Design 專案唯讀匯入（匯入紀錄與缺漏清單見 `design/IMPORT
 
 ## 授權
 
-- 手冊與網站內容：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh_TW)
+- **程式碼**：MIT（見 [LICENSE](LICENSE)）
+- **手冊與網站內容**：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh_TW)
   （沿用 g0v 社群慣例；內容源自 HackMD 共筆）
-- 程式碼：MIT（見 [LICENSE](LICENSE)）
+- **Logo & logotype**：© YellowOne，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+  （TODO(yellowone-url): 待補 YellowOne 官方頁面連結）
