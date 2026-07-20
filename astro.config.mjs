@@ -6,7 +6,7 @@ import { precacheGlobs } from "./scripts/precache-globs.mjs";
 import rehypeBaseUrl from "./scripts/rehype-base-url.mjs";
 
 // Single source of truth for the deployment base path.
-//   "/"                    → custom apex domain (needs public/CNAME)
+//   "/"                    → custom domain (needs public/CNAME)
 //   "/digiresi.g0v.tw/"    → GitHub Pages project subpath
 // Everything else in the codebase derives from this value.
 const BASE = "/";
@@ -28,7 +28,7 @@ const pagefindBeforeServiceWorker = {
 };
 
 export default defineConfig({
-  site: "https://digiresi.g0v.tw",
+  site: "https://digiresi.g0v.tw/",
   base: BASE,
   // "always" makes @vite-pwa/astro's precache manifest URLs end in "/"
   // ("handbook/prepare/go-bag/", "offline/") — exactly what the browser

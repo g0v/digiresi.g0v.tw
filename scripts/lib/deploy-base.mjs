@@ -2,7 +2,7 @@
 // `import.meta.env.BASE_URL` — that only exists inside Vite/Astro. Instead,
 // they read the base from an env var, defaulting to the value hardcoded in
 // astro.config.mjs. Keep this fallback in sync with astro.config.mjs's BASE.
-const DEFAULT_BASE = "/digiresi.g0v.tw/";
+const DEFAULT_BASE = "/";
 
 export function getBase() {
   const env = process.env.SITE_BASE;

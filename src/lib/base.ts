@@ -1,8 +1,7 @@
 // Single source of truth for the deployment base path is `base` in
 // astro.config.mjs. Astro/Vite exposes it here as import.meta.env.BASE_URL
 // (always ends with "/"). Every internal URL in templates/client scripts
-// goes through withBase() so we can swap "/" vs "/digiresi.g0v.tw/" from
-// one line of config.
+// goes through withBase(); the active custom-domain deployment uses "/".
 const BASE_URL: string = import.meta.env.BASE_URL;
 
 export const BASE = BASE_URL;
