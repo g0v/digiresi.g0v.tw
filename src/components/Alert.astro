@@ -1,0 +1,11 @@
+---
+interface Props {
+  tone?: "info" | "online" | "degraded" | "offline";
+  title?: string;
+}
+const { tone = "info", title } = Astro.props;
+---
+<div role="alert" class:list={["alert", tone !== "info" ? `alert-${tone}` : ""]}>
+  {title && <div class="alert-title">{title}</div>}
+  <div class="alert-body"><slot /></div>
+</div>

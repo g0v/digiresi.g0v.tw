@@ -1,0 +1,59 @@
+---
+interface Option { value: string; label: string; }
+interface Props {
+  label?: string;
+  id?: string;
+  name?: string;
+  options?: Option[];
+}
+const { label, id, name, options = [] } = Astro.props;
+---
+<div class="field">
+  {label && <label class="field-label" for={id}>{label}</label>}
+  <div class="select-wrap">
+    <select class="field-select" id={id} name={name}>
+      {options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+    <span class="select-arrow" aria-hidden="true">▼</span>
+  </div>
+</div>
+<style>
+  .field { display: flex; flex-direction: column; gap: 6px; font-family: var(--font-mono); }
+  .field-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .select-wrap {
+    position: relative;
+    display: flex;
+    background: var(--surface-sunken);
+    border: 2px solid var(--line-soft);
+  }
+  .select-wrap:focus-within { border-color: var(--line); outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  .field-select {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    padding: 10px 36px 10px 12px;
+    cursor: pointer;
+  }
+  .field-select option { background: var(--surface); color: var(--ink); }
+  .select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 10px;
+    color: var(--ink-2);
+  }
+</style>

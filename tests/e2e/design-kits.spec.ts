@@ -24,3 +24,16 @@ test("/design-kits/typography/ returns 200 and shows PRESS START 2P heading", as
   expect(response?.status()).toBe(200);
   await expect(page.locator('h2').filter({ hasText: 'PRESS START 2P' })).toBeVisible();
 });
+
+test("/design-kits/components/ returns 200 and shows group labels", async ({ page }) => {
+  const response = await page.goto("design-kits/components/");
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('h2').filter({ hasText: 'BUTTON' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'BADGE' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'ALERT' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'FORMS' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'SIGNAL BARS' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'TERMINAL BLOCK' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'MARQUEE' })).toBeVisible();
+  await expect(page.locator('h2').filter({ hasText: 'TABS' })).toBeVisible();
+});

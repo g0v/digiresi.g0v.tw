@@ -1,0 +1,20 @@
+---
+interface Props {
+  title?: string;
+  meta?: string;
+  footer?: string;
+  lifted?: boolean;
+  offline?: boolean;
+}
+const { title, meta, footer, lifted = false, offline = false } = Astro.props;
+---
+<div class:list={["card", lifted && "card-lifted", offline && "card-offline"]}>
+  {(title || meta) && (
+    <div class="card-head">
+      {title && <span class="card-title">{title}</span>}
+      {meta && <span class="card-meta">{meta}</span>}
+    </div>
+  )}
+  <div class="card-body"><slot /></div>
+  {footer && <div class="card-foot">{footer}</div>}
+</div>

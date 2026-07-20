@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  href?: string;
+}
+const { variant = "secondary", size = "md", disabled = false, type = "button", href } = Astro.props;
+const variantClass = variant === "primary" ? "btn-primary"
+  : variant === "ghost" ? "btn-ghost"
+  : "btn-secondary";
+const sizeClass = size === "sm" ? "btn-sm" : size === "lg" ? "btn-lg" : "";
+---
+{href ? (
+  <a href={href} class:list={["btn", variantClass, sizeClass]}><slot /></a>
+) : (
+  <button type={type} disabled={disabled} class:list={["btn", variantClass, sizeClass]}><slot /></button>
+)}

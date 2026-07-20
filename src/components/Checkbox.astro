@@ -1,0 +1,57 @@
+---
+interface Props {
+  label?: string;
+  name?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+}
+const { label, name, value, checked = false, disabled = false } = Astro.props;
+---
+<label class:list={["cb-wrap", disabled && "cb-disabled"]}>
+  <input
+    class="cb-input"
+    type="checkbox"
+    name={name}
+    value={value}
+    checked={checked}
+    disabled={disabled}
+  />
+  <span class="cb-box" aria-hidden="true">{checked ? "X" : ""}</span>
+  {label && <span class="cb-label">{label}</span>}
+</label>
+<style>
+  .cb-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink);
+    user-select: none;
+  }
+  .cb-disabled { cursor: not-allowed; color: var(--ink-3); }
+  .cb-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .cb-box {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--line);
+    background: var(--surface-sunken);
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1;
+    color: var(--accent-2);
+  }
+  .cb-disabled .cb-box { border: var(--border-offline); }
+  .cb-input:focus-visible + .cb-box { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+</style>
