@@ -1,5 +1,5 @@
 ---
-import Px from "./Px.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import RegisterDialog from "./RegisterDialog.astro";
 import StatusDot from "./StatusDot.astro";
 import { withBase } from "../lib/base";
@@ -32,10 +32,7 @@ const isActive = (href: string) =>
       ))}
     </nav>
     <StatusDot status="online" label="ONLINE" />
-    <button id="theme-toggle" type="button" aria-label="切換主題" title="blackout / paper">
-      <span class="only-dark ticon"><Px name="sun" size={16} /></span>
-      <span class="only-light ticon"><Px name="moon" size={16} /></span>
-    </button>
+    <ThemeToggle />
     <button class="btn btn-primary btn-sm" type="button" data-open-register>報名</button>
   </div>
 </header>
@@ -87,18 +84,6 @@ const isActive = (href: string) =>
     background: var(--ink);
     color: var(--ink-on-ink);
   }
-  #theme-toggle {
-    background: transparent;
-    border: 2px solid var(--line);
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-  }
-  .ticon { display: flex; }
   /* Theme swap: default (dark) shows the *-dark assets + sun icon. */
   .only-light { display: none; }
   :global(html[data-theme="light"]) .only-light { display: flex; }
@@ -110,23 +95,3 @@ const isActive = (href: string) =>
     .nav-link { padding: 8px 8px; }
   }
 </style>
-<script>
-  // Theme toggle. Dark ("blackout") = no attribute; light = data-theme="light".
-  // Persisted to localStorage "drt-theme"; the blocking script in BaseLayout
-  // <head> re-applies the choice before first paint.
-  const btn = document.getElementById("theme-toggle");
-  btn?.addEventListener("click", () => {
-    const root = document.documentElement;
-    const toLight = root.getAttribute("data-theme") !== "light";
-    if (toLight) {
-      root.setAttribute("data-theme", "light");
-    } else {
-      root.removeAttribute("data-theme");
-    }
-    try {
-      localStorage.setItem("drt-theme", toLight ? "light" : "dark");
-    } catch {
-      /* storage unavailable — toggle still works for this page view */
-    }
-  });
-</script>
