@@ -43,3 +43,9 @@ test("/design-kits/patterns/ returns 200 and shows SCANLINES heading", async ({ 
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'SCANLINES' })).toBeVisible();
 });
+
+test("/design-kits/website/ returns 200 and shows specimen label", async ({ page }) => {
+  const response = await page.goto("design-kits/website/");
+  expect(response?.status()).toBe(200);
+  await expect(page.getByText("ui_kits/website").first()).toBeVisible();
+});

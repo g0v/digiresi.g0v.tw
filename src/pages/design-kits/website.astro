@@ -1,0 +1,158 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+import Projects from "../../components/Projects.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import Marquee from "../../components/Marquee.astro";
+import StatusDot from "../../components/StatusDot.astro";
+import Button from "../../components/Button.astro";
+import RegisterDialog from "../../components/RegisterDialog.astro";
+---
+<BaseLayout
+  title="Website — Design Kits — DigiResiThon"
+  description="Full ui_kits/website specimen: header, landing, schedule, projects, register dialog."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-website" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">WEBSITE</h1>
+    <p class="t-dim" style="margin-top: var(--sp-3); font-size: var(--text-sm);">
+      This specimen composes the same Astro components /schedule/ and /projects/ use in production.
+      Source canvas: <code>design/ui_kits/website/Website.jsx</code>.
+    </p>
+
+    <!-- HEADER SPECIMEN -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">HEADER</h2>
+    <DesignSpecimen label="ui_kits/website — SiteHeader" viewport="1440">
+      <div class="ws-header-demo">
+        <nav class="ws-nav" aria-label="Website specimen navigation">
+          <span class="ws-wordmark t-dim">DigiResiThon</span>
+          <div class="ws-nav-links">
+            <a class="ws-nav-link ws-nav-active">HOME</a>
+            <a class="ws-nav-link">SCHEDULE</a>
+            <a class="ws-nav-link">PROJECTS</a>
+          </div>
+          <div class="ws-nav-actions">
+            <StatusDot status="online" label="ONLINE" />
+            <Button variant="primary" size="sm" type="button">Register</Button>
+          </div>
+        </nav>
+      </div>
+    </DesignSpecimen>
+
+    <!-- LANDING MARQUEE -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">LANDING — MARQUEE</h2>
+    <DesignSpecimen label="ui_kits/website — Marquee ticker" viewport="1440">
+      <Marquee items={["KEEP COMMS ALIVE", "SYNC OFFLINE", "DATA SURVIVES", "DIGIRESITHON YEAR 0", "2026.10.24-25"]} />
+    </DesignSpecimen>
+
+    <!-- LANDING TRACKS GRID -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">LANDING — TRACKS</h2>
+    <DesignSpecimen label="ui_kits/website — track cards" viewport="1440">
+      <SectionHeader label="TRACKS" right="YEAR 0 · 4 ACTIVE" />
+      <div class="ws-tracks-grid" style="margin-top: var(--sp-5);">
+        <div class="card">
+          <div class="card-head"><span class="card-title">COMMS</span><span class="card-meta">8 PROJECTS</span></div>
+          <div class="card-body">Mesh networks, LoRa, ham radio bridges, sneakernet protocols. Talk when the backbone can't.</div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">DATA</span><span class="card-meta">6 PROJECTS</span></div>
+          <div class="card-body">Mirrors, offline caches, distributed archives. The data survives even when the datacenter doesn't.</div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">INFO</span><span class="card-meta">5 PROJECTS</span></div>
+          <div class="card-body">Verified emergency info, rumor triage, low-bandwidth broadcast. Truth at 300 baud.</div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">CIVIC</span><span class="card-meta">4 PROJECTS</span></div>
+          <div class="card-body">Shelter maps, mutual-aid boards, paper-compatible workflows. Neighbors as infrastructure.</div>
+        </div>
+      </div>
+    </DesignSpecimen>
+
+    <!-- PROJECTS SPECIMEN -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">PROJECTS</h2>
+    <DesignSpecimen label="ui_kits/website — Projects (live component, same as /projects/)" viewport="1440">
+      <Projects />
+    </DesignSpecimen>
+
+    <!-- REGISTER DIALOG DEMO -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">REGISTER DIALOG</h2>
+    <DesignSpecimen label="ui_kits/website — RegisterDialog (click to preview)" viewport="AUTO">
+      <div class="ws-reg-demo">
+        <Button variant="primary" type="button" data-open-register>Open Register Dialog</Button>
+        <p class="t-dim" style="font-size: var(--text-xs); margin-top: var(--sp-3);">
+          Opens the shared <code>RegisterDialog.astro</code>. ESC and backdrop click dismiss.
+          Focus returns to this button on close.
+        </p>
+      </div>
+    </DesignSpecimen>
+  </div>
+  <RegisterDialog />
+</BaseLayout>
+<style>
+  .dk-website { padding-block: var(--sp-7) var(--sp-9); }
+  .ws-header-demo {
+    border: var(--border);
+    background: var(--bg);
+  }
+  .ws-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-6);
+    height: 64px;
+    padding: 0 var(--gutter);
+    border-bottom: var(--border);
+  }
+  .ws-wordmark {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    flex: none;
+  }
+  .ws-nav-links {
+    display: flex;
+    gap: var(--sp-1);
+    margin-right: auto;
+  }
+  .ws-nav-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  .ws-nav-active {
+    background: var(--ink);
+    color: var(--ink-on-ink);
+  }
+  .ws-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+  .ws-tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-4);
+  }
+  .ws-reg-demo {
+    padding: var(--sp-5);
+    background: var(--surface-sunken);
+    border: var(--border-offline);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
+  }
+  @media (max-width: 768px) {
+    .ws-tracks-grid { grid-template-columns: 1fr; }
+  }
+</style>
