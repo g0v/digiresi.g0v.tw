@@ -690,7 +690,7 @@ summary {
   color: var(--ink-2);
 }
 .handbook-breadcrumb a { color: var(--ink-2); text-decoration: none; }
-.handbook-breadcrumb a:hover { color: var(--accent); text-decoration: underline; }
+.handbook-breadcrumb a:hover { color: var(--selection-ink); text-decoration: underline; }
 .handbook-breadcrumb .glyph { color: var(--ink-3); }
 
 .handbook-article {
@@ -718,7 +718,6 @@ summary {
 .handbook-article ul,
 .handbook-article ol { margin: 0 0 var(--sp-4); padding-left: var(--sp-5); }
 .handbook-article li { margin-bottom: var(--sp-1); }
-.handbook-article a { color: var(--accent); }
 .handbook-article img {
   max-width: 100%;
   height: auto;
@@ -769,7 +768,6 @@ summary {
   font-size: var(--text-sm);
   color: var(--ink-2);
 }
-.article-attribution a { color: var(--accent); }
 .article-attribution .synced {
   color: var(--ink-3);
   letter-spacing: var(--tracking-label);
@@ -785,7 +783,7 @@ summary {
   font-size: var(--text-sm);
 }
 .article-nav a { color: var(--ink); text-decoration: none; }
-.article-nav a:hover { color: var(--accent); }
+.article-nav a:hover { color: var(--selection-ink); }
 
 @media print {
   /* Task 6 owns the paper-token override + hiding header/nav/footer.
