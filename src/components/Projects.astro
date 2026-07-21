@@ -1,0 +1,159 @@
+---
+import yaml from "js-yaml";
+import SectionHeader from "./SectionHeader.astro";
+import SignalBars from "./SignalBars.astro";
+import Tabs from "./Tabs.astro";
+import rawYaml from "../data/projects.yaml?raw";
+
+interface Project {
+  name: string;
+  track: string;
+  tag: string;
+  sync: number;
+  people: number;
+  desc: string;
+}
+
+const { projects } = yaml.load(rawYaml) as { projects: Project[] };
+
+const tabs = [
+  { id: "all", label: "All", count: projects.length },
+  { id: "comms", label: "Comms" },
+  { id: "data", label: "Data" },
+  { id: "info", label: "Info" },
+  { id: "civic", label: "Civic" },
+];
+---
+<div class="projects-wrap container" data-pagefind-ignore="all">
+  <SectionHeader label="PROJECTS" right="SAMPLE DATA · YEAR 0" />
+  <div class="projects-toolbar">
+    <Tabs active="all" items={tabs} />
+    <label class="search-wrap">
+      <span class="search-prefix t-dim">$</span>
+      <input
+        id="projects-search"
+        type="search"
+        placeholder="grep projects..."
+        aria-label="Search projects"
+        autocomplete="off"
+        class="search-input"
+      />
+    </label>
+  </div>
+  <div class="projects-grid" id="projects-grid">
+    {projects.map((p) => (
+      <div
+        class="card card-lifted proj-card"
+        data-track={p.track}
+        data-name={p.name.toLowerCase()}
+      >
+        <div class="card-head">
+          <span class="card-title">{p.name}</span>
+          <span class="badge">{p.tag}</span>
+        </div>
+        <div class="card-body">{p.desc}</div>
+        <div class="card-foot">
+          <span>{p.people} people</span>
+          <span class="sync-cell">SYNC <SignalBars level={p.sync} height={14} /></span>
+        </div>
+      </div>
+    ))}
+    <div
+      class="card card-offline proj-card"
+      data-track="__always"
+      data-name="your idea"
+    >
+      <div class="card-head">
+        <span class="card-title">YOUR IDEA</span>
+        <span class="card-meta">EMPTY SLOT</span>
+      </div>
+      <div class="card-body">
+        This slot is intentionally empty. Don't ask why nobody built it yet.
+      </div>
+      <div class="card-foot">
+        <span>0 people</span>
+        <span>→ pitch it</span>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .projects-wrap {
+    padding-block: var(--sp-7) var(--sp-8);
+  }
+  .projects-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--sp-4);
+    margin-top: var(--sp-5);
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    border: var(--border);
+    background: var(--surface);
+    padding: 6px 12px;
+    width: 260px;
+    box-sizing: border-box;
+    cursor: text;
+  }
+  .search-prefix {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    flex: none;
+  }
+  .search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    flex: 1;
+    min-width: 0;
+  }
+  .search-input::placeholder { color: var(--ink-3); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+    margin-top: var(--sp-5);
+  }
+  .proj-card[data-hidden] { display: none; }
+  .sync-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  @media (max-width: 768px) {
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+  const grid = document.getElementById("projects-grid");
+  const searchInput = document.getElementById("projects-search") as HTMLInputElement | null;
+  let currentTab = "all";
+
+  function filterProjects(): void {
+    if (!grid) return;
+    const q = searchInput?.value.toLowerCase() ?? "";
+    for (const card of grid.querySelectorAll<HTMLElement>(".proj-card")) {
+      const track = card.dataset.track ?? "";
+      const name = card.dataset.name ?? "";
+      const tabMatch =
+        currentTab === "all" || track === currentTab || track === "__always";
+      const searchMatch = q === "" || name.includes(q) || track === "__always";
+      card.toggleAttribute("data-hidden", !(tabMatch && searchMatch));
+    }
+  }
+
+  searchInput?.addEventListener("input", filterProjects);
+
+  document.querySelector(".projects-wrap")?.addEventListener("tab:change", (e) => {
+    currentTab = (e as CustomEvent<{ id: string }>).detail.id;
+    filterProjects();
+  });
+</script>

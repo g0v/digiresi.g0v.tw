@@ -1,0 +1,222 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+
+const baseTokens = [
+  "--black", "--paper", "--white",
+  "--gray-900", "--gray-700", "--gray-500", "--gray-300", "--gray-150", "--gray-100",
+  "--red", "--red-deep", "--red-bright",
+  "--green", "--green-bright",
+  "--amber", "--amber-bright",
+];
+
+const semanticTokens = [
+  { token: "--bg",              desc: "Page background" },
+  { token: "--surface",         desc: "Card / panel background" },
+  { token: "--ink",             desc: "Primary text" },
+  { token: "--ink-2",           desc: "Secondary text / labels" },
+  { token: "--ink-3",           desc: "Disabled / placeholder" },
+  { token: "--line",            desc: "Border color (structural)" },
+  { token: "--accent",          desc: "Signal red — actions, alerts, LIVE" },
+  { token: "--accent-2",        desc: "Terminal green — prompts, ok-states" },
+  { token: "--status-degraded", desc: "Amber — degraded / warning status" },
+  { token: "--status-offline",  desc: "Red — offline / error status" },
+];
+---
+<BaseLayout
+  title="Colors — Design Kits — DigiResiThon"
+  description="Base palette and semantic tokens, dark and light side-by-side."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-colors" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">COLORS</h1>
+
+    <div class="callout" style="margin-top: var(--sp-5);">
+      <strong>Two-accent rule:</strong> signal red (<code>--accent</code>) for actions/alerts/LIVE;
+      terminal green (<code>--accent-2</code>) for prompts/ok-states. That is all. No third accent.
+      Red &gt;5% of a screen is shouting. Amber (<code>--status-degraded</code>) exists only as a status.
+    </div>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">BASE PALETTE</h2>
+    <DesignSpecimen label="base-palette" viewport="AUTO">
+      <div class="swatch-grid" id="base-swatches">
+        {baseTokens.map((t) => (
+          <div class="swatch-cell" data-token={t}>
+            <div class="swatch-color" style={`background: var(${t});`}></div>
+            <div class="swatch-name">{t}</div>
+            <div class="swatch-hex t-dim">—</div>
+          </div>
+        ))}
+      </div>
+    </DesignSpecimen>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">SEMANTIC TOKENS</h2>
+    <DesignSpecimen label="semantic-tokens" viewport="AUTO">
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Dark value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody id="semantic-tbody">
+          {semanticTokens.map((row) => (
+            <tr data-token={row.token}>
+              <td><code>{row.token}</code></td>
+              <td>
+                <span class="swatch-inline" style={`background: var(${row.token});`}></span>
+                <span class="swatch-hex-inline t-dim">—</span>
+              </td>
+              <td class="t-dim">{row.desc}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </DesignSpecimen>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">DARK / LIGHT SIDE-BY-SIDE</h2>
+    <DesignSpecimen label="theme-comparison" viewport="AUTO">
+      <div class="compare-row">
+        <div class="compare-panel" aria-label="dark theme">
+          <div class="compare-label t-dim">BLACKOUT (default)</div>
+          <div class="swatch-mini-grid" id="dark-swatches">
+            {semanticTokens.map((row) => (
+              <div class="swatch-mini-cell">
+                <div class="swatch-mini-color" style={`background: var(${row.token});`}></div>
+                <div class="swatch-mini-name">{row.token}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="compare-panel" data-theme="light" aria-label="light theme">
+          <div class="compare-label t-dim">PAPER (data-theme="light")</div>
+          <div class="swatch-mini-grid">
+            {semanticTokens.map((row) => (
+              <div class="swatch-mini-cell">
+                <div class="swatch-mini-color" style={`background: var(${row.token});`}></div>
+                <div class="swatch-mini-name">{row.token}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </DesignSpecimen>
+  </div>
+</BaseLayout>
+<style>
+  .dk-colors { padding-block: var(--sp-7) var(--sp-9); }
+  .callout {
+    background: var(--surface);
+    border: var(--border);
+    border-left: 4px solid var(--accent);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--sp-3);
+  }
+  .swatch-cell { display: flex; flex-direction: column; gap: var(--sp-1); }
+  .swatch-color {
+    height: 48px;
+    border: var(--border-soft);
+  }
+  .swatch-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    word-break: break-all;
+  }
+  .swatch-hex { font-size: var(--text-xs); }
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  .token-table th, .token-table td {
+    border: var(--border-soft);
+    padding: var(--sp-2) var(--sp-3);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .token-table th {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: var(--surface);
+  }
+  .swatch-inline {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: var(--border-soft);
+    vertical-align: middle;
+    margin-right: var(--sp-2);
+  }
+  .swatch-hex-inline { font-size: var(--text-xs); }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+  }
+  .compare-panel {
+    padding: var(--sp-4);
+    border: var(--border);
+    background: var(--bg);
+  }
+  .compare-label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    margin-bottom: var(--sp-3);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+  }
+  .swatch-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--sp-2);
+  }
+  .swatch-mini-cell { display: flex; flex-direction: column; gap: 2px; }
+  .swatch-mini-color {
+    height: 28px;
+    border: var(--border-soft);
+  }
+  .swatch-mini-name {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-3);
+    word-break: break-all;
+    line-height: 1.3;
+  }
+  @media (max-width: 640px) {
+    .compare-row { grid-template-columns: 1fr; }
+    .swatch-mini-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+<script>
+  // Read computed hex values from getComputedStyle and populate the swatch cells.
+  const style = getComputedStyle(document.documentElement);
+
+  for (const cell of document.querySelectorAll<HTMLElement>("#base-swatches .swatch-cell")) {
+    const token = cell.dataset.token;
+    if (!token) continue;
+    const hex = style.getPropertyValue(token).trim();
+    const hexEl = cell.querySelector(".swatch-hex");
+    if (hexEl && hex) hexEl.textContent = hex;
+  }
+
+  for (const row of document.querySelectorAll<HTMLElement>("#semantic-tbody tr")) {
+    const token = row.dataset.token;
+    if (!token) continue;
+    const hex = style.getPropertyValue(token).trim();
+    const hexEl = row.querySelector(".swatch-hex-inline");
+    if (hexEl && hex) hexEl.textContent = hex;
+  }
+</script>

@@ -179,7 +179,7 @@ const marqueeItems = [
             {upcoming.name} · {upcoming.date!.replaceAll("-", ".")}。免費參加，遵守
             <a href="https://g0v.hackmd.io/s/COC">行為守則</a>。
           </div>
-          <a class="btn btn-primary btn-sm" href={upcoming.registerUrl!} target="_blank" rel="noopener">前往報名</a>
+          <button class="btn btn-primary btn-sm" type="button" data-open-register>前往報名</button>
         </div>
       ) : (
         <div class="alert">

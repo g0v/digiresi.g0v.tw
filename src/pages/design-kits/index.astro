@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import { withBase } from "../../lib/base";
+---
+<BaseLayout
+  title="Design Kits — DigiResiThon"
+  description="Self-hosted design-system reference: tokens, components, and patterns."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-overview" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">DESIGN KITS</h1>
+    <p class="t-dim" style="margin-top: var(--sp-3); font-size: var(--text-sm);">
+      Self-hosted reference for the DigiResiThon design system.
+      Source of truth:
+      <a href="https://github.com/g0v/digiresi.g0v.tw/blob/main/design/readme.md">design/readme.md</a>
+    </p>
+
+    <h2 class="label" style="margin-top: var(--sp-7);">RULES OF THE WORLD</h2>
+    <ul class="rules-list">
+      <li>
+        <span class="t-accent">radius: 0</span> —
+        no rounding anywhere (<code>--radius: 0px</code>)
+      </li>
+      <li>
+        <span class="t-accent">2px borders</span> —
+        structural borders via <code>--border</code>; dashed <code>--border-offline</code> means pending/placeholder
+      </li>
+      <li>
+        <span class="t-accent">hard shadows</span> —
+        pixel offsets only: <code>--shadow-1</code> (3px), <code>--shadow-2</code> (6px), <code>--shadow-accent</code> (red); no blur, no spread
+      </li>
+      <li>
+        <span class="t-accent">stepped motion</span> —
+        <code>steps(2..4)</code>, 100–200ms via <code>--ease-step-*</code> + <code>--dur-*</code>; elements snap like sprites, never ease
+      </li>
+      <li>
+        <span class="t-accent">no emoji</span> —
+        Unicode geometry (<code>▲ ■ ● → ░ █</code>) and box-drawing (<code>┌ ─ │</code>) do that job
+      </li>
+      <li>
+        <span class="t-accent">red is a signal</span> —
+        <code>--accent</code> for actions, alerts, LIVE only; &gt;5% of a screen in red is shouting
+      </li>
+      <li>
+        <span class="t-accent">dark default</span> —
+        "blackout" is the default (no attribute on <code>&lt;html&gt;</code>); light only via <code>data-theme="light"</code> on <code>&lt;html&gt;</code> or any subtree
+      </li>
+    </ul>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">SECTIONS</h2>
+    <div class="dk-grid">
+      <a class="card dk-card" href={withBase("/design-kits/logo/")}>
+        <div class="card-head"><span class="card-title">LOGO</span></div>
+        <div class="card-body">Mark, wordmark, lockup. YellowOne CC BY-SA 4.0 attribution. Download links.</div>
+      </a>
+      <a class="card dk-card" href={withBase("/design-kits/colors/")}>
+        <div class="card-head"><span class="card-title">COLORS</span></div>
+        <div class="card-body">Base palette + semantic tokens. Dark/light side-by-side. Two-accent rule.</div>
+      </a>
+      <a class="card dk-card" href={withBase("/design-kits/typography/")}>
+        <div class="card-head"><span class="card-title">TYPOGRAPHY</span></div>
+        <div class="card-body">Press Start 2P pixel grid. IBM Plex Mono body/label. TC fallback note.</div>
+      </a>
+      <a class="card dk-card" href={withBase("/design-kits/components/")}>
+        <div class="card-head"><span class="card-title">COMPONENTS</span></div>
+        <div class="card-body">Button, Card, Badge, Alert, Input, Select, Checkbox, SignalBars, StatusDot, TerminalBlock, Marquee, Tabs.</div>
+      </a>
+      <a class="card dk-card" href={withBase("/design-kits/patterns/")}>
+        <div class="card-head"><span class="card-title">PATTERNS</span></div>
+        <div class="card-body">Scanlines, box-drawing headers, the 45° slash, motion tokens, stripe-caution, checker.</div>
+      </a>
+      <a class="card dk-card" href={withBase("/design-kits/website/")}>
+        <div class="card-head"><span class="card-title">WEBSITE</span></div>
+        <div class="card-body">Full ui_kits/website specimen — header, landing, schedule, projects, register dialog.</div>
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .dk-overview {
+    padding-block: var(--sp-7) var(--sp-9);
+  }
+  .rules-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-4) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    font-size: var(--text-sm);
+  }
+  .rules-list li {
+    border-left: 2px solid var(--line-soft);
+    padding-left: var(--sp-4);
+    line-height: var(--leading-body);
+  }
+  .dk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+  }
+  .dk-card {
+    text-decoration: none;
+    color: var(--ink);
+    transition: box-shadow var(--dur-1) var(--ease-step-2),
+                transform var(--dur-1) var(--ease-step-2);
+  }
+  .dk-card:hover {
+    box-shadow: var(--shadow-2);
+    transform: translate(-2px, -2px);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    .dk-grid { grid-template-columns: 1fr; }
+  }
+</style>

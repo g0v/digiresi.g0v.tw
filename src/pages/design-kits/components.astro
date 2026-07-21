@@ -1,0 +1,207 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+import Alert from "../../components/Alert.astro";
+import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
+import Card from "../../components/Card.astro";
+import Input from "../../components/Input.astro";
+import Select from "../../components/Select.astro";
+import Checkbox from "../../components/Checkbox.astro";
+import SignalBars from "../../components/SignalBars.astro";
+import StatusDot from "../../components/StatusDot.astro";
+import TerminalBlock from "../../components/TerminalBlock.astro";
+import Marquee from "../../components/Marquee.astro";
+import Tabs from "../../components/Tabs.astro";
+---
+<BaseLayout
+  title="Components — Design Kits — DigiResiThon"
+  description="Live component specimens: Button, Card, Badge, Alert, forms, SignalBars, StatusDot, TerminalBlock, Marquee, Tabs."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-components" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">COMPONENTS</h1>
+
+    <!-- BUTTON -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">BUTTON</h2>
+    <DesignSpecimen label="Button — variants × sizes" viewport="AUTO">
+      <div class="spec-row">
+        <Button variant="primary" size="sm">PRIMARY SM</Button>
+        <Button variant="primary" size="md">PRIMARY MD</Button>
+        <Button variant="secondary" size="sm">SECONDARY SM</Button>
+        <Button variant="secondary" size="md">SECONDARY MD</Button>
+        <Button variant="ghost" size="sm">GHOST SM</Button>
+        <Button variant="ghost" size="md">GHOST MD</Button>
+        <Button variant="primary" size="md" disabled>DISABLED</Button>
+      </div>
+    </DesignSpecimen>
+
+    <!-- CARD -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">CARD</h2>
+    <DesignSpecimen label="Card — default / lifted / offline" viewport="AUTO">
+      <div class="spec-grid-3">
+        <Card title="DEFAULT" meta="ACTIVE">Default card — standard border, no shadow.</Card>
+        <Card title="LIFTED" meta="ACTIVE" lifted>Lifted card — shadow-2 offset, used for project cards.</Card>
+        <Card title="OFFLINE" meta="PENDING" offline>Offline card — dashed border, dimmed text.</Card>
+      </div>
+    </DesignSpecimen>
+
+    <!-- BADGE -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">BADGE</h2>
+    <DesignSpecimen label="Badge — all statuses" viewport="AUTO">
+      <div class="spec-row">
+        <Badge status="online">ONLINE</Badge>
+        <Badge status="degraded">DEGRADED</Badge>
+        <Badge status="offline">OFFLINE</Badge>
+        <Badge status="live">LIVE</Badge>
+        <Badge status="neutral">NEUTRAL</Badge>
+      </div>
+    </DesignSpecimen>
+
+    <!-- ALERT -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">ALERT</h2>
+    <DesignSpecimen label="Alert — all tones" viewport="AUTO">
+      <div class="spec-stack">
+        <Alert tone="info" title="INFO">Informational alert — left band uses --ink. General notices.</Alert>
+        <Alert tone="online" title="ONLINE">Online alert — left band uses --status-online.</Alert>
+        <Alert tone="degraded" title="DEGRADED">Degraded alert — caution stripe, --status-degraded.</Alert>
+        <Alert tone="offline" title="OFFLINE">Offline alert — stripe, --status-offline. Use for errors.</Alert>
+      </div>
+    </DesignSpecimen>
+
+    <!-- FORMS -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">FORMS</h2>
+    <DesignSpecimen label="Input / Select / Checkbox" viewport="AUTO">
+      <div class="spec-form">
+        <Input label="Callsign" id="sp-callsign" placeholder="n0body" prefix="$" hint="Shown on your badge" />
+        <Select
+          label="Track"
+          id="sp-track"
+          options={[
+            { value: "comms", label: "Comms without internet" },
+            { value: "data", label: "Data backup" },
+            { value: "info", label: "Information integrity" },
+            { value: "civic", label: "Civic coordination" },
+          ]}
+        />
+        <Checkbox label="I'll bring a battery pack" name="batt" checked />
+        <Checkbox label="Disabled option" name="nope" disabled />
+      </div>
+    </DesignSpecimen>
+
+    <!-- BRAND: SIGNAL BARS -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">SIGNAL BARS</h2>
+    <DesignSpecimen label="SignalBars — levels 1–4 + animated" viewport="AUTO">
+      <div class="spec-row spec-row--center">
+        <div class="spec-signal-cell">
+          <SignalBars level={1} height={32} />
+          <span class="t-dim">1/4</span>
+        </div>
+        <div class="spec-signal-cell">
+          <SignalBars level={2} height={32} />
+          <span class="t-dim">2/4</span>
+        </div>
+        <div class="spec-signal-cell">
+          <SignalBars level={3} height={32} />
+          <span class="t-dim">3/4</span>
+        </div>
+        <div class="spec-signal-cell">
+          <SignalBars level={4} height={32} />
+          <span class="t-dim">4/4</span>
+        </div>
+        <div class="spec-signal-cell">
+          <SignalBars animated height={32} />
+          <span class="t-dim">animated</span>
+        </div>
+      </div>
+    </DesignSpecimen>
+
+    <!-- BRAND: STATUS DOT -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">STATUS DOT</h2>
+    <DesignSpecimen label="StatusDot — online / degraded / offline" viewport="AUTO">
+      <div class="spec-row">
+        <StatusDot status="online" label="ONLINE" />
+        <StatusDot status="degraded" label="DEGRADED" />
+        <StatusDot status="offline" label="OFFLINE" />
+      </div>
+    </DesignSpecimen>
+
+    <!-- BRAND: TERMINAL BLOCK -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">TERMINAL BLOCK</h2>
+    <DesignSpecimen label="TerminalBlock" viewport="AUTO">
+      <TerminalBlock
+        title="digiresithon@tw:~"
+        lines={[
+          { prompt: "$", text: "join --track comms" },
+          { text: "Connecting to mesh…", tone: "green" },
+          { text: "# 2km hop established", tone: "dim" },
+          { text: "ERROR: no backbone route", tone: "red" },
+        ]}
+      />
+    </DesignSpecimen>
+
+    <!-- BRAND: MARQUEE -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">MARQUEE</h2>
+    <DesignSpecimen label="Marquee" viewport="AUTO">
+      <Marquee items={["RESILIENCE", "COMMS", "DATA", "INFO", "CIVIC", "DIGIRESITHON YEAR 0"]} />
+    </DesignSpecimen>
+
+    <!-- TABS -->
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-4);">TABS</h2>
+    <DesignSpecimen label="Tabs — interactive (emits tab:change)" viewport="AUTO">
+      <Tabs
+        active="all"
+        items={[
+          { id: "all", label: "All", count: 6 },
+          { id: "comms", label: "Comms" },
+          { id: "data", label: "Data" },
+          { id: "info", label: "Info" },
+          { id: "civic", label: "Civic" },
+        ]}
+      />
+      <p class="t-dim" style="font-size: var(--text-xs); margin-top: var(--sp-3);">
+        Click a tab above — it dispatches <code>tab:change</code> CustomEvent (bubbles: true) with <code>detail.id</code>.
+      </p>
+    </DesignSpecimen>
+  </div>
+</BaseLayout>
+<style>
+  .dk-components { padding-block: var(--sp-7) var(--sp-9); }
+  .spec-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    align-items: flex-start;
+  }
+  .spec-row--center { align-items: center; }
+  .spec-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+  }
+  .spec-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  .spec-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+    max-width: 400px;
+  }
+  .spec-signal-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-label);
+  }
+  @media (max-width: 640px) {
+    .spec-grid-3 { grid-template-columns: 1fr; }
+  }
+</style>

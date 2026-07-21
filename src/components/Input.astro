@@ -1,0 +1,55 @@
+---
+type HTMLInputTypeAttribute =
+  | "button" | "checkbox" | "color" | "date" | "datetime-local" | "email"
+  | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio"
+  | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time"
+  | "url" | "week";
+interface Props {
+  label?: string;
+  id?: string;
+  type?: HTMLInputTypeAttribute;
+  placeholder?: string;
+  prefix?: string;
+  hint?: string;
+  name?: string;
+}
+const { label, id, type = "text", placeholder, prefix, hint, name } = Astro.props;
+---
+<div class="field">
+  {label && <label class="field-label" for={id}>{label}</label>}
+  <div class="field-input-wrap">
+    {prefix && <span class="field-prefix">{prefix}</span>}
+    <input class="field-input" id={id} name={name} type={type} placeholder={placeholder} />
+  </div>
+  {hint && <div class="field-hint">{hint}</div>}
+</div>
+<style>
+  .field { display: flex; flex-direction: column; gap: 6px; font-family: var(--font-mono); }
+  .field-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .field-input-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--surface-sunken);
+    border: 2px solid var(--line-soft);
+  }
+  .field-input-wrap:focus-within { border-color: var(--line); outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  .field-prefix { padding: 0 0 0 12px; color: var(--accent-2); font-size: var(--text-sm); font-weight: 600; }
+  .field-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    padding: 10px 12px;
+  }
+  .field-hint { font-size: var(--text-xs); color: var(--ink-3); }
+</style>

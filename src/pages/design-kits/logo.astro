@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DesignKitsNav from "../../components/DesignKitsNav.astro";
+import DesignSpecimen from "../../components/DesignSpecimen.astro";
+import { withBase } from "../../lib/base";
+
+const base = withBase("/design/assets/logo");
+---
+<BaseLayout
+  title="Logo — Design Kits — DigiResiThon"
+  description="Logo mark, wordmark, and lockup — dark and light previews, downloads, and YellowOne CC BY-SA 4.0 attribution."
+  lang="en"
+>
+  <DesignKitsNav />
+  <div class="container dk-logo" data-pagefind-ignore="all">
+    <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">LOGO</h1>
+
+    <!-- TODO(yellowone-url): link to YellowOne canonical profile -->
+    <div class="attribution-block">
+      <p class="attr-line">
+        Logo mark, wordmark, and lockup &copy; YellowOne &mdash;
+        Licensed <strong>CC BY-SA 4.0</strong>.
+        Derivative works must be released under the same license.
+      </p>
+      <p class="attr-line t-dim">
+        Source: DigiResiTh0n Design System (Claude Design project).
+        See <code>design/assets/logo/LICENSE.md</code>.
+      </p>
+    </div>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">MARK</h2>
+    <DesignSpecimen label="mark" viewport="AUTO">
+      <div class="logo-row">
+        <div class="theme-panel" aria-label="dark theme">
+          <img src={`${base}/mark-dark.png`} alt="DigiResiThon mark — dark theme" height="64" />
+        </div>
+        <div class="theme-panel theme-panel--light" data-theme="light" aria-label="light theme">
+          <img src={`${base}/mark.png`} alt="DigiResiThon mark — light theme" height="64" />
+        </div>
+      </div>
+    </DesignSpecimen>
+    <div class="dl-row">
+      <a class="btn btn-sm" href={`${base}/mark-dark.png`} download="mark-dark.png">DOWNLOAD DARK</a>
+      <a class="btn btn-sm" href={`${base}/mark.png`} download="mark.png">DOWNLOAD LIGHT</a>
+    </div>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">WORDMARK</h2>
+    <DesignSpecimen label="wordmark" viewport="AUTO">
+      <div class="logo-row">
+        <div class="theme-panel" aria-label="dark theme">
+          <img src={`${base}/wordmark-dark.png`} alt="DigiResiThon wordmark — dark theme" height="40" />
+        </div>
+        <div class="theme-panel theme-panel--light" data-theme="light" aria-label="light theme">
+          <img src={`${base}/wordmark.png`} alt="DigiResiThon wordmark — light theme" height="40" />
+        </div>
+      </div>
+    </DesignSpecimen>
+    <div class="dl-row">
+      <a class="btn btn-sm" href={`${base}/wordmark-dark.png`} download="wordmark-dark.png">DOWNLOAD DARK</a>
+      <a class="btn btn-sm" href={`${base}/wordmark.png`} download="wordmark.png">DOWNLOAD LIGHT</a>
+    </div>
+
+    <div class="usage-notes">
+      <h2 class="label" style="margin-bottom: var(--sp-3);">USAGE RULES</h2>
+      <ul class="rules-list">
+        <li>Clear space = height of the "0" on all sides.</li>
+        <li>Use <code>-dark</code> variants on dark surfaces (the default theme); red stays red in both.</li>
+        <li>Do not recolor, skew, round, or add effects to the mark.</li>
+        <li>Raster only — ask the community for vector originals.</li>
+        <li>Min height: mark 48px, wordmark 32px.</li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .dk-logo { padding-block: var(--sp-7) var(--sp-9); }
+  .attribution-block {
+    margin-top: var(--sp-5);
+    border-left: 4px solid var(--accent);
+    padding: var(--sp-4) var(--sp-5);
+    background: var(--surface);
+  }
+  .attr-line {
+    margin: 0 0 var(--sp-2);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+  }
+  .attr-line:last-child { margin-bottom: 0; }
+  .logo-row {
+    display: flex;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .theme-panel {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg);
+    border: var(--border);
+    padding: var(--sp-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme-panel--light {
+    background: var(--paper);
+  }
+  .dl-row {
+    display: flex;
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+    flex-wrap: wrap;
+  }
+  .usage-notes { margin-top: var(--sp-7); }
+  .rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    font-size: var(--text-sm);
+  }
+  .rules-list li {
+    border-left: 2px solid var(--line-soft);
+    padding-left: var(--sp-4);
+    line-height: var(--leading-body);
+  }
+</style>

@@ -1,1 +1,4 @@
 force_language: "zh"
+exclude_glob:
+  - "design-kits/**"
+  - "projects/**"

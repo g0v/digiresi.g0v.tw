@@ -1,0 +1,13 @@
+---
+interface Props {
+  status?: "online" | "degraded" | "offline" | "live" | "neutral";
+  blink?: boolean;
+}
+const { status = "neutral", blink } = Astro.props;
+const doBlink = blink != null ? blink : status === "live";
+const dotClass = status !== "neutral" ? `dot--${status}` : "";
+---
+<span class="badge">
+  <span class:list={["dot", dotClass, doBlink ? "dot--live" : ""]}></span>
+  <slot />
+</span>

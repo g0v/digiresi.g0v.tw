@@ -1,0 +1,45 @@
+---
+import Px from "./Px.astro";
+---
+<button id="theme-toggle" type="button" aria-label="Toggle theme" title="blackout / paper">
+  <span class="tt-sun"><Px name="sun" size={16} /></span>
+  <span class="tt-moon"><Px name="moon" size={16} /></span>
+</button>
+<style>
+  button {
+    background: transparent;
+    border: 2px solid var(--line);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    flex: none;
+  }
+  button:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+  .tt-moon { display: none; }
+  :global(html[data-theme="light"]) .tt-sun { display: none; }
+  :global(html[data-theme="light"]) .tt-moon { display: flex; }
+</style>
+<script>
+  const btn = document.getElementById("theme-toggle");
+  btn?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const toLight = root.getAttribute("data-theme") !== "light";
+    if (toLight) {
+      root.setAttribute("data-theme", "light");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+    try {
+      localStorage.setItem("digiresi:theme", toLight ? "light" : "dark");
+    } catch {
+      /* storage unavailable — toggle still works for this page view */
+    }
+  });
+</script>

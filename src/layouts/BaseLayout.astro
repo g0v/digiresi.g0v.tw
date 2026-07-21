@@ -31,7 +31,7 @@ const { title, description, lang = "zh-Hant-TW" } = Astro.props;
       // visitor chose it via the nav toggle. No prefers-color-scheme switch.
       (function () {
         try {
-          if (localStorage.getItem("drt-theme") === "light") {
+          if (localStorage.getItem("digiresi:theme") === "light") {
             document.documentElement.setAttribute("data-theme", "light");
           }
         } catch (e) {

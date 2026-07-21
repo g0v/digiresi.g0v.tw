@@ -85,17 +85,30 @@ const open = Boolean(upcoming && upcoming.registerUrl);
 <script>
   const dialog = document.getElementById("register-dialog") as HTMLDialogElement | null;
   if (dialog) {
-    for (const opener of document.querySelectorAll("[data-open-register]")) {
-      opener.addEventListener("click", () => dialog.showModal());
+    let lastOpener: HTMLElement | null = null;
+
+    for (const opener of document.querySelectorAll<HTMLElement>("[data-open-register]")) {
+      opener.addEventListener("click", () => {
+        lastOpener = opener;
+        dialog.showModal();
+      });
     }
+
     dialog
       .querySelector("[data-close-register]")
       ?.addEventListener("click", () => dialog.close());
-    // Backdrop click: .reg-inner spans the dialog's full box (dialog and
-    // .reg-inner both have zero padding), so a click whose target is the
-    // <dialog> itself can only be on the ::backdrop.
+
+    // Backdrop click: the <dialog> element covers the full viewport; a click
+    // whose target is the <dialog> itself (not .reg-inner) is on the backdrop.
     dialog.addEventListener("click", (e) => {
       if (e.target === dialog) dialog.close();
+    });
+
+    // Return focus to the opener whenever the dialog closes (ESC, backdrop,
+    // or the close button all fire the "close" event).
+    dialog.addEventListener("close", () => {
+      lastOpener?.focus();
+      lastOpener = null;
     });
   }
 </script>
