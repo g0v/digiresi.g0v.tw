@@ -209,3 +209,258 @@ escalated as needs-decision.
   call at the drive.
 - `start_url` remains `${BASE}handbook/`, now guarded by a test that fails if it
   drifts.
+
+## Validation stage outcome (2026-07-25)
+
+Fresh validator, did not build this. Worktree `.worktrees/full-site-offline` at
+`2626721`, 15 commits ahead of `main` (`f812556`). Everything below was re-run
+independently; no number is copied from the implementation report.
+
+### Verdict: REJECTED
+
+Twelve of twelve offline ACs reproduce green, and the four falsification probes
+I ran confirm the tests are real checks rather than tests that cannot fail. Two
+of the three interactive ACs pass at the drive. **AC-I1 fails at the drive on
+iOS**, for one line of CSS. That is the whole rejection; everything else in this
+branch is in good shape and should not be touched.
+
+### Offline acceptance criteria — reproduced
+
+Clean run: `rm -rf dist && npm run build` (exit 0), then each suite.
+
+| AC | Command / test | Exit | Actual |
+|---|---|---|---|
+| AC-1 | `precache-scope.test.mjs` "precaches every visitor-facing portal route" | 0 | pass; emitted keys include `/`, `about/`, `schedule/`, `projects/`, `en/` |
+| AC-2 | same file, "keeps design-kits out of the precache" | 0 | pass; zero `design-kits/` keys in the emitted `dist/sw.js` |
+| AC-3 | `npm run check:budget` | 0 | `TOTAL 101 files, 7971839 bytes (7785.0 KiB)` / `PASS: precache total 7971839 bytes <= 10485760` |
+| AC-4 | `offline.spec.ts` landing page + `/about/` `/schedule/` `/projects/` `/en/` | 0 | 5 tests pass; each asserts route-specific copy plus title |
+| AC-5 | "uncached portal route falls back to the offline page" (`/design-kits/`) | 0 | pass |
+| AC-6 | "the offline page leads back to a route that works offline" | 0 | pass; lands on handbook with `navigator.onLine === false` |
+| AC-7 | install-affordance presence + count-of-one tests | 0 | pass at `/`, `/schedule/`, `/en/`; exactly 1 on `/handbook/` |
+| AC-8 | "handbook search returns results while offline" | 0 | pass; result href matches `/handbook/` |
+| AC-9 | `search-scope.test.mjs` "indexes handbook pages only" | 0 | pass; 20 fragments, all `/handbook/` |
+| AC-10 | `manifest-guards.test.mjs` start_url | 0 | pass; `start_url` is `/handbook/` |
+| AC-11 | `manifest-guards.test.mjs` SAMPLE DATA | 0 | pass |
+| AC-12 | full sweep | 0 | see below |
+
+AC-12 sweep, real output:
+
+```
+npm run build        exit 0   precache  102 entries (7785.00 KiB)
+npm run test         exit 0   Test Files 11 passed (11) / Tests 67 passed | 2 skipped (69)
+npm run test:e2e     exit 0   34 passed (8.3s)
+npm run check:budget exit 0   TOTAL 101 files, 7971839 bytes; PASS <= 10485760
+npm run check:links  exit 0   PASS: 0 broken internal links (763 internal refs across 34 HTML files)
+```
+
+### Falsification probes — the tests can fail
+
+Run in a disposable detached worktree, never in the feature worktree.
+
+1. **AC-8's test genuinely fails without the `?ts` fix.** Checked out `3e1f758`
+   (the commit that adds the test, before the fix in `2626721`), rebuilt clean,
+   ran the search test: **1 failed** —
+   `locator('#search .pagefind-ui__result-link')` "element(s) not found" after
+   15 s. It fails for exactly the claimed reason: offline search returns nothing.
+   The fix is real and the test is not vacuous.
+2. **AC-5's retargeted fallback test genuinely fails.** Added
+   `design-kits/**/*.html` to `precacheGlobs` at HEAD, rebuilt: the test fails —
+   `getByText('目前離線')` "element(s) not found". The same build also flipped
+   `precache-scope.test.mjs` "keeps design-kits out of the precache" to red.
+   Retargeting preserved a real check.
+3. **AC-4's root test genuinely fails.** Removed `index.html` from
+   `precacheGlobs`, rebuilt: "the landing page renders offline" fails on
+   `toContainText("網路斷了")`.
+
+### Interactive acceptance criteria — live drive
+
+Driven against `npm run preview` on `http://localhost:4321/` with real page
+loads and screenshots I looked at, at 1280×900 and at iPhone 13 (390 CSS px),
+online and with the context genuinely offline after warming the cache.
+
+**AC-I2 — PASS.** Read while genuinely disconnected the status is accurate and
+matches the site's voice. Observed strings, offline, cache warm:
+
+- `/` (`lang="zh-Hant-TW"`): `OFFLINE — 網站已存，離線可用；設計元件庫需連線`, dot `data-state="offline"`.
+- `/en/` (`lang="en"`): `OFFLINE — site saved, works offline. Design kits need a connection.`
+- Online, warm: `✓ 網站已存離線可用；設計元件庫需連線` / `✓ Site saved, works offline. Design kits need a connection.`
+- First visit, cold: `↓ 網站下載中…`.
+- `/projects/` correctly gets the English string — the `lang="en"` case the
+  implementer flagged and fixed in `dd5b44a` is right on the page.
+
+I also drove `/design-kits/` offline and read the `/offline/` page as a visitor
+sees it: it names design-kits as the page that needs a connection, lists what is
+saved (首頁、關於、時程、專案、EN、手冊全文), and offers 開啟手冊 and 回首頁.
+Both work while still offline.
+
+**AC-I3 — PASS.** At 390 px the footer row wraps cleanly: status on its own
+lines, then the affordance; no horizontal overflow, no overlap with the mark
+logos or the attribution block. The status dot sits beside the second line of a
+two-line message rather than the first — cosmetic, not damage.
+
+**AC-I1 — FAIL.** The copy itself is correct and is not the problem: zh-Hant
+`安裝離線版網站` / `iOS：用 Safari 的分享選單「加入主畫面」，整個網站即可離線使用`,
+English `Save this site offline` / `iOS: Share menu in Safari, then Add to Home
+Screen, to keep this site offline`, each rendering on the pages that declare the
+matching `lang`. It reads as site-shaped and does not overclaim in words.
+
+What fails is the affordance itself, on iOS. See the finding below.
+
+### Findings
+
+**F-1 — MATERIAL (breaks AC-I1). On iOS Safari the install affordance renders a
+dead button that cannot install.**
+
+`InstallHint.astro`'s iOS branch unhides the container and the manual
+instructions, leaving `[data-install-btn]` with its `hidden` attribute set. But
+`.btn { display: inline-flex }` in `global.css` overrides the UA agent's
+`[hidden] { display: none }`, so the attribute does not hide it. Probed on a
+live iPhone 13 context against the preview server:
+
+```
+beforeinstallpromptFired: false
+btnHiddenAttr: true      btnDisplay: "flex"    btnBox: { w: 87, h: 45 }
+iosHiddenAttr: false     iosDisplay: "block"
+```
+
+An iOS visitor therefore sees a button labelled 安裝離線版網站 / SAVE THIS SITE
+OFFLINE sitting next to instructions telling them to use the share sheet.
+`beforeinstallprompt` never fires on iOS, so `deferred` is null and tapping the
+button does nothing. It is also in the accessibility tree as an operable button.
+That is the affordance overpromising — a one-tap install that does not exist —
+which is the failure mode AC-I1 names, expressed through presentation rather
+than wording. The same defect also leaves the button on screen after a
+successful Chromium install prompt, since `btn.hidden = true` is equally inert
+until `appinstalled` hides the container.
+
+The component's author already knew this hazard: `.install-hint[hidden] {
+display: none; }` exists in the same style block precisely because
+`display: inline-flex` defeats `[hidden]`. It was applied to the container and
+missed on the button.
+
+This is **pre-existing** — the same markup and CSS shipped on `main`. It is
+recorded as material rather than waived because (a) ACs are end-state properties
+of the shipped site, not properties of the delta, and AC-I1 is not satisfied in
+the end state; (b) this feature multiplies the blast radius from one page
+(`/handbook/`) to every page on the site; and (c) the affordance is the subject
+of the feature.
+
+**Fix (serves AC-I1)** — one line in `src/components/InstallHint.astro`'s style
+block:
+
+```css
+.install-hint [hidden] { display: none; }
+```
+
+I verified this candidate in a disposable worktree: rebuilt and re-probed the
+same iPhone 13 context, `btnDisplay: "none"`, `btnBox: { w: 0, h: 0 }`, and the
+iOS instructions take the full row. Specificity is sufficient without
+`!important`. Optionally worth a Playwright guard — "the install button is not
+visible when the browser cannot install" is an objective behavioural fact and is
+testable without automating AC-I1's tone, which stays interactive.
+
+**F-2 — DECLINE (correct-but-disproportionate). `precache-scope.test.mjs`
+hardcodes the root key as `"/"` and is not base-aware.**
+
+Its sibling `manifest-guards.test.mjs` imports `getBase()`; this one does not.
+Reproduced: rebuilt the branch with `BASE = "/digiresi.g0v.tw/"` and ran the new
+unit tests with `SITE_BASE` set — `manifest-guards` and `search-scope` pass,
+`precache-scope` fails with `expected [ 'handbook/', …(101) ] to include '/'`.
+
+Declined rather than routed back: no AC is at risk, and a subpath deploy is not
+a supported configuration today — `deployment.test.mjs` already pins
+`const BASE = "/";` in `astro.config.mjs`, so moving to a subpath is a deliberate
+multi-file change and this test is one more file in it.
+**Promotion condition:** the day the site is moved to a subpath base, or a CI
+lane builds one, this becomes material and must be fixed in the same change.
+The fix is `expect(urls).toContain(getBase())`.
+
+**F-3 — DECLINE (correct-but-disproportionate). The header's static
+`ONLINE` chip contradicts the footer's `OFFLINE —` status on the same screen.**
+
+Visible on the `/offline/` page while genuinely disconnected. `SiteHeader.astro`
+renders `<StatusDot status="online" label="ONLINE" />`, unchanged since the init
+commit — it is an event-status chip, not a connectivity indicator. No AC covers
+it and this branch did not introduce it, but the two now sit on one screen for
+the first time. **Promotion condition:** if the captain reads the header chip as
+connectivity at the drive, it becomes a copy fix in its own right.
+
+**F-4 — Observation, no action.** `.offline-row:empty { display: none; }` in
+`SiteFooter.astro` is dead: the row always contains two components. Harmless.
+
+### Site invariants — all four, with evidence
+
+1. **Base path — HOLDS.** Reproduced the implementer's strongest claim rather
+   than reading it. Rebuilt `2626721` in a disposable worktree with
+   `const BASE = "/digiresi.g0v.tw/"` and parsed the emitted `dist/sw.js`:
+   the root precache key becomes `/digiresi.g0v.tw/`, the fallback becomes
+   `createHandlerBoundToURL("/digiresi.g0v.tw/offline/")`, the denylist becomes
+   `/^\/digiresi.g0v.tw\/(?!handbook\/)/`, `manifest.webmanifest` carries
+   `"start_url":"/digiresi.g0v.tw/handbook/"` and subpath icon URLs, and
+   `design-kits` remains absent. The remaining portal keys stay relative
+   (`about/`, `schedule/`, `projects/`, `en/`) and resolve against the worker's
+   scope. The claim was accurate. The one base-unaware artifact found is a test
+   file, F-2, not a route or an asset URL.
+2. **Precache / search index — HOLDS, with the intended asymmetry.** Portal IN
+   precache (`precache-scope.test.mjs`), OUT of the search index
+   (`search-scope.test.mjs`, 20 fragments all `/handbook/`); `/design-kits/` OUT
+   of both. Guarded in both directions, and probe 2 above shows the
+   design-kits exclusion guard actually fires.
+3. **Vitest glob — HOLDS.** `vitest.config.mjs` still excludes `.worktrees/**`.
+   Evidenced positively, not by reading: `ls .worktrees/*/tests/unit/*.mjs`
+   finds **20** sibling test files across the `custom-domain-migration` and
+   `design-kits` worktrees, and `npx vitest list --filesOnly` at the main repo
+   root collects **8** files, none of them from a sibling worktree. The run
+   inside this worktree collected 11 files, all under its own `tests/unit/`.
+4. **Playwright — HOLDS.** `playwright.config.ts` derives both `baseURL` and
+   `webServer.url` from `getBase()`; `webServer.command` is `npm run preview`.
+   The 34-test run resolved against that preview server, and my own live drive
+   used the same server.
+
+### Did any implementer claim turn out untrue or overstated?
+
+Substantively, no — this is the most accurate implementation report I could have
+asked for. Every load-bearing claim reproduced:
+
+- **Base-path verification** — reproduced exactly, including the specific
+  emitted values. Not faked by inspection.
+- **Budget divergence** — reproduced from both ends. Built `main` (`f812556`)
+  clean: **96 files, 7,816,274 bytes**, matching the design's figure to the byte.
+  Branch: **101 files, 7,971,839 bytes**. Delta **+155,565**, exactly as
+  reported. File count `96 → 101` is precisely the five new portal HTML files;
+  no new file class appears. The extra bytes are HTML growth of already-precached
+  files, as claimed: `handbook/` 288.1 → 340.3 KiB across the same 21 files,
+  `offline/` 7.7 → 10.7 KiB, `_astro/` 347.6 → 348.7 KiB. Nothing unintended is
+  precached. Worth adding: the five new pages themselves also came in ~13 KB
+  above the design's prediction for the same footer reason, so the design's
+  +84,159 under-counted on both sides, not just on existing files.
+- **Root precache key is not degenerate** — confirmed against the generated
+  `sw.js`: the key is `"/"`, the one absolute key in an otherwise relative
+  manifest, and `/` renders offline.
+- **Task 5's retargeted test still bites** — confirmed by making it fail.
+- **Two self-reviewed findings, zero declines, no AC narrowed** — I read the
+  whole diff against the plan for this. Nothing in the diff is unrequested
+  except the `ignoreURLParametersMatching` line, which is the documented
+  material AC-8 fix and is commented as such. AC-7 was implemented *stricter*
+  than written (count-of-one at every asserted route, plus a count-of-one on
+  `[data-offline-status]`), and AC-8 was widened from a non-existent "existing"
+  test to a real one. No AC was narrowed to make a finding pass. Zero declines
+  was an honest count for the implementation stage.
+
+Two small inaccuracies, neither load-bearing:
+
+- The report's budget note reads "97 shipped vs 101 counted globs + 1". The
+  shipped precache is **102 entries** (build log: `precache 102 entries`);
+  `check-budget.mjs` counts 101. The substance — under-measures by exactly one
+  file, `manifest.webmanifest` — is correct; `97` is a stale design-stage number.
+- "the run from inside this worktree collected 11 files, none from sibling
+  worktrees" is true but weak evidence, since no `.worktrees` directory exists
+  inside the worktree at all. The invariant does hold; see item 3 above for the
+  check that could actually have failed.
+
+### What a re-run needs to clear this
+
+One fix, F-1, serving AC-I1: hide `[data-install-btn]` when its `hidden`
+attribute is set. Nothing else in this branch needs to change. F-2 and F-3 are
+declines with promotion conditions recorded and must not be fixed as part of
+this correction round.
