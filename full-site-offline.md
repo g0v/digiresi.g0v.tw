@@ -728,3 +728,207 @@ intent was an inference, and the captain resolved it the other way.
   confirmed unrelated to this round, and left alone.
 - Branch is local: not merged, not pushed. The captain decides how it lands,
   because merging deploys to production.
+
+## Re-validation (2026-07-25)
+
+Fresh re-validator; did not build the fixes and did not write the original
+validation. `fix/install-affordance` is merged: `main` is at `22aed8b` and this
+is what is deployed, so everything below was run against the main checkout at
+that commit, from a clean `rm -rf dist && npm run build`. Scoped per the
+README's small-change fast path — AC-I1 re-judged at a live drive, each of the
+four fixes reproduced, and a regression sweep. The twelve offline ACs and the
+four falsification probes from the first validation were not re-run.
+
+### Verdict: PASSED
+
+AC-I1 passes at the drive. All four fixes do what the correction round claims,
+reproduced independently. Both new guards were made to go red. Nothing material
+was refuted; no new finding rises above an observation.
+
+### AC-I1 — live drive, iPhone 13 @ 390 px
+
+Playwright `devices["iPhone 13"]` against `npm run preview`, real page load of
+`/`, screenshots looked at. `beforeinstallprompt` does not fire in this context,
+so it is the genuine iOS branch:
+
+```
+beforeinstallpromptFired: false     innerWidth: 397
+rootHiddenAttr: false   rootDisplay: "flex"
+btnHiddenAttr: true     btnDisplay: "none"    btnBox: { w: 0, h: 0 }
+iosHiddenAttr: false    iosDisplay: "block"   iosBox: { w: 342, h: 41 }
+playwright btn visible: false       ios visible: true
+```
+
+`btnDisplay` and `btnBox` match the correction round's reported values exactly.
+The button is also gone from the accessibility tree — an aria snapshot of the
+footer lists no button node for 安裝離線版網站; the only offline-affordance text
+is the share-sheet line. What an iOS visitor sees is instructions and nothing
+else, which is what F-1 broke.
+
+On `/en/` the same context gives `btnDisplay: "none"`, `btnBox: {0,0}`, button
+text `Save this site offline`, and the visible instruction
+`iOS: Share menu in Safari, then Add to Home Screen, to keep this site offline`.
+Copy is site-shaped in both languages and no longer overpromises in either
+wording or presentation. **AC-I1 — PASS.**
+
+I also checked the direction nobody tested, since over-hiding is the obvious way
+a `display: none` fix could go wrong: on a context that *can* install (synthetic
+`beforeinstallprompt`), the button becomes `display: "flex"`, `119 × 30`, the
+iOS hint hides, and after the prompt is accepted the button correctly goes to
+`display: "none"`. The fix hides only what should be hidden, and it does close
+the second half of the defect the report claimed for it.
+
+### Falsification — both new guards go red
+
+Disposable detached worktree at `22aed8b` outside `.worktrees/`, removed
+afterwards.
+
+1. **F-1 guard.** Deleted the single line `.install-hint [hidden] { display:
+   none; }` from `InstallHint.astro`, rebuilt clean:
+
+   ```
+   Error: expect(locator).toBeHidden() failed
+   Locator:  locator('[data-install-btn]')
+   Expected: hidden   Received: visible
+     14 × locator resolved to <button hidden="" type="button" data-install-btn=""
+          data-astro-cid-ncwmmf27="" class="btn btn-secondary btn-sm"> 安裝離線版網站 </button>
+        - unexpected value "visible"
+   ```
+
+   Byte-identical to the failure the correction round recorded watching.
+
+   **Procedural note against my own first attempt:** the same revert initially
+   reported `1 passed`, because a preview server I had left running on 4321 from
+   the main checkout was reused by Playwright's `webServer`, so the test drove
+   the *fixed* build. Killing it produced the failure above. Recorded because a
+   green run under a stale server is exactly the way a falsification probe lies.
+
+2. **F-3 guard.** Removed the `is:inline` connectivity script from
+   `SiteHeader.astro`, rebuilt clean: the header-chip test fails at the offline
+   assertion, `toContainText("OFFLINE")` receiving `連線中 ONLINE` from a chip
+   still carrying `data-state="online"`. The guard binds to real behaviour.
+
+### F-3 — driven genuinely offline, both widths, three routes
+
+Cache warmed over `/`, `/en/`, `/projects/`, `/about/`, `/schedule/`,
+`/handbook/`, `/offline/`, then `context.setOffline(true)`. Header chip and
+footer status agree everywhere:
+
+| viewport | route | `html lang` | chip | chip dot | footer state | footer text |
+|---|---|---|---|---|---|---|
+| 1280 | `/` | zh-Hant-TW | `離線 OFFLINE` | `rgb(255,70,51)`, animation `none` | `offline` | `OFFLINE — 網站已存，離線可用；設計元件庫需連線` |
+| 1280 | `/en/` | en | `離線 OFFLINE` | same | `offline` | `OFFLINE — site saved, works offline. Design kits need a connection.` |
+| 1280 | `/projects/` | en | `離線 OFFLINE` | same | `offline` | same English string |
+| iPhone 13 | `/`, `/en/`, `/projects/` | — | `離線 OFFLINE` | same | `offline` | as above |
+
+Online and warm, both widths: chip `連線中 ONLINE`, dot `rgb(43,213,118)`,
+animation `drt-blink`, footer `✓ 網站已存離線可用；設計元件庫需連線`. The
+contradiction F-3 named is gone, and the bilingual label is neither broken nor
+zh-only on the two `lang="en"` pages — it is the same string the header uses
+everywhere, matching the header's existing bilingual voice (首頁 HOME).
+
+**No flash, confirmed by measurement not by argument.** An init-time poll
+installed before any document script, sampling every animation frame until
+`readyState === "complete"` plus a settle tick, recorded exactly one distinct
+state on an online load of `/` at both widths:
+`["online:連線中 ONLINE"]`. The SSR default is never visibly corrected.
+
+### F-3 — `StatusDot`'s other callers
+
+Computed styles read off a live `/design-kits/components/`:
+
+```
+online    rgb(43, 213, 118)   animation drt-blink   10px × 10px
+degraded  rgb(255, 176, 32)   animation none        10px × 10px
+offline   rgb(255, 70, 51)    animation none        10px × 10px
+```
+
+Identical to the correction round's figures and to the modifier-class rules they
+replace. `/design-kits/website/` renders two dots — the real header's dynamic
+one and the specimen's static `ONLINE` — both green and blinking. `grep` over
+`src/` and `tests/` confirms nothing outside `StatusDot.astro` references
+`.status-dot--*`, so moving the colours onto `[data-state]` affected no caller.
+
+### F-2 — `BASE` is really restored, and the fix really works
+
+`astro.config.mjs:12` is `const BASE = "/";` in the shipped config, and
+`git status --porcelain` at the repo root is empty, so nothing is uncommitted on
+top of it. Full unit suite at that base: **11 files, 67 passed, 2 skipped**.
+
+The fix's substance was checked rather than assumed: in the disposable worktree,
+set `const BASE = "/digiresi.g0v.tw/"`, rebuilt clean, ran with
+`SITE_BASE=/digiresi.g0v.tw/` — **1 failed | 66 passed | 2 skipped**, and the
+one failure is `deployment.test.mjs > keeps Astro's browser base at the domain
+root`, the guard that deliberately pins `const BASE = "/";`.
+`precache-scope.test.mjs` passes at the subpath, which it could not do before.
+Exactly as reported.
+
+### F-4
+
+`.offline-row:empty` is gone from `SiteFooter.astro`; the footer renders
+unchanged at both widths in every drive above.
+
+### Regression sweep — clean build, real output
+
+| Command | Exit | Result |
+|---|---|---|
+| `rm -rf dist && npm run build` | 0 | clean |
+| `npm run test` | 0 | Test Files 11 passed (11) / Tests 67 passed, 2 skipped (69) |
+| `npm run test:e2e` | 0 | 36 passed (9.4s) |
+| `npm run check:budget` | 0 | `TOTAL 101 files, 8006501 bytes (7818.8 KiB)` / `PASS: <= 10485760` |
+| `npm run check:links` | 0 | `PASS: 0 broken internal links (763 internal refs across 34 HTML files)` |
+
+Precache total 8,006,501 bytes — matches the correction round's figure to the
+byte. 101 files, unchanged.
+
+### Site invariants
+
+1. **Base path — HOLDS.** Parsed the emitted `dist/sw.js`: 102 precache
+   entries, root key `"/"`, `createHandlerBoundToURL("/offline/")`, denylist
+   `/^\/(?!handbook\/)/`. The subpath rebuild above is the check that could have
+   failed and did not; the one base-unaware file the first validation found is
+   now base-aware.
+2. **Precache / search index — HOLDS.** Portal keys `/`, `about/`, `schedule/`,
+   `projects/`, `en/`, `offline/`, `handbook/` all present in the emitted
+   manifest; `grep -c design-kits dist/sw.js` is **0**. `search-scope` still
+   green. Neither fix touched a glob.
+3. **Vitest glob — HOLDS,** evidenced positively rather than by reading:
+   `ls .worktrees/*/tests/unit/*.mjs` finds **29** sibling test files, and
+   `npx vitest list --filesOnly` at the repo root collects **11**, all under
+   `tests/unit/`. None from a sibling worktree.
+4. **Playwright — HOLDS.** Both new guards resolve through `baseURL` and the
+   `webServer`-managed preview; the F-1 guard sets only `userAgent` and
+   `viewport`. No path assumption added. (See the falsification note above for
+   the one way this can be undermined — a stray preview server, which is an
+   operator hazard, not a config defect.)
+
+### Findings
+
+**Nothing material. Nothing to route back.** One observation:
+
+**R-1 — Observation, no action. The chip's `status-dot--online` modifier class
+goes stale when the state flips.** The inline script rewrites `data-state` and
+the label but leaves `class="status-dot status-dot--online"` in place, so an
+offline chip carries an `--online` class. It has no rendering effect — all
+colour rules key off `[data-state]` and nothing anywhere selects
+`.status-dot--*` — and the component's own comment documents the choice. It is
+recorded only because it is a latent trap for a future selector or test that
+reaches for `.status-dot--offline` and finds it never appears.
+
+### Anything the correction round claimed that did not hold
+
+**Nothing.** Every claim I reproduced came out at the same values, several to
+the byte: F-1's `btnDisplay: "none"` / `btnBox: {0,0}` / `iosBox: {342, 41}`,
+the F-1 guard's exact failure text on the unfixed build, F-2's single remaining
+subpath failure being `deployment.test.mjs`, F-3's specimen colours and blink
+states, the 8,006,501-byte precache total, and the 36-test e2e count. The two
+open items the dispatch named are still true as recorded — the design-kits
+website specimen still hardcodes `label="ONLINE"`, and the 390 px horizontal
+overflow (`scrollWidth` 397 vs 390) is present and unrelated to these edits.
+
+The only thing worth adding to the record is a gap in coverage rather than an
+error: the correction round verified that the F-1 fix hides the button, and
+never verified that it still *shows* the button on a browser that can install.
+It does — I checked — but that half was taken on faith, and a `display: none`
+rule with one character more specificity than intended would have shipped a site
+where nobody can install at all, with every test still green.
