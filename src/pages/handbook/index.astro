@@ -5,8 +5,6 @@ import SectionHeader from "../../components/SectionHeader.astro";
 import SignalBars from "../../components/SignalBars.astro";
 import { SECTION_NAMES, SECTION_ORDER } from "../../lib/sections";
 import Search from "../../components/Search.astro";
-import OfflineStatus from "../../components/OfflineStatus.astro";
-import InstallHint from "../../components/InstallHint.astro";
 import { withBase } from "../../lib/base";
 
 const SECTION_BLURBS: Record<string, string> = {
@@ -38,10 +36,6 @@ const sections = SECTION_ORDER.map((section) => {
 >
   <div class="handbook-index">
     <SectionHeader label="手冊" right="OFFLINE-FIRST" />
-    <div class="handbook-status-row">
-      <OfflineStatus />
-      <InstallHint />
-    </div>
     <Search />
     <div class="handbook-grid">
       {sections.map(({ section: _section, name, blurb, items }) => (
@@ -96,13 +90,6 @@ const sections = SECTION_ORDER.map((section) => {
     max-width: var(--container);
     margin: 0 auto;
     padding: 48px var(--gutter) 64px;
-  }
-  .handbook-status-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sp-4);
-    margin-top: var(--sp-4);
   }
   .handbook-grid {
     display: grid;

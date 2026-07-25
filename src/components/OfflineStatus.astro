@@ -1,60 +1,102 @@
 ---
+// Reports SITE-level offline readiness, not handbook-level. Probes one handbook
+// article AND one portal route, because as of the full-site-offline feature the
+// saved scope is the whole site — a handbook-only probe would report "saved"
+// while the portal was still missing.
+//
+// design-kits is deliberately out of the precache, so it is named as the one
+// part still needing a connection. Copy follows the page's declared lang,
+// threaded down from BaseLayout via SiteFooter (/projects/ is lang="en" too).
+interface Props {
+  lang?: string;
+}
+const { lang = "zh-Hant-TW" } = Astro.props;
+const isEnglish = lang.toLowerCase().startsWith("en");
+
+const copy = isEnglish
+  ? {
+      checking: "Checking offline cache...",
+      offlineReady: "OFFLINE — site saved, works offline. Design kits need a connection.",
+      offlineIncomplete: "OFFLINE — site not fully downloaded yet",
+      unsupported: "This browser does not support offline caching",
+      ready: "✓ Site saved, works offline. Design kits need a connection.",
+      downloading: "↓ Saving the site...",
+    }
+  : {
+      checking: "檢查離線快取…",
+      offlineReady: "OFFLINE — 網站已存，離線可用；設計元件庫需連線",
+      offlineIncomplete: "OFFLINE — 網站尚未下載完成",
+      unsupported: "此瀏覽器不支援離線快取",
+      ready: "✓ 網站已存離線可用；設計元件庫需連線",
+      downloading: "↓ 網站下載中…",
+    };
 ---
-<div class="offline-status" data-offline-status>
+<div
+  class="offline-status"
+  data-offline-status
+  data-copy-offline-ready={copy.offlineReady}
+  data-copy-offline-incomplete={copy.offlineIncomplete}
+  data-copy-unsupported={copy.unsupported}
+  data-copy-ready={copy.ready}
+  data-copy-downloading={copy.downloading}
+>
   <span
     class="offline-status-dot"
     data-dot
     data-state="checking"
     aria-hidden="true"></span>
-  <span class="offline-status-msg" data-msg aria-live="polite">檢查離線快取…</span>
+  <span class="offline-status-msg" data-msg aria-live="polite">{copy.checking}</span>
 </div>
 
 <script>
   const root = document.querySelector("[data-offline-status]");
   const dot = root?.querySelector("[data-dot]") as HTMLElement | null;
   const msg = root?.querySelector("[data-msg]") as HTMLElement | null;
-  // Any precached handbook page works as a probe; go-bag is order 1, section 1.
-  const PROBE_URL = `${import.meta.env.BASE_URL}handbook/prepare/go-bag/`;
+  // Astro cannot pass the frontmatter object into a processed script, so the
+  // strings ride on the element as data-* attributes.
+  const COPY = root instanceof HTMLElement ? { ...root.dataset } : {};
+  const BASE_URL = import.meta.env.BASE_URL;
+  // Site-level readiness needs BOTH a handbook article and a portal route: the
+  // handbook alone was the old, narrower claim.
+  const PROBE_URLS = [`${BASE_URL}handbook/prepare/go-bag/`, BASE_URL];
 
-  function setState(state: string, text: string) {
+  function setState(state: string, key: string) {
     if (!dot || !msg) return;
     dot.dataset.state = state;
-    msg.textContent = text;
+    msg.textContent = COPY[key] ?? "";
   }
 
-  async function handbookCached(): Promise<boolean> {
+  async function siteCached(): Promise<boolean> {
     if (!("caches" in window)) return false;
-    const hit = await caches.match(PROBE_URL, { ignoreSearch: true });
-    return hit !== undefined;
+    for (const url of PROBE_URLS) {
+      if (!(await caches.match(url, { ignoreSearch: true }))) return false;
+    }
+    return true;
   }
 
   async function refresh() {
     if (!navigator.onLine) {
-      const cached = await handbookCached();
-      setState(
-        "offline",
-        cached ? "OFFLINE — 手冊已下載，離線可用" : "OFFLINE — 手冊尚未下載完成",
-      );
+      setState("offline", (await siteCached()) ? "copyOfflineReady" : "copyOfflineIncomplete");
       return;
     }
     if (!("serviceWorker" in navigator)) {
-      setState("unsupported", "此瀏覽器不支援離線快取");
+      setState("unsupported", "copyUnsupported");
       return;
     }
-    if (await handbookCached()) {
-      setState("ok", "✓ 手冊已完整下載，離線可用");
+    if (await siteCached()) {
+      setState("ok", "copyReady");
       return;
     }
     // U+2193 DOWNWARDS ARROW (text presentation) — not the emoji-capable
     // U+2B07 variant; the design system bans emoji in UI copy.
-    setState("downloading", "↓ 手冊下載中…");
+    setState("downloading", "copyDownloading");
     await navigator.serviceWorker.ready;
     let tries = 0;
     const timer = window.setInterval(async () => {
       tries += 1;
-      if (await handbookCached()) {
+      if (await siteCached()) {
         window.clearInterval(timer);
-        setState("ok", "✓ 手冊已完整下載，離線可用");
+        setState("ok", "copyReady");
       } else if (tries >= 30) {
         window.clearInterval(timer); // give up quietly after ~60s
       }

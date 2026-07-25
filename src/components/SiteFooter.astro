@@ -1,8 +1,22 @@
 ---
-// Footer chrome: mark logo, mono-caps attribution, community links.
+// Footer chrome: mark logo, mono-caps attribution, community links, and the
+// offline/install affordance. The affordance lives here — not on /handbook/ —
+// so every page offers it; both components resolve a single instance with
+// document.querySelector, so there must be exactly one mount per page.
 import { withBase } from "../lib/base";
+import OfflineStatus from "./OfflineStatus.astro";
+import InstallHint from "./InstallHint.astro";
+
+interface Props {
+  lang?: string;
+}
+const { lang = "zh-Hant-TW" } = Astro.props;
 ---
 <footer class="site-footer">
+  <div class="container offline-row">
+    <OfflineStatus lang={lang} />
+    <InstallHint lang={lang} />
+  </div>
   <div class="container inner">
     <img class="only-dark" src={withBase("/brand/mark-dark.png")} alt="DigiResiThon mark" height="40" />
     <img class="only-light" src={withBase("/brand/mark.png")} alt="DigiResiThon mark" height="40" />
@@ -26,6 +40,14 @@ import { withBase } from "../lib/base";
     border-top: var(--border);
     margin-top: auto;
   }
+  .offline-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    padding-top: 24px;
+  }
+  .offline-row:empty { display: none; }
   .inner {
     display: flex;
     align-items: center;
