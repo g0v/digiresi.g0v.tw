@@ -102,6 +102,24 @@ test("the offline page leads back to a route that works offline", async ({ page,
   expect(await page.evaluate(() => navigator.onLine)).toBe(false);
 });
 
+// The install affordance used to render on /handbook/ only, so a visitor
+// standing anywhere else was never offered it. The count-of-one assertion is
+// what catches double-mounting: both components resolve a single instance with
+// document.querySelector, so leaving the handbook copy in place while adding a
+// footer copy would bind the script to the wrong element.
+for (const path of ["", "schedule/", "en/"]) {
+  test(`the install affordance is present at /${path}`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("[data-install-hint]")).toHaveCount(1);
+  });
+}
+
+test("the install affordance is mounted exactly once on /handbook/", async ({ page }) => {
+  await page.goto("handbook/");
+  await expect(page.locator("[data-install-hint]")).toHaveCount(1);
+  await expect(page.locator("[data-offline-status]")).toHaveCount(1);
+});
+
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
