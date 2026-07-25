@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
+import { getBase } from "../../scripts/lib/deploy-base.mjs";
 
 // Binds two independent values: the glob list in scripts/precache-globs.mjs and
 // what the build actually emitted into dist/sw.js. They can diverge (a glob that
@@ -19,11 +20,14 @@ describe.skipIf(!hasBuild)("service worker precache scope", () => {
   it("precaches every visitor-facing portal route", () => {
     const urls = manifestUrls();
     // vite-pwa rewrites "X/index.html" to "X/". The root was predicted to come
-    // out as a degenerate empty key; it does not — the build emits "/", the one
-    // absolute key in an otherwise relative manifest. Asserted exactly so a
+    // out as a degenerate empty key; it does not — the build emits the base, the
+    // one absolute key in an otherwise relative manifest. Asserted exactly so a
     // change in that form is noticed. That it RESOLVES offline is proved
     // separately by the Playwright test, not by this key's presence.
-    expect(urls).toContain("/");
+    // Base-aware like manifest-guards.test.mjs: under a subpath base the root
+    // key becomes "/digiresi.g0v.tw/", and hardcoding "/" made this the one
+    // base-unaware file in the suite.
+    expect(urls).toContain(getBase());
     for (const route of ["about/", "schedule/", "projects/", "en/"]) {
       expect(urls).toContain(route);
     }
