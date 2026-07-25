@@ -68,6 +68,13 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: precacheGlobs,
+        // Pagefind fetches /pagefind/pagefind-entry.json with a `?ts=<epoch>`
+        // cache-buster. Workbox matches precache entries INCLUDING the query
+        // string — its default ignoreURLParametersMatching covers only utm_*
+        // and fbclid — so that request missed the precache and went to the
+        // network, and offline search hung at "正在搜尋…" forever. Ignoring
+        // `ts` lets the precached entry match. Keep the workbox defaults.
+        ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^ts$/],
         // Offline fallback for /handbook/** navigations that miss the precache.
         navigateFallback: `${BASE}offline/`,
         // Keep the precache-fallback NavigationRoute away from portal URLs:
