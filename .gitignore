@@ -4,3 +4,4 @@ dist/
 .astro/
 .sync-tmp/
 docs/superpowers/
+test-results/*
