@@ -172,6 +172,23 @@ test("offline status reports the site as saved and names the exception", async (
   );
 });
 
+// AC-8. Search is the handbook's whole point on disaster day, and it depends on
+// /pagefind/** being precached — which in turn depends on the Pagefind
+// integration running BEFORE @vite-pwa/astro's build hook in astro.config.mjs.
+// Fails if pagefind/**/* leaves the precache globs or the integrations are
+// reordered.
+test("handbook search returns results while offline", async ({ page, context }) => {
+  await warmPrecache(page, [`${BASE}handbook/`, `${BASE}pagefind/pagefind-ui.js`]);
+  await context.setOffline(true);
+  await page.goto("handbook/");
+  const input = page.locator("#search input[type='text']");
+  await input.waitFor({ timeout: 15_000 });
+  await input.fill("救難包");
+  const results = page.locator("#search .pagefind-ui__result-link");
+  await expect(results.first()).toBeVisible({ timeout: 15_000 });
+  await expect(results.first()).toHaveAttribute("href", /\/handbook\//);
+});
+
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
