@@ -152,6 +152,30 @@ for (const path of ["en/", "projects/"]) {
   });
 }
 
+// AC-I1's wording stays interactive; what is checked here is the behavioural
+// fact underneath it — a browser that cannot install must not be offered a
+// one-tap install. On iOS `beforeinstallprompt` never fires, so the component
+// shows the share-sheet instructions instead; the button carries `hidden`, but
+// `.btn { display: inline-flex }` in global.css defeats the UA's
+// `[hidden] { display: none }` unless the component says so itself. A visible,
+// focusable button that cannot install is the overpromise AC-I1 forbids,
+// expressed through presentation rather than wording. Fails if
+// `.install-hint [hidden] { display: none; }` is dropped.
+const IPHONE_UA =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 " +
+  "(KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+
+test.describe("a browser that cannot install", () => {
+  test.use({ userAgent: IPHONE_UA, viewport: { width: 390, height: 844 } });
+
+  test("is shown the manual instructions and no install button", async ({ page }) => {
+    await page.goto("");
+    // The iOS branch has run: the container and the instructions are unhidden.
+    await expect(page.locator("[data-ios-hint]")).toBeVisible();
+    await expect(page.locator("[data-install-btn]")).toBeHidden();
+  });
+});
+
 // AC-I2's tone is the captain's call at the drive; what is checked here is the
 // behavioural claim underneath it — that the status is computed from the SITE
 // being cached (a portal probe, not a handbook-only probe) and that it names
