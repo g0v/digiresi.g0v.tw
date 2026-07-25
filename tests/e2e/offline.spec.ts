@@ -85,6 +85,23 @@ test("uncached portal route falls back to the offline page", async ({ page, cont
   await expect(page.getByText("目前離線").first()).toBeVisible();
 });
 
+// Exercises behaviour, not copy: a visitor who lands on /offline/ while still
+// disconnected must be able to click through to something that actually works.
+// Fails if the offline page's primary link ever points at a route that is not
+// precached.
+test("the offline page leads back to a route that works offline", async ({ page, context }) => {
+  await warmPrecache(page, [`${BASE}handbook/`]);
+  await context.setOffline(true);
+  await page.goto("design-kits/");
+  await expect(page.getByText("目前離線").first()).toBeVisible();
+  await page.locator(".offline-page a.btn").first().click();
+  // The handbook index carries no heading element at all — assert its own
+  // content and title rather than a role that is not there.
+  await expect(page).toHaveTitle(/手冊 HANDBOOK/);
+  await expect(page.getByText("開始閱讀").first()).toBeVisible();
+  expect(await page.evaluate(() => navigator.onLine)).toBe(false);
+});
+
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
