@@ -546,11 +546,16 @@ is edited. That is the guard working, not a regression.
 `git diff astro.config.mjs` is empty and the full unit suite is green at
 `BASE = "/"`. Site invariant 1 is intact.
 
-### F-3 — ESCALATED, not committed
+### F-3 — escalated, then redirected by the captain — FIXED (`755941b`)
 
-The header chip relabel was escalated to the first officer rather than decided,
-per the dispatch's explicit instruction to escalate if no relabel is clearly
-right. Two facts found while investigating, both load-bearing:
+F-3 was first dispatched as "disambiguate the label minimally; do NOT make the
+chip connectivity-aware". No relabel was clearly right, so it was escalated with
+three options rather than guessed at. **The captain then withdrew that
+instruction and asked for real behaviour: the chip reports live connectivity.**
+The relabel options were dropped; no wording change was committed and then
+built on. Recorded because the instruction genuinely reversed mid-round.
+
+Two facts found during the escalation, both of which shaped the implementation:
 
 - **`SiteHeader` is entirely lang-unaware.** `BaseLayout.astro:58` renders
   `<SiteHeader />` with no props while line 62 renders `<SiteFooter lang={lang} />`.
@@ -568,13 +573,98 @@ right. Two facts found while investigating, both load-bearing:
   states whether it is about the project, the event, or is decoration — which is
   the fork that made this escalate rather than decide.
 
-Options put to the first officer, all one line at `SiteHeader.astro:36`:
-**A** `label="專案進行中 ACTIVE"` (recommended — bilingual, cannot be read as
-connectivity, claim does not go stale); **B** `label="ACTIVE"` (smallest copy
-delta, zero layout risk, says less); **C** `label="活動進行中 EVENT LIVE"`
-(closest to the specimen's framing, but a static chip claiming a live event is
-untrue most of the year, and making it dynamic is the new behaviour the dispatch
-forbade).
+The first finding decided the language question: **labels are bilingual and
+`lang` is NOT threaded into `SiteHeader`.** The second stopped being a blocker
+once the chip became dynamic — a chip reporting live connectivity has a real
+referent and cannot go stale, which is the falsifiability problem the static
+options all had.
+
+**What shipped.** `SiteHeader.astro` passes bilingual copy on data attributes
+(`連線中 ONLINE` / `離線 OFFLINE`) and carries a blocking `is:inline` script,
+placed after `</header>` so the element exists during parse. It uses the *same*
+detection as `OfflineStatus` — `navigator.onLine` plus the `online`/`offline`
+events — so the two components cannot disagree about state. The chip stays a
+chip; the footer keeps the sentence.
+
+**Test-first.** Watched fail on the unfixed build:
+
+```
+Error: expect(locator).toHaveAttribute(expected) failed
+Locator:  locator('.site-header .status-dot')
+Expected: "online"    Received: ""
+  14 × locator resolved to <span class="status-dot status-dot--online">…</span>
+     - unexpected value "null"
+```
+
+That first assertion only proves the attribute was absent, so the contradiction
+itself was reproduced separately with a throwaway spec, genuinely offline after
+warming the cache — and then deleted, not committed:
+
+```
+HEADER CHIP TEXT WHILE OFFLINE: "ONLINE"
+FOOTER DOT STATE: offline
+```
+
+Header and footer disagreeing on one screen, which is F-3 exactly. The shipped
+test asserts both the state and the agreement with the footer's dot, and
+compares the chip text on `/` against `/en/` — that comparison is what would
+catch a zh-only label shipping onto a `lang="en"` page.
+
+**`StatusDot`'s contract — checked before changing, per the stop condition.**
+`grep` over `src/` and `tests/` finds no reference to `.status-dot` or
+`.status-dot--*` outside the component itself; the three other call sites
+(`design-kits/website.astro:36`, `design-kits/components.astro:125-127`) pass
+only `status`/`label`. **No existing prop changed meaning and no required prop
+was added**, so no call site was affected and the stop condition did not fire.
+The changes are additive: a `data-state` attribute, a `[data-sd-label]` wrapper
+around the label text (one inline element in place of one text node — same
+flex item, no styles), and a rest-spread so a caller can attach its own hooks.
+Colours moved from `.status-dot--{status}` to `[data-state="…"]` so a runtime
+state change is one attribute write rather than a class swap plus a text patch.
+
+Verified the specimens render identically rather than assuming it — computed
+styles read off `/design-kits/components/`:
+
+```
+online   rgb(43, 213, 118)  animation drt-blink
+degraded rgb(255, 176, 32)  animation none
+offline  rgb(255, 70, 51)   animation none
+```
+
+Unchanged from the modifier-class rules they replace. One deliberate addition:
+`[data-state="offline"] .sd-blink { animation: none; }`, so a chip that flips to
+offline at runtime goes solid — a blinking red dot reads as an alarm, and the
+footer's offline dot is solid.
+
+**No flash, and which SSR default.** Server-rendered state is `online`.
+`navigator.onLine` is client-only, and a visitor who fetched the page over the
+network *is* online, so the common case never flips; the offline case — a
+visitor opening the site from the precache — is corrected before first paint by
+the blocking inline script, the same pattern as BaseLayout's theme init.
+Measured rather than assumed: an init-script poll firing at the earliest moment
+the element exists on an online load observed `online:連線中 ONLINE` and nothing
+else.
+
+**Re-driven at both widths, both states**, against `npm run preview`:
+
+| | text | dot | chip width | header height |
+|---|---|---|---|---|
+| 1280 online | `連線中 ONLINE` | `rgb(43,213,118)` | 114 px | 66 px |
+| 1280 offline | `離線 OFFLINE` | `rgb(255,70,51)` | 109 px | 66 px |
+| 390 online | `連線中 ONLINE` | `rgb(43,213,118)` | 114 px | 157 px |
+| 390 offline | `離線 OFFLINE` | `rgb(255,70,51)` | 109 px | 157 px |
+
+The label is 5 px *narrower* offline, so no state widens the header. At 390 px
+the page reports 7 px of horizontal overflow (`scrollWidth` 397 vs 390, from
+`nav`/`.nav-link`) — **pre-existing and not caused by this change**: rebuilt
+with the F-3 edits stashed and measured the same 397 px and the same 157 px
+header height. Untouched, as this is a correction round.
+
+**One consequence left deliberately alone.** `design-kits/website.astro`'s
+header specimen still hardcodes `<StatusDot status="online" label="ONLINE" />`,
+so it no longer mirrors the real header's copy. Changing it is a design-kits
+edit outside this round's scope; it remains a valid static specimen of the
+component. Flagged here rather than fixed.
 
 ### F-4 — observation, fixed under captain override (`7872b6d`)
 
@@ -584,18 +674,20 @@ files in `dist/` and found `.offline-row` present in 34 and empty in 0. The
 selector could not match, so removal cannot change rendering. The validator's
 observation was correct.
 
-### Verification (real output, clean build, after all three commits)
+### Verification (real output, clean build, after all four commits)
 
 | Command | Exit | Result |
 |---|---|---|
-| `rm -rf dist && npm run build` | 0 | `precache  102 entries (7785.01 KiB)` |
+| `rm -rf dist && npm run build` | 0 | clean |
 | `npm run test` | 0 | Test Files 11 passed (11) / Tests 67 passed, 2 skipped (69) |
-| `npm run test:e2e` | 0 | 35 passed (8.1s) — 34 before, plus the new F-1 guard |
-| `npm run check:budget` | 0 | `TOTAL 101 files, 7971855 bytes`; `PASS: <= 10485760` |
+| `npm run test:e2e` | 0 | 36 passed (9.5s) — 34 at validation, plus the F-1 and F-3 guards |
+| `npm run check:budget` | 0 | `TOTAL 101 files, 8006501 bytes`; `PASS: <= 10485760` |
 | `npm run check:links` | 0 | `PASS: 0 broken internal links (763 internal refs across 34 HTML files)` |
 
-Precache total moved 7,971,839 → 7,971,855 bytes (+16, the added CSS rule).
-File count unchanged at 101. Headroom 2,513,905 bytes.
+Precache total moved 7,971,839 → 8,006,501 bytes (+34,662): the F-1 CSS rule
+plus the header's inline connectivity script and its copy attributes, which land
+in all 34 precached HTML files. File count unchanged at 101. Headroom
+2,479,259 bytes (2.36 MB) against the 10 MB ceiling.
 
 ### Site invariants
 
@@ -607,20 +699,32 @@ File count unchanged at 101. Headroom 2,513,905 bytes.
    exclusion guard and the search-scope guard both still pass.
 3. **Vitest glob — unchanged.** `vitest.config.mjs` untouched; the run collected
    11 files, all under this worktree's `tests/unit/`.
-4. **Playwright — HOLDS.** The new F-1 guard resolves against the same
-   `webServer`-managed preview as the rest of the suite; it sets only
-   `userAgent` and `viewport` via `test.use`, adding no path assumption.
+4. **Playwright — HOLDS.** Both new guards resolve against the same
+   `webServer`-managed preview as the rest of the suite. The F-1 guard sets only
+   `userAgent` and `viewport` via `test.use`, and the F-3 guard navigates with
+   relative paths through `baseURL` and derives its cache probes from
+   `getBase()` — neither adds a path assumption.
 
 ### Anything in the validator's report that turned out wrong
 
 Nothing. Every claim I acted on reproduced: F-1's mechanism and its verified fix
 values (`btnDisplay: "none"`, `btnBox: {0,0}`, no `!important` needed), F-2's
-exact assertion message, and F-4's deadness. This is the second stage in a row
-whose report survived independent reproduction intact.
+exact assertion message, F-3's header/footer contradiction, and F-4's deadness.
+This is the second stage in a row whose report survived independent
+reproduction intact.
+
+One nuance the validator's F-3 write-up understates: it describes the chip as
+"an event-status chip, not a connectivity indicator", but nothing in the repo
+ever said which it was — the only evidence is a design-kit specimen line. The
+observation that the two contradict each other was correct; the attribution of
+intent was an inference, and the captain resolved it the other way.
 
 ### Not done
 
-- F-3 awaits the first officer's choice of wording.
-- Nothing else in the branch was touched. No cleanup pass was taken.
+- Nothing else in the branch was touched. No cleanup pass was taken. The
+  design-kits header specimen's stale `label="ONLINE"` is flagged under F-3 and
+  deliberately left.
+- The pre-existing 7 px horizontal overflow at 390 px (from `nav`) was measured,
+  confirmed unrelated to this round, and left alone.
 - Branch is local: not merged, not pushed. The captain decides how it lands,
   because merging deploys to production.
