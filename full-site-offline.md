@@ -7,7 +7,7 @@ started:
 completed:
 verdict:
 score: 0.8
-worktree: .worktrees/full-site-offline
+worktree: .worktrees/install-affordance
 issue:
 pr:
 mod-block:
@@ -464,3 +464,163 @@ One fix, F-1, serving AC-I1: hide `[data-install-btn]` when its `hidden`
 attribute is set. Nothing else in this branch needs to change. F-2 and F-3 are
 declines with promotion conditions recorded and must not be fixed as part of
 this correction round.
+
+## Correction round 1 (2026-07-25)
+
+Branch `fix/install-affordance` in worktree `.worktrees/install-affordance`,
+cut from `origin/main` at `1a2962e` — the feature is already merged and live, so
+this round corrects production, not an open branch. Three commits; F-3 escalated
+and not yet committed.
+
+**Captain override.** The validator declined F-2 and F-3 with promotion
+conditions and wrote that they "must not be fixed as part of this correction
+round". The captain overrode that and asked for all four. This is recorded so
+the dispositions do not read as an ensign quietly ignoring them: both declines
+were correct calls on the validator's part; the captain chose to do more than
+the gate required. No acceptance criterion was narrowed or weakened by the
+override.
+
+### F-1 — MATERIAL, serves AC-I1 — FIXED (`8463339`)
+
+`src/components/InstallHint.astro` style block gained
+`.install-hint [hidden] { display: none; }`, alongside the container rule the
+author had already written for the same hazard.
+
+Test-first. Added a Playwright guard to `tests/e2e/offline.spec.ts` — an
+iPhone user-agent context at 390 px asserting the manual instructions are
+visible and `[data-install-btn]` is not. Watched it fail on the unfixed build,
+for the right reason:
+
+```
+Error: expect(locator).toBeHidden() failed
+Locator:  locator('[data-install-btn]')
+Expected: hidden
+Received: visible
+  14 x locator resolved to <button hidden="" type="button" data-install-btn=""
+       data-astro-cid-ncwmmf27="" class="btn btn-secondary btn-sm"> 安裝離線版網站 </button>
+     - unexpected value "visible"
+```
+
+The button carrying `hidden=""` while resolving as visible is precisely the
+defect. After the CSS fix the same test passes.
+
+Live re-probe, reproduced independently rather than assumed — Playwright
+`devices["iPhone 13"]` context against `npm run preview`, real page load of `/`:
+
+```
+beforeinstallpromptFired: false
+rootHiddenAttr: false    rootDisplay: "flex"
+btnHiddenAttr: true      btnDisplay: "none"    btnBox: { w: 0, h: 0 }
+iosHiddenAttr: false     iosDisplay: "block"   iosBox: { w: 342, h: 41 }
+```
+
+Matches the validator's verified candidate exactly: `btnDisplay: "none"`,
+`btnBox: {0,0}`, and the iOS instructions take the full row (342 px of the
+397 px reported inner width, two lines). Specificity was sufficient without
+`!important`, as the validator said.
+
+### F-2 — declined by the validator, fixed under captain override (`d29f504`)
+
+`tests/unit/precache-scope.test.mjs` now imports `getBase()` from
+`scripts/lib/deploy-base.mjs` — the same import its sibling
+`manifest-guards.test.mjs` already uses — and asserts
+`expect(urls).toContain(getBase())` instead of a hardcoded `"/"`.
+
+Reproduced the failure first. Set `const BASE = "/digiresi.g0v.tw/"` in
+`astro.config.mjs`, rebuilt clean, ran with `SITE_BASE=/digiresi.g0v.tw/`:
+
+```
+FAIL tests/unit/precache-scope.test.mjs > service worker precache scope >
+     precaches every visitor-facing portal route
+AssertionError: expected [ 'handbook/', ...(101) ] to include '/'
+  26|     expect(urls).toContain("/");
+```
+
+Byte-identical to the validator's reported reproduction. After the fix, the
+same subpath build leaves exactly one failure in the whole unit suite —
+`deployment.test.mjs > keeps Astro's browser base at the domain root`, which
+deliberately pins `const BASE = "/";` and is *supposed* to fail when the config
+is edited. That is the guard working, not a regression.
+
+**`BASE` restored to `"/"` and rebuilt** before anything was committed;
+`git diff astro.config.mjs` is empty and the full unit suite is green at
+`BASE = "/"`. Site invariant 1 is intact.
+
+### F-3 — ESCALATED, not committed
+
+The header chip relabel was escalated to the first officer rather than decided,
+per the dispatch's explicit instruction to escalate if no relabel is clearly
+right. Two facts found while investigating, both load-bearing:
+
+- **`SiteHeader` is entirely lang-unaware.** `BaseLayout.astro:58` renders
+  `<SiteHeader />` with no props while line 62 renders `<SiteFooter lang={lang} />`.
+  Every header string is already bilingual-or-zh on `lang="en"` pages: the nav
+  reads `首頁 HOME` / `時程 SCHEDULE`, and the register button is bare `報名` on
+  `/en/` and `/projects/`. So a per-language header string is not a minimal
+  relabel — it requires threading `lang` into the header and giving the whole
+  header a language. A bilingual label matches the header's existing voice and
+  needs no plumbing.
+- **The chip's intent is under-specified in the record.** The only design
+  evidence is the design-kits plan's website specimen
+  (`docs/superpowers/plans/2026-07-20-design-kits.md:1849`):
+  `STATUS · ONLINE · [ DAY 0 ] · T-42 DAYS · 2026.10.24 SAT`. "ONLINE" is
+  terminal-aesthetic system/event chrome beside the event countdown. Nothing
+  states whether it is about the project, the event, or is decoration — which is
+  the fork that made this escalate rather than decide.
+
+Options put to the first officer, all one line at `SiteHeader.astro:36`:
+**A** `label="專案進行中 ACTIVE"` (recommended — bilingual, cannot be read as
+connectivity, claim does not go stale); **B** `label="ACTIVE"` (smallest copy
+delta, zero layout risk, says less); **C** `label="活動進行中 EVENT LIVE"`
+(closest to the specimen's framing, but a static chip claiming a live event is
+untrue most of the year, and making it dynamic is the new behaviour the dispatch
+forbade).
+
+### F-4 — observation, fixed under captain override (`7872b6d`)
+
+Removed `.offline-row:empty { display: none; }` from `SiteFooter.astro`.
+Confirmed dead before removing rather than assuming: parsed all 34 emitted HTML
+files in `dist/` and found `.offline-row` present in 34 and empty in 0. The
+selector could not match, so removal cannot change rendering. The validator's
+observation was correct.
+
+### Verification (real output, clean build, after all three commits)
+
+| Command | Exit | Result |
+|---|---|---|
+| `rm -rf dist && npm run build` | 0 | `precache  102 entries (7785.01 KiB)` |
+| `npm run test` | 0 | Test Files 11 passed (11) / Tests 67 passed, 2 skipped (69) |
+| `npm run test:e2e` | 0 | 35 passed (8.1s) — 34 before, plus the new F-1 guard |
+| `npm run check:budget` | 0 | `TOTAL 101 files, 7971855 bytes`; `PASS: <= 10485760` |
+| `npm run check:links` | 0 | `PASS: 0 broken internal links (763 internal refs across 34 HTML files)` |
+
+Precache total moved 7,971,839 → 7,971,855 bytes (+16, the added CSS rule).
+File count unchanged at 101. Headroom 2,513,905 bytes.
+
+### Site invariants
+
+1. **Base path — HOLDS, and F-2 improved it.** `astro.config.mjs` is back at
+   `const BASE = "/";` (verified by an empty `git diff` on that file, not by
+   reading it), and the one base-unaware file the validator found is now
+   base-aware.
+2. **Precache / search index — unchanged.** No glob touched; the design-kits
+   exclusion guard and the search-scope guard both still pass.
+3. **Vitest glob — unchanged.** `vitest.config.mjs` untouched; the run collected
+   11 files, all under this worktree's `tests/unit/`.
+4. **Playwright — HOLDS.** The new F-1 guard resolves against the same
+   `webServer`-managed preview as the rest of the suite; it sets only
+   `userAgent` and `viewport` via `test.use`, adding no path assumption.
+
+### Anything in the validator's report that turned out wrong
+
+Nothing. Every claim I acted on reproduced: F-1's mechanism and its verified fix
+values (`btnDisplay: "none"`, `btnBox: {0,0}`, no `!important` needed), F-2's
+exact assertion message, and F-4's deadness. This is the second stage in a row
+whose report survived independent reproduction intact.
+
+### Not done
+
+- F-3 awaits the first officer's choice of wording.
+- Nothing else in the branch was touched. No cleanup pass was taken.
+- Branch is local: not merged, not pushed. The captain decides how it lands,
+  because merging deploys to production.
