@@ -75,9 +75,13 @@ for (const route of PORTAL_ROUTES) {
 test("uncached portal route falls back to the offline page", async ({ page, context }) => {
   await warmPrecache(page);
   await context.setOffline(true);
-  // /schedule/ is portal zone: network-first, never precached, never visited
-  // in this context — the service worker must serve the /offline/ fallback.
-  await page.goto("schedule/");
+  // /design-kits/ is the contributor-facing specimen tree: deliberately kept
+  // out of the precache, so it stays network-first and, offline and unvisited,
+  // must get the /offline/ fallback. This test used to drive /schedule/, which
+  // is precached as of this feature — retargeted rather than deleted, because
+  // it is the only coverage of the fallback path, and not relaxed, because a
+  // test that can no longer fail is not a check.
+  await page.goto("design-kits/");
   await expect(page.getByText("目前離線").first()).toBeVisible();
 });
 
