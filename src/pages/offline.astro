@@ -3,19 +3,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
 import { withBase } from "../lib/base";
 ---
-<BaseLayout title="OFFLINE — DigiResiThon" description="目前離線。手冊仍可離線使用。">
+<BaseLayout title="OFFLINE — DigiResiThon" description="目前離線。網站已存在裝置上，只有設計元件庫需要連線。">
   <div class="offline-page">
     <TerminalBlock
       title="digiresithon@tw:~"
       lines={[
         { prompt: "$", text: "curl https://digiresi.g0v.tw" },
         { text: "connection failed — OFFLINE", tone: "red" },
-        { text: "目前離線，這一頁還沒被快取。", tone: "dim" },
-        { text: "手冊仍可離線使用：", tone: "green" },
+        { text: "目前離線。這一頁是設計元件庫，需要連線才看得到。", tone: "dim" },
+        { text: "網站其餘部分都已存在裝置上：首頁、關於、時程、專案、EN、手冊全文。", tone: "green" },
       ]}
       cursor={true}
     />
-    <a class="btn btn-primary btn-lg" href={withBase("/handbook/")}>開啟手冊</a>
+    <div class="offline-links">
+      <a class="btn btn-primary btn-lg" href={withBase("/handbook/")}>開啟手冊</a>
+      <a class="btn btn-secondary btn-lg" href={withBase("/")}>回首頁</a>
+    </div>
     <p class="offline-note">回到線上之後，重新整理即可載入原本要看的頁面。</p>
   </div>
 </BaseLayout>
@@ -29,6 +32,11 @@ import { withBase } from "../lib/base";
     flex-direction: column;
     align-items: flex-start;
     gap: var(--sp-5);
+  }
+  .offline-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
   }
   .offline-note {
     font-family: var(--font-mono);
