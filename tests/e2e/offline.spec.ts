@@ -52,6 +52,26 @@ test("the landing page renders offline", async ({ page, context }) => {
   await expect(page).toHaveTitle(/數位韌性松 DigiResiThon/);
 });
 
+// Each assertion names copy that only this route carries. A bare "an h1 is
+// visible" check would not do — and in fact the /offline/ fallback has no h1 at
+// all, so such a check would pass for a different reason than the one claimed.
+const PORTAL_ROUTES: Array<{ path: string; text: string; title: RegExp }> = [
+  { path: "about/", text: "IG 不能動", title: /關於｜數位韌性松/ },
+  { path: "schedule/", text: "OFFLINE SURVIVAL KIT", title: /時程｜數位韌性松/ },
+  { path: "projects/", text: "MESHBOX", title: /Projects — DigiResiThon/ },
+  { path: "en/", text: "WHEN THE NET", title: /Digital Resilience Hackathon/ },
+];
+
+for (const route of PORTAL_ROUTES) {
+  test(`/${route.path} renders offline`, async ({ page, context }) => {
+    await warmPrecache(page, [`${BASE}${route.path}`]);
+    await context.setOffline(true);
+    await page.goto(route.path);
+    await expect(page.getByText(route.text).first()).toBeVisible();
+    await expect(page).toHaveTitle(route.title);
+  });
+}
+
 test("uncached portal route falls back to the offline page", async ({ page, context }) => {
   await warmPrecache(page);
   await context.setOffline(true);
