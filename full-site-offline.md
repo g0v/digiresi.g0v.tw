@@ -1,13 +1,13 @@
 ---
 id: ctgh94xpjy379xeehs4p1kac
 title: Full-site offline PWA
-status: implementation
+status: done
 source: "captain request"
 started:
-completed:
-verdict:
+completed: 2026-07-25T13:57:58Z
+verdict: PASSED
 score: 0.8
-worktree: .worktrees/install-affordance
+worktree:
 issue:
 pr:
 mod-block:
@@ -932,3 +932,50 @@ never verified that it still *shows* the button on a browser that can install.
 It does — I checked — but that half was taken on faith, and a `display: none`
 rule with one character more specificity than intended would have shipped a site
 where nobody can install at all, with every test still green.
+
+## Terminal note — how this reached `done`
+
+`status: done`, `verdict: PASSED`, `completed: 2026-07-25T13:57:58Z`, set with
+`--force`. The `pr` field is empty and stays empty. Recorded here so a future
+reader does not read that emptiness as data loss.
+
+The `pr-merge` mod refused the terminal transition:
+
+```
+Error: entity full-site-offline cannot advance to terminal — workflow has merge
+hook(s) [pr-merge] that have not run (pr field is empty and mod-block is empty).
+```
+
+The guard was correct. This workflow's `done` means "merged via a real PR",
+and this entity never had one. Both merges went direct to `main` — `1a2962e`
+(the feature) and `22aed8b` (correction round 1) — at the captain's explicit
+instruction, ahead of a live demo. `.github/workflows/ci.yml` runs on
+`pull_request` only, so neither merge ran CI on the remote; every check cited in
+this record was run locally.
+
+The captain chose `--force` over the alternatives: opening a retrospective PR
+would have been empty, since everything was already on `main`, and would have
+recorded a review that never happened; leaving the entity at `implementation`
+would have been wrong in the more damaging direction, since the work is shipped,
+live, and passed re-validation.
+
+So the empty `pr` field is the durable marker: this is the entity that shipped
+without PR review. Everything else in this record — the REJECTED verdict, the
+live iOS defect that verdict caught, the captain override of two declines, the
+mid-round reversal of F-3, and the re-validation PASS — is above.
+
+Two open items survive this entity and were deliberately not fixed:
+
+- `src/pages/design-kits/website.astro` hardcodes `<StatusDot status="online"
+  label="ONLINE" />` in its header specimen, so it no longer mirrors the real
+  header's bilingual dynamic chip. Out of scope for a correction round.
+- A 7 px horizontal overflow at 390 px (`scrollWidth` 397 vs 390, from
+  `nav`/`.nav-link`), demonstrated pre-existing by rebuilding with the
+  correction round's edits stashed.
+
+One latent trap, recorded by the re-validator as R-1: when the header chip flips
+state, the inline script rewrites `data-state` and the label but leaves the
+stale `status-dot--online` modifier class in place. It has no rendering effect
+today — every colour rule keys off `[data-state]` and nothing selects
+`.status-dot--*` — but a future selector or test reaching for
+`.status-dot--offline` will never find it.
