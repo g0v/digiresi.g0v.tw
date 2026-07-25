@@ -18,10 +18,12 @@ function manifestUrls() {
 describe.skipIf(!hasBuild)("service worker precache scope", () => {
   it("precaches every visitor-facing portal route", () => {
     const urls = manifestUrls();
-    // vite-pwa rewrites "X/index.html" to "X/"; the root may come out as "".
-    // Accept whichever form the build emits — Task 3's Playwright test is what
-    // proves the root actually resolves offline.
-    expect(urls.some((u) => u === "" || u === "index.html")).toBe(true);
+    // vite-pwa rewrites "X/index.html" to "X/". The root was predicted to come
+    // out as a degenerate empty key; it does not — the build emits "/", the one
+    // absolute key in an otherwise relative manifest. Asserted exactly so a
+    // change in that form is noticed. That it RESOLVES offline is proved
+    // separately by the Playwright test, not by this key's presence.
+    expect(urls).toContain("/");
     for (const route of ["about/", "schedule/", "projects/", "en/"]) {
       expect(urls).toContain(route);
     }
