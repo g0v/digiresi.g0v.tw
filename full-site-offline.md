@@ -1,13 +1,13 @@
 ---
 id: ctgh94xpjy379xeehs4p1kac
 title: Full-site offline PWA
-status: design
+status: implementation
 source: "captain request"
 started:
 completed:
 verdict:
 score: 0.8
-worktree:
+worktree: .worktrees/full-site-offline
 issue:
 pr:
 mod-block:
@@ -118,3 +118,94 @@ and "fix" it.
   shipped manifest has 97 entries; the budget counts 96.
 - vite-pwa rewrites `X/index.html` to `X/` in the manifest, so the root
   `dist/index.html` may emit a degenerate key. Given its own test-first task.
+
+## Implementation stage outcome (2026-07-25)
+
+Branch `feat/full-site-offline` in worktree `.worktrees/full-site-offline`,
+15 commits, all 14 plan tasks landed plus one unplanned material fix.
+
+### Verification (real output, clean build)
+
+| Command | Exit | Result |
+|---|---|---|
+| `npm run build` | 0 | clean, from `rm -rf dist` |
+| `npm run test` | 0 | 11 files, 67 passed, 2 skipped |
+| `npm run test:e2e` | 0 | 34 passed |
+| `npm run check:budget` | 0 | 101 files, 7,971,839 bytes <= 10,485,760 |
+| `npm run check:links` | 0 | 0 broken links, 763 refs across 34 HTML files |
+
+Precache delta: **+155,565 bytes** against a predicted +84,159. See
+"Budget divergence" below — it is explained, not unanticipated.
+
+### Site invariants
+
+1. **Base path** — verified by building with `BASE = "/digiresi.g0v.tw/"` and
+   reading the emitted `sw.js`: the root precache key becomes
+   `/digiresi.g0v.tw/`, `navigateFallback` becomes `/digiresi.g0v.tw/offline/`.
+   The root key tracks `BASE`; it is not a hardcoded `/`. Config restored.
+2. **Precache / search index** — portal IN precache (`precache-scope.test.mjs`),
+   OUT of the search index (`search-scope.test.mjs`); design-kits OUT of both.
+   The asymmetry is deliberate and now guarded in both directions.
+3. **Vitest glob** — `vitest.config.mjs` still excludes `.worktrees/**`; the run
+   from inside this worktree collected 11 files, none from sibling worktrees.
+4. **Playwright** — resolves `baseURL` and `webServer.url` from
+   `getBase()`; run against the preview server as configured.
+
+### What the plan got wrong
+
+- **AC-8 had no task and no existing coverage.** The spec's "existing/extended
+  Playwright coverage" for offline search was false — there was no search e2e
+  test at all. Added one.
+- **Offline handbook search never worked.** The new AC-8 test exposed a
+  pre-existing defect: Pagefind fetches `/pagefind/pagefind-entry.json?ts=`,
+  and workbox matches precache entries including the query string (its default
+  `ignoreURLParametersMatching` covers only `utm_*`/`fbclid`), so the request
+  missed the precache and offline search hung at 正在搜尋… forever. Fixed by
+  adding `/^ts$/`. AC-8's word "still" was false before this feature.
+- **The root precache key is not degenerate.** The predicted empty key does not
+  occur; the build emits `"/"` — the one absolute key in an otherwise relative
+  manifest. Task 3 needed no glob or workbox fix.
+- **`/offline/` has no `h1`.** AC-4's rationale ("a visible h1, which the
+  /offline/ fallback would also satisfy") is wrong in the other direction. The
+  tests assert route-specific copy regardless, so the AC is unaffected.
+- **The handbook index has no heading element at all**, so Task 6's escape test
+  asserts the page's own content and title instead of a heading role.
+- **Task 11 needed language-awareness the plan gave only to Task 10.** Task 9
+  put `OfflineStatus` on every page, including the two that declare `lang="en"`,
+  so a zh-only status string would have shipped onto `/en/` and `/projects/`.
+
+### Budget divergence
+
+Predicted +84,159 bytes; actual +155,565. The **file count matched the
+prediction exactly (101)** — nothing unanticipated is being precached. The
+extra 71,406 bytes is growth of already-precached HTML: Task 9 moved
+`OfflineStatus` and `InstallHint` into `SiteFooter`, so all 21 handbook pages
+plus `/offline/` now carry those inline scripts and copy attributes. The design
+measured only the newly added files, not the footer's cost to existing ones.
+Headroom remaining: 2,513,921 bytes (2.40 MB). The 10 MB ceiling is untouched.
+
+`check-budget.mjs` still under-measures by one file (`manifest.webmanifest`,
+97 shipped vs 101 counted globs + 1). Behaviour deliberately unchanged.
+
+### Feedback Cycles
+
+No review round was run at this stage, so no external findings were triaged.
+Two findings surfaced during self-review; both were classed **material** and
+fixed, because each breaks a declared acceptance criterion:
+
+- **Offline search broken by the `?ts=` cache-buster** — material, breaks AC-8
+  on a path every visitor reaches. Fixed in `2626721`.
+- **`OfflineStatus` would render zh-Hant copy on `lang="en"` pages** — material,
+  puts AC-I2 out of reach at the drive on `/en/` and `/projects/`. Fixed in
+  `dd5b44a`.
+
+No declines recorded. No acceptance criterion was narrowed. Nothing was
+escalated as needs-decision.
+
+### Left for validation
+
+- AC-I1, AC-I2, AC-I3 are interactive and were NOT judged here. The install and
+  status copy shipped as a defensible first draft, flagged for the captain's
+  call at the drive.
+- `start_url` remains `${BASE}handbook/`, now guarded by a test that fails if it
+  drifts.
