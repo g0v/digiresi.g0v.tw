@@ -1,15 +1,23 @@
 ---
+// `status` is the SERVER-RENDERED state. A caller that changes state at runtime
+// (SiteHeader, which reports live connectivity) rewrites `data-state` and the
+// label span rather than the modifier class — which is why the colours below key
+// off `data-state`, not off `.status-dot--*`. Every existing call site passes
+// only `status`/`label` and renders exactly as before; the extra attributes are
+// additive and the rest-spread is there so a caller can attach its own hooks
+// without this component knowing about them.
 interface Props {
   status: "online" | "degraded" | "offline";
   label?: string;
   blink?: boolean;
+  [key: `data-${string}`]: unknown;
 }
-const { status, label, blink } = Astro.props;
+const { status, label, blink, ...rest } = Astro.props;
 const doBlink = blink ?? status === "online";
 ---
-<span class={`status-dot status-dot--${status}`}>
+<span class={`status-dot status-dot--${status}`} data-state={status} {...rest}>
   <span class:list={["sd-dot", { "sd-blink": doBlink }]}></span>
-  {label ?? status}
+  <span data-sd-label>{label ?? status}</span>
 </span>
 <style>
   .status-dot {
@@ -28,8 +36,12 @@ const doBlink = blink ?? status === "online";
     height: 10px;
     flex: none;
   }
-  .status-dot--online .sd-dot { background: var(--status-online); }
-  .status-dot--degraded .sd-dot { background: var(--status-degraded); }
-  .status-dot--offline .sd-dot { background: var(--status-offline); }
+  .status-dot[data-state="online"] .sd-dot { background: var(--status-online); }
+  .status-dot[data-state="degraded"] .sd-dot { background: var(--status-degraded); }
+  .status-dot[data-state="offline"] .sd-dot { background: var(--status-offline); }
   .sd-blink { animation: drt-blink 1.2s steps(1) infinite; }
+  /* A blinking red dot reads as an alarm. The footer's offline dot is solid, so
+     a chip that flips to offline at runtime goes solid too, declaratively —
+     the caller's script only has to set data-state. */
+  .status-dot[data-state="offline"] .sd-blink { animation: none; }
 </style>

@@ -152,6 +152,30 @@ for (const path of ["en/", "projects/"]) {
   });
 }
 
+// AC-I1's wording stays interactive; what is checked here is the behavioural
+// fact underneath it — a browser that cannot install must not be offered a
+// one-tap install. On iOS `beforeinstallprompt` never fires, so the component
+// shows the share-sheet instructions instead; the button carries `hidden`, but
+// `.btn { display: inline-flex }` in global.css defeats the UA's
+// `[hidden] { display: none }` unless the component says so itself. A visible,
+// focusable button that cannot install is the overpromise AC-I1 forbids,
+// expressed through presentation rather than wording. Fails if
+// `.install-hint [hidden] { display: none; }` is dropped.
+const IPHONE_UA =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 " +
+  "(KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+
+test.describe("a browser that cannot install", () => {
+  test.use({ userAgent: IPHONE_UA, viewport: { width: 390, height: 844 } });
+
+  test("is shown the manual instructions and no install button", async ({ page }) => {
+    await page.goto("");
+    // The iOS branch has run: the container and the instructions are unhidden.
+    await expect(page.locator("[data-ios-hint]")).toBeVisible();
+    await expect(page.locator("[data-install-btn]")).toBeHidden();
+  });
+});
+
 // AC-I2's tone is the captain's call at the drive; what is checked here is the
 // behavioural claim underneath it — that the status is computed from the SITE
 // being cached (a portal probe, not a handbook-only probe) and that it names
@@ -170,6 +194,38 @@ test("offline status reports the site as saved and names the exception", async (
     "data-state",
     "offline"
   );
+});
+
+// The header chip used to render a static ONLINE, so while a visitor was
+// genuinely disconnected the header said ONLINE and the footer said OFFLINE on
+// the same screen. The chip now reports live connectivity and must AGREE with
+// the footer's status, which is asserted here in the same breath — the two
+// components disagreeing is the bug this replaces. The label is bilingual
+// because the header takes no `lang` prop (BaseLayout passes lang to the footer
+// only), so the same chip has to be right on zh-Hant and lang="en" pages alike;
+// the /en/ comparison below is what would catch a zh-only label shipping.
+test("the header status chip reports the real connection state", async ({ page, context }) => {
+  await warmPrecache(page, [BASE, `${BASE}en/`]);
+  const chip = page.locator(".site-header .status-dot");
+
+  await page.goto("");
+  await expect(chip).toHaveAttribute("data-state", "online");
+  await expect(chip).toContainText("ONLINE");
+
+  await context.setOffline(true);
+  await page.goto("");
+  await expect(chip).toContainText("OFFLINE");
+  await expect(chip).toHaveAttribute("data-state", "offline");
+  // Agrees with the footer instead of contradicting it.
+  await expect(page.locator("[data-offline-status] [data-dot]")).toHaveAttribute(
+    "data-state",
+    "offline"
+  );
+
+  const zhText = (await chip.textContent())?.trim();
+  await page.goto("en/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  expect((await chip.textContent())?.trim()).toBe(zhText);
 });
 
 // AC-8. Search is the handbook's whole point on disaster day, and it depends on

@@ -83,4 +83,10 @@ const copy = isEnglish
     color: var(--ink-2);
   }
   .install-hint[hidden] { display: none; }
+  /* Same hazard one level down: .btn { display: inline-flex } in global.css
+     overrides the UA's [hidden] { display: none }, so the button's own hidden
+     attribute does not hide it. Without this, iOS — where beforeinstallprompt
+     never fires — shows a dead install button next to the share-sheet
+     instructions, and Chromium leaves it on screen after a successful prompt. */
+  .install-hint [hidden] { display: none; }
 </style>

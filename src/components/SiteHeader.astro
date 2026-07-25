@@ -11,6 +11,17 @@ const nav = [
   { href: withBase("/projects/"), label: "PROJECTS" },
   { href: withBase("/design-kits/"), label: "DESIGN" },
 ];
+// The chip reports the visitor's live connection, so it agrees with the footer's
+// OfflineStatus instead of contradicting it. Labels are bilingual and NOT keyed
+// on lang: BaseLayout renders <SiteHeader /> with no props (only SiteFooter gets
+// lang), and every other header string is already bilingual-or-zh — 首頁 HOME,
+// and a bare 報名 on the lang="en" pages. Threading lang through the header to
+// translate two words would be a much larger change than this one.
+// Server-rendered state is `online`: navigator.onLine is client-only, and a
+// visitor who fetched this page over the network is online, so the common case
+// never flips. The offline case is corrected before first paint by the blocking
+// inline script below, following the theme-init pattern in BaseLayout.
+const net = { online: "連線中 ONLINE", offline: "離線 OFFLINE" };
 const pathname = Astro.url.pathname;
 const home = withBase("/");
 const isActive = (href: string) =>
@@ -33,11 +44,41 @@ const isActive = (href: string) =>
         >{n.label}</a>
       ))}
     </nav>
-    <StatusDot status="online" label="ONLINE" />
+    <StatusDot
+      status="online"
+      label={net.online}
+      data-net-status
+      data-copy-online={net.online}
+      data-copy-offline={net.offline}
+    />
     <ThemeToggle />
     <button class="btn btn-primary btn-sm" type="button" data-open-register>報名</button>
   </div>
 </header>
+<script is:inline>
+  // Blocking, like the theme init, and placed after the header so the element
+  // exists during parse: a visitor opening the site from the precache while
+  // disconnected must never see a frame of ONLINE. Same detection as the
+  // footer's OfflineStatus — navigator.onLine plus the online/offline events —
+  // so the two can never disagree about the state. The footer carries the
+  // sentence; this stays a chip. Copy rides on data-* attributes because an
+  // is:inline script cannot see component frontmatter.
+  (function () {
+    var chip = document.querySelector("[data-net-status]");
+    if (!chip) return;
+    var label = chip.querySelector("[data-sd-label]");
+    function apply() {
+      var online = navigator.onLine !== false;
+      chip.setAttribute("data-state", online ? "online" : "offline");
+      if (label) {
+        label.textContent = online ? chip.dataset.copyOnline : chip.dataset.copyOffline;
+      }
+    }
+    apply();
+    window.addEventListener("online", apply);
+    window.addEventListener("offline", apply);
+  })();
+</script>
 <RegisterDialog />
 <style>
   .site-header {
