@@ -152,6 +152,26 @@ for (const path of ["en/", "projects/"]) {
   });
 }
 
+// AC-I2's tone is the captain's call at the drive; what is checked here is the
+// behavioural claim underneath it — that the status is computed from the SITE
+// being cached (a portal probe, not a handbook-only probe) and that it names
+// the one exception. Fails if OfflineStatus goes back to probing /handbook/
+// alone, or stops mentioning design-kits.
+test("offline status reports the site as saved and names the exception", async ({
+  page,
+  context,
+}) => {
+  await warmPrecache(page, [BASE, `${BASE}handbook/`]);
+  await context.setOffline(true);
+  await page.goto("");
+  const msg = page.locator("[data-offline-status] [data-msg]");
+  await expect(msg).toContainText("設計元件庫");
+  await expect(page.locator("[data-offline-status] [data-dot]")).toHaveAttribute(
+    "data-state",
+    "offline"
+  );
+});
+
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
