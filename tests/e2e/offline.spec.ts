@@ -196,6 +196,38 @@ test("offline status reports the site as saved and names the exception", async (
   );
 });
 
+// The header chip used to render a static ONLINE, so while a visitor was
+// genuinely disconnected the header said ONLINE and the footer said OFFLINE on
+// the same screen. The chip now reports live connectivity and must AGREE with
+// the footer's status, which is asserted here in the same breath — the two
+// components disagreeing is the bug this replaces. The label is bilingual
+// because the header takes no `lang` prop (BaseLayout passes lang to the footer
+// only), so the same chip has to be right on zh-Hant and lang="en" pages alike;
+// the /en/ comparison below is what would catch a zh-only label shipping.
+test("the header status chip reports the real connection state", async ({ page, context }) => {
+  await warmPrecache(page, [BASE, `${BASE}en/`]);
+  const chip = page.locator(".site-header .status-dot");
+
+  await page.goto("");
+  await expect(chip).toHaveAttribute("data-state", "online");
+  await expect(chip).toContainText("ONLINE");
+
+  await context.setOffline(true);
+  await page.goto("");
+  await expect(chip).toContainText("OFFLINE");
+  await expect(chip).toHaveAttribute("data-state", "offline");
+  // Agrees with the footer instead of contradicting it.
+  await expect(page.locator("[data-offline-status] [data-dot]")).toHaveAttribute(
+    "data-state",
+    "offline"
+  );
+
+  const zhText = (await chip.textContent())?.trim();
+  await page.goto("en/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  expect((await chip.textContent())?.trim()).toBe(zhText);
+});
+
 // AC-8. Search is the handbook's whole point on disaster day, and it depends on
 // /pagefind/** being precached — which in turn depends on the Pagefind
 // integration running BEFORE @vite-pwa/astro's build hook in astro.config.mjs.
