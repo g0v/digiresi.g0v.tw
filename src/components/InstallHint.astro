@@ -1,11 +1,33 @@
 ---
+// Copy follows the page's DECLARED lang, threaded down from BaseLayout via
+// SiteFooter — not a /en/ path check. /projects/ is lang="en" as well, so a
+// path-prefix test would get it wrong.
+//
+// The saved scope is the site, not the handbook, so the strings name 網站 /
+// "site". design-kits is the one part still needing a connection; the
+// /offline/ page carries that detail rather than crowding it in here.
+interface Props {
+  lang?: string;
+}
+const { lang = "zh-Hant-TW" } = Astro.props;
+const isEnglish = lang.toLowerCase().startsWith("en");
+
+const copy = isEnglish
+  ? {
+      button: "Save this site offline",
+      ios: "iOS: Share menu in Safari, then Add to Home Screen, to keep this site offline",
+    }
+  : {
+      button: "安裝離線版網站",
+      ios: "iOS：用 Safari 的分享選單「加入主畫面」，整個網站即可離線使用",
+    };
 ---
 <div class="install-hint" data-install-hint hidden>
   <button class="btn btn-secondary btn-sm" type="button" data-install-btn hidden>
-    安裝離線手冊
+    {copy.button}
   </button>
   <span class="install-hint-ios" data-ios-hint hidden>
-    iOS：用 Safari 的分享選單「加入主畫面」，即可離線使用手冊
+    {copy.ios}
   </span>
 </div>
 

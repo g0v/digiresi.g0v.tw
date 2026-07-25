@@ -120,6 +120,38 @@ test("the install affordance is mounted exactly once on /handbook/", async ({ pa
   await expect(page.locator("[data-offline-status]")).toHaveCount(1);
 });
 
+// The install copy follows the page's DECLARED lang, not a /en/ path prefix —
+// /projects/ is lang="en" too. Asserted as a script-range property rather than
+// exact wording, so the captain can settle AC-I1's wording at the drive without
+// the test dictating it. Still falsifiable: it fails if a page renders the
+// wrong language's string, and if the zh copy goes back to promising 手冊.
+const CJK = /[㐀-鿿]/;
+
+for (const path of ["", "schedule/"]) {
+  test(`install copy is zh-Hant and site-shaped at /${path}`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant-TW");
+    for (const sel of ["[data-install-btn]", "[data-ios-hint]"]) {
+      const text = (await page.locator(sel).textContent()) ?? "";
+      expect(CJK.test(text)).toBe(true);
+      // The overpromise this feature exists to remove.
+      expect(text).not.toContain("手冊");
+    }
+  });
+}
+
+for (const path of ["en/", "projects/"]) {
+  test(`install copy is English at /${path}`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    for (const sel of ["[data-install-btn]", "[data-ios-hint]"]) {
+      const text = (await page.locator(sel).textContent()) ?? "";
+      expect(CJK.test(text)).toBe(false);
+      expect(text.trim().length).toBeGreaterThan(0);
+    }
+  });
+}
+
 test("blackout theme is the default", async ({ page }) => {
   // Fresh context (Playwright default per test): no stored drt-theme, no
   // data-theme attribute — the body must be blackout near-black #0c0c0b.
