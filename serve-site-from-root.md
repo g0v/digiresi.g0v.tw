@@ -2,7 +2,7 @@
 id: jyx931798m7m2zve0zj9nsm3
 title: Serve site from root path
 status: done
-source: commission seed (survey: PR #1)
+source: "commission seed (survey: PR #1)"
 started: 2026-07-19T07:36:50Z
 completed: 2026-07-20T05:22:32Z
 verdict: PASSED

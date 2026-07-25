@@ -2,7 +2,7 @@
 id: 9xrcmwbwyqr5pm98d2mdvqy2
 title: Deploy site at custom domain root
 status: done
-source: commission seed (survey: PR #2)
+source: "commission seed (survey: PR #2)"
 started: 2026-07-20T08:40:00Z
 completed: 2026-07-20T09:27:06Z
 verdict: PASSED
