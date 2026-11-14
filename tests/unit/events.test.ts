@@ -49,11 +49,11 @@ describe("featuredEvent", () => {
 });
 
 describe("loadEvents (reads src/data/events.yaml)", () => {
-  it("loads 16 rounds Th0n..Th15n, unique numbers, newest first", () => {
+  it("loads 18 rounds Th0n..Th17n, unique numbers, newest first", () => {
     const events = loadEvents();
-    expect(events).toHaveLength(16);
-    expect(events[0].number).toBe(15);
-    expect(new Set(events.map((e) => e.number)).size).toBe(16);
+    expect(events).toHaveLength(18);
+    expect(events[0].number).toBe(17);
+    expect(new Set(events.map((e) => e.number)).size).toBe(18);
     for (const e of events) {
       expect(e.url).toMatch(/^https:\/\/g0v\.hackmd\.io\//);
       if (e.date !== null) expect(e.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
