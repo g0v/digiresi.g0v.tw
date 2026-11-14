@@ -19,6 +19,8 @@ export interface EventDay {
 
 export interface EventEntry {
   number: number;
+  /** Set only on a rerun that shares its round number, e.g. "RE" → "Th16n RE". */
+  suffix?: string | null;
   name: string;
   date: string | null; // "YYYY-MM-DD" (quoted in YAML so it stays a string)
   venue: string | null;
@@ -35,6 +37,20 @@ export interface EventEntry {
 export function loadEvents(): EventEntry[] {
   const file = path.resolve(process.cwd(), "src/data/events.yaml");
   return yaml.load(fs.readFileSync(file, "utf8")) as EventEntry[];
+}
+
+/** Short round code shown in the archive: "Th15n", or "Th16n RE" for a rerun. */
+export function eventCode(e: EventEntry): string {
+  return e.suffix ? `Th${e.number}n ${e.suffix}` : `Th${e.number}n`;
+}
+
+/**
+ * Newest-first comparator: round number desc, then (for a rerun sharing the
+ * number) date desc, undated last.
+ */
+export function byNewest(a: EventEntry, b: EventEntry): number {
+  if (a.number !== b.number) return b.number - a.number;
+  return (b.date ?? "").localeCompare(a.date ?? "");
 }
 
 /** Earliest dated event with date >= todayISO ("YYYY-MM-DD"), else null. */
@@ -55,6 +71,6 @@ export function featuredEvent(events: EventEntry[], todayISO: string): EventEntr
   const up = upcomingEvent(events, todayISO);
   if (up) return up;
   const past = events.filter((e) => typeof e.date === "string" && e.date < todayISO);
-  past.sort((a, b) => b.number - a.number);
+  past.sort(byNewest);
   return past[0] ?? null;
 }

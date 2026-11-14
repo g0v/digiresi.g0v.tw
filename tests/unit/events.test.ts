@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  byNewest,
+  eventCode,
   featuredEvent,
   loadEvents,
   upcomingEvent,
@@ -43,17 +45,37 @@ describe("featuredEvent", () => {
     expect(featuredEvent(events, "2026-07-17")?.number).toBe(15);
   });
 
+  it("breaks a same-number tie (a rerun) by the later date", () => {
+    const rerun = { ...ev(16, "2026-09-13"), suffix: "RE" };
+    const events = [ev(16, "2026-07-25"), rerun, ev(15, "2026-06-21")];
+    expect(featuredEvent(events, "2026-10-01")).toBe(rerun);
+  });
+
   it("returns null for an empty list", () => {
     expect(featuredEvent([], "2026-07-17")).toBeNull();
   });
 });
 
+describe("byNewest / eventCode", () => {
+  it("orders by number desc, then date desc within a number", () => {
+    const rerun = { ...ev(16, "2026-09-13"), suffix: "RE" };
+    const sorted = [ev(15, "2026-06-21"), ev(16, "2026-07-25"), rerun].sort(byNewest);
+    expect(sorted.map(eventCode)).toEqual(["Th16n RE", "Th16n", "Th15n"]);
+  });
+
+  it("renders the code without a suffix when none is set", () => {
+    expect(eventCode(ev(3, null))).toBe("Th3n");
+    expect(eventCode({ ...ev(3, null), suffix: null })).toBe("Th3n");
+  });
+});
+
 describe("loadEvents (reads src/data/events.yaml)", () => {
-  it("loads 18 rounds Th0n..Th17n, unique numbers, newest first", () => {
+  it("loads 19 rounds Th0n..Th17n (incl. Th16n RE), unique codes, newest first", () => {
     const events = loadEvents();
-    expect(events).toHaveLength(18);
+    expect(events).toHaveLength(19);
     expect(events[0].number).toBe(17);
-    expect(new Set(events.map((e) => e.number)).size).toBe(18);
+    expect(new Set(events.map(eventCode)).size).toBe(19);
+    expect([...events].sort(byNewest)).toEqual(events);
     for (const e of events) {
       expect(e.url).toMatch(/^https:\/\/g0v\.hackmd\.io\//);
       if (e.date !== null) expect(e.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -64,6 +86,8 @@ describe("loadEvents (reads src/data/events.yaml)", () => {
     const th15 = loadEvents().find((e) => e.number === 15)!;
     expect(th15.date).toBe("2026-06-21");
     expect(th15.days).toBeNull();
+    const re = loadEvents().find((e) => eventCode(e) === "Th16n RE")!;
+    expect(re.date).toBe("2026-09-13");
     const th0 = loadEvents().find((e) => e.number === 0)!;
     expect(th0.days).toHaveLength(1);
     expect(th0.days![0].sessions[0]).toEqual({

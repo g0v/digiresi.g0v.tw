@@ -9,6 +9,8 @@
 # - registerUrl 為各場 KKTIX 頁（歷史場次頁面仍在，是否開放由程式依日期判斷）。
 # - Th16n 共筆「時間地點」段為上一場複製貼上未改（寫 Mar 8 / g0v 台北社群空間），
 #   以 KKTIX 頁的日期與「更新」公告（併入屯屯黑客松、改在屯屯書店）為準。
+# - 同一場次編號重辦時（如 Th16n RE），沿用同一個 number，另加 suffix（如 RE）
+#   區分；沒有重辦的場次省略 suffix。同 number 依日期新到舊排。
 - number: 17
   name: DigiResiTh17n 第拾柒次數位韌性松
   date: "2026-11-29"
@@ -16,6 +18,15 @@
   summary: 邀請自 2022 年起長居基輔的台灣記者曹雨昕，分享烏克蘭戰時生活的一週樣貌。
   url: https://g0v.hackmd.io/ZY-JjtljRdqsunoqRmztCg
   registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith17n
+  days: null
+- number: 16
+  suffix: RE
+  name: DigiResiTh16n 第拾陸次數位韌性松（RE）
+  date: "2026-09-13"
+  venue: g0v 台北社群空間
+  summary: 7/25 併入大松後的重辦場，分享 OCF 海纜入口網站與 App 韌性檢測、手機不能上網演習的 OONI 觀測與 Meshtastic 實驗心得。
+  url: https://g0v.hackmd.io/umNnSGqAT5mfc_gfAaBH-g
+  registerUrl: https://g0v-digiresi.kktix.cc/events/digiresith16n-re
   days: null
 - number: 16
   name: DigiResiTh16n 第拾陸次數位韌性松

@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
-import { featuredEvent, loadEvents } from "../lib/events";
+import { byNewest, eventCode, featuredEvent, loadEvents } from "../lib/events";
 import type { SessionTag } from "../lib/events";
 
 const events = loadEvents();
@@ -12,7 +12,7 @@ const days = featured?.days ?? null;
 const hasDrill = Boolean(
   days?.some((d) => d.sessions.some((s) => s.tag === "DRILL")),
 );
-const archive = [...events].sort((a, b) => b.number - a.number);
+const archive = [...events].sort(byNewest);
 
 // zh-TW packing list, ported from the kit's OFFLINE SURVIVAL KIT.
 const kit = [
@@ -25,9 +25,10 @@ const kit = [
 
 const tagDot = (tag: SessionTag) =>
   tag === "DRILL" ? "dot--offline" : tag === "HACK" ? "dot--online" : "";
-// Archive rows show "Th15n 第拾伍次" style short names.
+// Archive rows show "Th15n 第拾伍次" style short names; a rerun's "（RE）"
+// is dropped too, since eventCode() already shows it.
 const shortName = (name: string) =>
-  name.replace(/^DigiResiTh\d+n\s*/, "").replace(/數位韌性松$/, "");
+  name.replace(/^DigiResiTh\d+n\s*/, "").replace(/數位韌性松(（[^）]*）)?$/, "");
 ---
 <BaseLayout
   title="時程｜數位韌性松 DigiResiThon"
@@ -126,7 +127,7 @@ const shortName = (name: string) =>
       {archive.map((e, i) => (
         <div class="ar-row" role="listitem">
           <span class="ar-tree">{i === archive.length - 1 ? "└─" : "├─"}</span>
-          <span class="ar-code">Th{e.number}n</span>
+          <span class="ar-code">{eventCode(e)}</span>
           <span class="ar-name">{shortName(e.name)}</span>
           <span class="ar-meta">
             {e.date ? e.date.replaceAll("-", ".") : "日期未定"}
