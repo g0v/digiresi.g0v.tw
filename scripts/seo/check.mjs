@@ -12,7 +12,9 @@ export const ORIGIN = "https://digiresi.g0v.tw";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_MAX_BYTES = 150 * 1024;
 export const DESCRIPTION_RANGE = [70, 160];
-export const NOINDEX_PATHS = ["/offline/"];
+export const NOINDEX_PATHS = ["/offline/", "/404.html"];
+/** Pages with no URL of their own (GitHub Pages' 404.html): no canonical, no og:url. */
+export const NO_CANONICAL_PATHS = ["/404.html"];
 
 /** Width/height from a PNG's IHDR chunk, or null if not a PNG. */
 export function pngSize(buf) {
@@ -38,11 +40,16 @@ export function checkPages(pages, dist, { eventCount } = {}) {
       const n = [...p.description].length;
       if (n < DESCRIPTION_RANGE[0] || n > DESCRIPTION_RANGE[1]) fail(p, `description is ${n} characters (want 70–160)`);
     }
-    if (p.canonical !== self) fail(p, `canonical is ${p.canonical ?? "missing"} (want ${self})`);
+    const noCanonical = NO_CANONICAL_PATHS.includes(p.path);
+    if (noCanonical) {
+      if (p.canonical) fail(p, `has canonical ${p.canonical} (want none)`);
+      if (p.og["og:url"]) fail(p, `has og:url ${p.og["og:url"]} (want none)`);
+    } else if (p.canonical !== self) fail(p, `canonical is ${p.canonical ?? "missing"} (want ${self})`);
     if (!p.robots) fail(p, "missing meta robots");
     const noindex = /noindex/.test(p.robots ?? "");
     if (NOINDEX_PATHS.includes(p.path) !== noindex) fail(p, `robots "${p.robots}" (noindex expected only on ${NOINDEX_PATHS.join(", ")})`);
     for (const key of ["og:title", "og:description", "og:url", "og:image", "og:image:alt", "og:site_name", "og:type", "og:locale"]) {
+      if (key === "og:url" && noCanonical) continue;
       if (!p.og[key]) fail(p, `missing ${key}`);
     }
     if (p.og["og:url"] && p.og["og:url"] !== self) fail(p, `og:url ${p.og["og:url"]} differs from the canonical`);

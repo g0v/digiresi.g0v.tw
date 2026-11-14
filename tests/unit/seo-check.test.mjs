@@ -198,6 +198,29 @@ describe("site files check", () => {
   });
 });
 
+describe("404 page", () => {
+  const dist = tmpDist({ "og/a.png": png(1200, 630) });
+  // GitHub Pages' 404.html has no URL of its own: noindex, no canonical, no og:url.
+  const ogWithoutUrl = { ...page("/404.html").og };
+  delete ogWithoutUrl["og:url"];
+  const notFound = (overrides = {}) =>
+    page("/404.html", { robots: "noindex, follow", canonical: null, og: ogWithoutUrl, jsonldData: [], ...overrides });
+
+  it("passes a noindex 404 page without canonical or og:url", () => {
+    expect(checkPages([notFound()], dist)).toEqual([]);
+  });
+
+  it("flags a canonical on the 404 page", () => {
+    const problems = checkPages([notFound({ canonical: `${ORIGIN}/404.html` })], dist).join("\n");
+    expect(problems).toMatch(/\/404\.html: has canonical/);
+  });
+
+  it("requires noindex on the 404 page", () => {
+    const problems = checkPages([notFound({ robots: "index, follow" })], dist).join("\n");
+    expect(problems).toMatch(/\/404\.html: robots .*noindex expected/);
+  });
+});
+
 const hasBuild = fs.existsSync("dist/index.html");
 describe.skipIf(!hasBuild)("built site", () => {
   it("passes the SEO check", () => {

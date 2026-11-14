@@ -23,6 +23,8 @@ interface Props {
   ogType?: "website" | "article";
   alternates?: Alternate[];
   noindex?: boolean;
+  /** false omits the canonical link and og:url (404 page). */
+  canonical?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   section?: string;
   modified?: string;

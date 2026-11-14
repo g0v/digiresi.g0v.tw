@@ -32,6 +32,8 @@ export interface Props {
   /** Translations of this page (the page itself is added automatically). */
   alternates?: Alternate[];
   noindex?: boolean;
+  /** false: no canonical link and no og:url (the 404 page has no URL of its own). */
+  canonical?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** article:section (handbook section name). */
   section?: string;
@@ -49,6 +51,7 @@ const {
   lang = "zh",
   alternates = [],
   noindex = false,
+  canonical: emitCanonical = true,
   jsonLd,
   section,
   modified,
@@ -78,14 +81,14 @@ const serialize = (o: unknown) => JSON.stringify(o).replace(/</g, "\\u003c");
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
+{emitCanonical && <link rel="canonical" href={canonical} />}
 <meta name="robots" content={robots} />
 <link rel="sitemap" type="application/xml" href={absoluteUrl("/sitemap-index.xml")} />
 {hreflangs.map((h) => <link rel="alternate" hreflang={h.hreflang} href={h.href} />)}
 {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 <meta property="og:site_name" content={SITE_NAME[lang]} />
 <meta property="og:type" content={type} />
-<meta property="og:url" content={canonical} />
+{emitCanonical && <meta property="og:url" content={canonical} />}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:locale" content={ogLocale(lang)} />

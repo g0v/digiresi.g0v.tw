@@ -19,6 +19,8 @@ export interface PageSeo {
   og: OgCard;
   alternates?: { lang: Lang; path: string }[];
   noindex?: boolean;
+  /** false: no <link rel="canonical"> and no og:url (the 404 page). */
+  canonical?: false;
 }
 
 const dk = (name: string, description: string): PageSeo => ({
@@ -73,6 +75,17 @@ export const PAGES: Record<string, PageSeo> = {
     lang: "zh",
     og: { heading: "目前離線", kicker: "OFFLINE" },
     noindex: true,
+  },
+  // GitHub Pages serves dist/404.html for every missing URL, so the page has
+  // no address of its own: noindex, no canonical, not in the sitemap or llms.
+  "/404/": {
+    title: composeTitle("找不到這一頁", "zh"),
+    description:
+      "這個網址在數位韌性松網站上找不到，可能是連結打錯，或頁面已經搬家。可以回首頁看下一場活動，翻數位韌性手冊查斷網準備與通訊指南，或到時程頁找歷次小松的共筆。",
+    lang: "zh",
+    og: { heading: "找不到這一頁", kicker: "404 NOT FOUND" },
+    noindex: true,
+    canonical: false,
   },
   "/handbook/": {
     title: composeTitle("數位韌性手冊：斷網也能查的防災與通訊指南", "zh"),
@@ -138,6 +151,7 @@ export function seoProps(path: string) {
     ogImageAlt: ogAlt(s.og, s.lang),
     alternates: s.alternates,
     noindex: s.noindex,
+    canonical: s.canonical ?? true,
     jsonLd: pageJsonLd(path, s),
   };
 }

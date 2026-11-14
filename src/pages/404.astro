@@ -1,0 +1,56 @@
+---
+// GitHub Pages serves dist/404.html for any URL it can't find, at any depth,
+// so every link and asset here must be site-absolute (withBase), never relative.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { seoProps } from "../lib/seo/pages";
+import TerminalBlock from "../components/TerminalBlock.astro";
+import { withBase } from "../lib/base";
+---
+<BaseLayout {...seoProps("/404/")}>
+  <div class="notfound-page">
+    <h1 class="pixel-h-tc pixel-h-tc--2 notfound-title">找不到這一頁</h1>
+    <TerminalBlock
+      title="digiresithon@tw:~"
+      lines={[
+        { prompt: "$", text: "curl -I https://digiresi.g0v.tw/…" },
+        { text: "HTTP/1.1 404 Not Found", tone: "red" },
+        { text: "這個網址沒有頁面，可能是連結打錯，或頁面已經搬家。", tone: "dim" },
+        { text: "從下面的連結回到網站。", tone: "green" },
+      ]}
+      cursor={true}
+    />
+    <p class="notfound-en" lang="en">Page not found. Try the home page, the handbook or the schedule below.</p>
+    <div class="notfound-links">
+      <a class="btn btn-primary btn-lg" href={withBase("/")}>回首頁</a>
+      <a class="btn btn-secondary btn-lg" href={withBase("/handbook/")}>數位韌性手冊</a>
+      <a class="btn btn-secondary btn-lg" href={withBase("/schedule/")}>活動時程</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .notfound-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 64px var(--gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-5);
+  }
+  .notfound-title {
+    margin: 0;
+    color: var(--ink);
+  }
+  .notfound-en {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+    margin: 0;
+  }
+  .notfound-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+</style>
