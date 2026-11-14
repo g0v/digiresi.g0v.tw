@@ -2,7 +2,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { checkPages, checkSiteFiles, pngSize } from "../../scripts/seo/check.mjs";
+import yaml from "js-yaml";
+import { checkFeed, checkPages, checkSiteFiles, pngSize, xmlWellFormed } from "../../scripts/seo/check.mjs";
 import { validateJsonLd } from "../../scripts/seo/jsonld.mjs";
 import { inspectDist } from "../../scripts/seo/lib.mjs";
 
@@ -56,6 +57,7 @@ function page(p, overrides = {}) {
     },
     twitter: { "twitter:card": "summary_large_image" },
     hreflang: [],
+    feeds: [`${ORIGIN}/schedule/feed.xml`],
     h1: 1,
     ...overrides,
   };
@@ -221,6 +223,77 @@ describe("404 page", () => {
   });
 });
 
+describe("Atom feed check", () => {
+  const FEED = `${ORIGIN}/schedule/feed.xml`;
+  const events = [{ number: 1, name: "E1", date: "2026-01-18" }];
+  const feedPages = [page("/schedule/"), page("/offline/", { robots: "noindex, follow" })];
+  const goodFeed = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hant-TW">
+  <id>${FEED}</id>
+  <title>數位韌性松活動時程</title>
+  <link rel="self" type="application/atom+xml" href="${FEED}"/>
+  <updated>2026-01-18T00:00:00+08:00</updated>
+  <entry>
+    <id>${ORIGIN}/schedule/#th1n</id>
+    <title>E1</title>
+    <link rel="alternate" type="text/html" href="${ORIGIN}/schedule/#th1n"/>
+    <published>2026-01-18T00:00:00+08:00</published>
+    <updated>2026-01-18T00:00:00+08:00</updated>
+    <summary type="text">2026-01-18。活動共筆：https://g0v.hackmd.io/x</summary>
+  </entry>
+</feed>
+`;
+  const buildWith = (files = {}) =>
+    tmpDist({ "schedule/index.html": '<div id="th1n"></div>', "schedule/feed.xml": goodFeed, ...files });
+
+  it("passes a valid minimal feed", () => {
+    expect(checkFeed(feedPages, buildWith(), events)).toEqual([]);
+  });
+
+  it("flags a dated event that has no feed entry", () => {
+    const more = [...events, { number: 2, name: "E2", date: "2026-02-01" }];
+    const problems = checkFeed(feedPages, buildWith(), more).join("\n");
+    expect(problems).toMatch(/1 entries, events.yaml has 2 dated events/);
+    expect(problems).toMatch(/no entry titled "E2"/);
+  });
+
+  it("flags malformed XML", () => {
+    const problems = checkFeed(feedPages, buildWith({ "schedule/feed.xml": goodFeed.replace("</entry>", "</feed>") }), events).join("\n");
+    expect(problems).toMatch(/not well-formed XML/);
+  });
+
+  it("flags an entry whose anchor is not on the schedule page", () => {
+    const problems = checkFeed(feedPages, buildWith({ "schedule/index.html": "<div></div>" }), events).join("\n");
+    expect(problems).toMatch(/no id="th1n" in dist\/schedule\/index.html/);
+  });
+
+  it("flags a page without the feed link", () => {
+    const problems = checkFeed([page("/about/", { feeds: [] })], buildWith(), events).join("\n");
+    expect(problems).toMatch(/\/about\/: no link to the Atom feed/);
+  });
+
+  it("flags a missing feed file", () => {
+    const problems = checkFeed(feedPages, tmpDist({ "schedule/index.html": "" }), events).join("\n");
+    expect(problems).toMatch(/schedule\/feed.xml: missing/);
+  });
+});
+
+describe("xmlWellFormed", () => {
+  it("accepts a declaration, comments, CDATA, self-closing tags and entities", () => {
+    expect(
+      xmlWellFormed('<?xml version="1.0" encoding="utf-8"?><a x="1"><!-- c --><b/><c><![CDATA[<&>]]></c>&amp;&#39;&#x41;</a>'),
+    ).toBeNull();
+  });
+
+  it("rejects bare ampersands, mismatched tags, a second root, stray text and unclosed tags", () => {
+    expect(xmlWellFormed("<a>&</a>")).toMatch(/bare &/);
+    expect(xmlWellFormed("<a><b></a></b>")).toMatch(/closes/);
+    expect(xmlWellFormed("<a/><b/>")).toMatch(/more than one root/);
+    expect(xmlWellFormed("<a/>tail")).toMatch(/outside the root/);
+    expect(xmlWellFormed("<a>")).toMatch(/never closed/);
+  });
+});
+
 const hasBuild = fs.existsSync("dist/index.html");
 describe.skipIf(!hasBuild)("built site", () => {
   it("passes the SEO check", () => {
@@ -228,5 +301,7 @@ describe.skipIf(!hasBuild)("built site", () => {
     expect(pages.length).toBeGreaterThan(30);
     expect(checkPages(pages, path.resolve("dist"))).toEqual([]);
     expect(checkSiteFiles(pages, path.resolve("dist"))).toEqual([]);
+    const events = yaml.load(fs.readFileSync("src/data/events.yaml", "utf8"));
+    expect(checkFeed(pages, path.resolve("dist"), events)).toEqual([]);
   });
 });

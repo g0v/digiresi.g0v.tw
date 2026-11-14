@@ -43,7 +43,7 @@ describe.skipIf(!hasBuild)("service worker precache scope", () => {
     // robots.txt, the sitemaps and llms*.txt are for crawlers and agents, not
     // for offline visitors; llms-full.txt alone is ~50 KB of handbook text.
     const urls = manifestUrls();
-    for (const file of ["robots.txt", "llms.txt", "llms-full.txt", "sitemap-index.xml", "sitemap-0.xml"]) {
+    for (const file of ["robots.txt", "llms.txt", "llms-full.txt", "sitemap-index.xml", "sitemap-0.xml", "schedule/feed.xml"]) {
       expect(fs.existsSync(`dist/${file}`), file).toBe(true);
       expect(urls.filter((u) => u.endsWith(file)), file).toEqual([]);
     }

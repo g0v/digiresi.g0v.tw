@@ -44,6 +44,11 @@ export function eventCode(e: EventEntry): string {
   return e.suffix ? `Th${e.number}n ${e.suffix}` : `Th${e.number}n`;
 }
 
+/** In-page id of a round on /schedule/: "th17n", or "th16n-re" for a rerun. */
+export function eventAnchor(e: EventEntry): string {
+  return `th${e.number}n` + (e.suffix ? `-${e.suffix.toLowerCase()}` : "");
+}
+
 /** Distinct rounds: a rerun (same number, e.g. Th16n RE) is not a new round. */
 export function roundCount(events: EventEntry[]): number {
   return new Set(events.map((e) => e.number)).size;

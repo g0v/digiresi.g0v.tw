@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   byNewest,
+  eventAnchor,
   eventCode,
   roundCount,
   featuredEvent,
@@ -67,6 +68,19 @@ describe("byNewest / eventCode", () => {
   it("renders the code without a suffix when none is set", () => {
     expect(eventCode(ev(3, null))).toBe("Th3n");
     expect(eventCode({ ...ev(3, null), suffix: null })).toBe("Th3n");
+  });
+});
+
+describe("eventAnchor", () => {
+  it("builds the in-page id from the round number, with the suffix when set", () => {
+    expect(eventAnchor(ev(17, null))).toBe("th17n");
+    expect(eventAnchor({ ...ev(16, null), suffix: "RE" })).toBe("th16n-re");
+    expect(eventAnchor({ ...ev(3, null), suffix: null })).toBe("th3n");
+  });
+
+  it("gives every event in events.yaml a distinct anchor", () => {
+    const anchors = loadEvents().map(eventAnchor);
+    expect(new Set(anchors).size).toBe(anchors.length);
   });
 });
 

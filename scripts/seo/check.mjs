@@ -175,6 +175,135 @@ export function checkSiteFiles(pages, dist) {
   return problems;
 }
 
+/** Public URL of the Atom feed; every indexable page links it (see SeoHead.astro). */
+export const FEED_URL = `${ORIGIN}/schedule/feed.xml`;
+
+const XML_TAG = /<(\/?)([A-Za-z_][\w.:-]*)((?:\s+[A-Za-z_:][\w.:-]*\s*=\s*(?:"[^"<]*"|'[^'<]*'))*)\s*(\/?)>/g;
+const XML_BARE_AMP = /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/;
+
+/**
+ * Well-formedness for the XML subset the feed uses: one root, every open tag
+ * closed in order, no bare `&`, no stray `<`. Returns null when it passes,
+ * else the first problem found.
+ */
+export function xmlWellFormed(xml) {
+  const body = xml
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, "")
+    .replace(/<\?[\s\S]*?\?>/g, "");
+  if (XML_BARE_AMP.test(body)) return "a bare & (must be &amp;)";
+  const open = [];
+  let roots = 0;
+  let last = 0;
+  for (const m of body.matchAll(XML_TAG)) {
+    const text = body.slice(last, m.index);
+    if (text.includes("<")) return "a stray < in text";
+    if (!open.length && text.trim()) return "text outside the root element";
+    last = m.index + m[0].length;
+    const [, closing, name, , selfClosing] = m;
+    if (closing) {
+      if (!open.length) return `</${name}> without an open element`;
+      const top = open.pop();
+      if (top !== name) return `</${name}> closes <${top}>`;
+    } else {
+      if (!open.length) {
+        roots += 1;
+        if (roots > 1) return "more than one root element";
+      }
+      if (!selfClosing) open.push(name);
+    }
+  }
+  const tail = body.slice(last);
+  if (tail.includes("<")) return "a stray < in text";
+  if (open.length) return `<${open.at(-1)}> is never closed`;
+  if (tail.trim()) return "text outside the root element";
+  if (roots !== 1) return "no root element";
+  return null;
+}
+
+const RFC3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
+const XML_ENTITIES = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+const unescapeXml = (s) =>
+  s.replace(/&(#x[0-9a-fA-F]+|#\d+|amp|lt|gt|quot|apos);/g, (_, e) =>
+    e[0] === "#" ? String.fromCodePoint(e[1] === "x" ? parseInt(e.slice(2), 16) : Number(e.slice(1))) : XML_ENTITIES[e],
+  );
+/** Unescaped inner text of every <name> element in `xml`. */
+const elementTexts = (xml, name) =>
+  [...xml.matchAll(new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`, "g"))].map((m) => unescapeXml(m[1]));
+/** Attributes of every <link> element in `xml`. */
+const linksIn = (xml) =>
+  [...xml.matchAll(/<link\b([^>]*?)\/?>/g)].map((m) =>
+    Object.fromEntries([...m[1].matchAll(/([\w:-]+)="([^"]*)"/g)].map((a) => [a[1], unescapeXml(a[2])])),
+  );
+
+/**
+ * The Atom feed at /schedule/feed.xml: well-formed, complete, one entry per
+ * dated event in events.yaml, each entry pointing at its anchor on /schedule/,
+ * and linked from every indexable page.
+ */
+export function checkFeed(pages, dist, events) {
+  const problems = [];
+  const fail = (msg) => problems.push(msg);
+  const xml = read(dist, "schedule/feed.xml");
+  const schedule = read(dist, "schedule/index.html");
+  const datedEvents = (events ?? []).filter((e) => e.date);
+  if (schedule === null) fail("schedule/index.html: missing");
+
+  if (xml === null) fail("schedule/feed.xml: missing");
+  else {
+    const err = xmlWellFormed(xml);
+    if (err) fail(`schedule/feed.xml: not well-formed XML (${err})`);
+    const body = xml.replace(/^﻿/, "").replace(/^\s*<\?xml[^>]*\?>\s*/, "");
+    if (!body.startsWith('<feed xmlns="http://www.w3.org/2005/Atom"')) {
+      fail('schedule/feed.xml: root is not <feed xmlns="http://www.w3.org/2005/Atom">');
+    }
+    const head = body.split("<entry")[0];
+    for (const name of ["id", "title", "updated"]) {
+      if (!elementTexts(head, name).length) fail(`schedule/feed.xml: feed lacks <${name}>`);
+    }
+    if (!linksIn(head).some((l) => l.rel === "self")) fail('schedule/feed.xml: feed lacks <link rel="self">');
+    for (const u of elementTexts(head, "updated")) {
+      if (!RFC3339.test(u)) fail(`schedule/feed.xml: feed <updated> "${u}" is not an RFC 3339 date-time`);
+    }
+
+    const entries = [...body.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/g)].map((m) => m[1]);
+    const titles = [];
+    const prefix = `${ORIGIN}/schedule/#`;
+    entries.forEach((entry, i) => {
+      const label = `schedule/feed.xml entry ${i + 1}`;
+      for (const name of ["id", "title", "updated", "summary"]) {
+        if (!elementTexts(entry, name).length) fail(`${label}: lacks <${name}>`);
+      }
+      const links = linksIn(entry);
+      if (!links.length) fail(`${label}: lacks <link>`);
+      for (const d of [...elementTexts(entry, "updated"), ...elementTexts(entry, "published")]) {
+        if (!RFC3339.test(d)) fail(`${label}: date "${d}" is not an RFC 3339 date-time`);
+      }
+      titles.push(elementTexts(entry, "title")[0]);
+      const alt = links.find((l) => l.rel === "alternate")?.href ?? "";
+      const anchor = alt.startsWith(prefix) ? alt.slice(prefix.length) : "";
+      if (!/^[A-Za-z0-9-]+$/.test(anchor)) fail(`${label}: alternate link "${alt}" is not ${prefix}<anchor>`);
+      else if (schedule !== null && !schedule.includes(`id="${anchor}"`)) {
+        fail(`${label}: no id="${anchor}" in dist/schedule/index.html`);
+      }
+    });
+    for (const e of datedEvents) {
+      if (!titles.includes(e.name)) fail(`schedule/feed.xml: no entry titled "${e.name}" (events.yaml, ${e.date})`);
+    }
+    if (entries.length !== datedEvents.length) {
+      fail(`schedule/feed.xml: ${entries.length} entries, events.yaml has ${datedEvents.length} dated events`);
+    }
+  }
+
+  for (const p of pages) {
+    const indexable = !/noindex/.test(p.robots ?? "");
+    if (indexable && !(p.feeds ?? []).includes(FEED_URL)) {
+      fail(`${p.path}: no link to the Atom feed ${FEED_URL} (rel="alternate" type="application/atom+xml")`);
+    }
+  }
+  return problems;
+}
+
 /** Dated events with a venue in src/data/events.yaml (one Event node each). */
 export function datedEventCount(file = "src/data/events.yaml") {
   return (yaml.load(fs.readFileSync(file, "utf8")) ?? []).filter((e) => e.date && e.venue).length;
@@ -187,7 +316,12 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     process.exit(1);
   }
   const pages = inspectDist(dist);
-  const problems = [...checkPages(pages, dist, { eventCount: datedEventCount() }), ...checkSiteFiles(pages, dist)];
+  const events = yaml.load(fs.readFileSync("src/data/events.yaml", "utf8")) ?? [];
+  const problems = [
+    ...checkPages(pages, dist, { eventCount: datedEventCount() }),
+    ...checkSiteFiles(pages, dist),
+    ...checkFeed(pages, dist, events),
+  ];
   if (problems.length) {
     console.error(`check-seo: FAIL — ${problems.length} problem(s) across ${pages.length} pages:`);
     for (const line of problems) console.error(`  ${line}`);
@@ -196,6 +330,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   console.log(
     `check-seo: PASS — ${pages.length} pages have title, description, canonical, robots, og:*, twitter:card, ` +
       "a 1200x630 og:image, one <h1> and valid JSON-LD; titles and descriptions are unique; " +
-      "robots.txt, sitemap (with hreflang), llms.txt and llms-full.txt are consistent with the pages.",
+      "robots.txt, sitemap (with hreflang), llms.txt and llms-full.txt are consistent with the pages; " +
+      "the Atom feed (schedule/feed.xml) is well-formed, matches events.yaml and is linked from every indexable page.",
   );
 }

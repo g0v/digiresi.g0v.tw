@@ -34,6 +34,7 @@ export function inspect(dist, file) {
     og: {},
     twitter: {},
     hreflang: [],
+    feeds: [],
     jsonld: [],
     jsonldData: [],
     h1: (html.match(/<h1[\s>]/gi) || []).length,
@@ -51,6 +52,7 @@ export function inspect(dist, file) {
     const a = attrs(m[0]);
     if (a.rel === "canonical") page.canonical = a.href;
     if (a.rel === "alternate" && a.hreflang) page.hreflang.push(`${a.hreflang}=${a.href}`);
+    if (a.rel === "alternate" && a.type === "application/atom+xml") page.feeds.push(a.href);
   }
   for (const m of html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
