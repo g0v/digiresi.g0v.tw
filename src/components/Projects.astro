@@ -14,6 +14,12 @@ interface Project {
   desc: string;
 }
 
+interface Props {
+  /** Render the section label as the page's <h1> (true only on /projects/). */
+  h1?: boolean;
+}
+const { h1 = false } = Astro.props;
+
 const { projects } = yaml.load(rawYaml) as { projects: Project[] };
 
 const tabs = [
@@ -25,7 +31,7 @@ const tabs = [
 ];
 ---
 <div class="projects-wrap container" data-pagefind-ignore="all">
-  <SectionHeader label="PROJECTS" right="SAMPLE DATA · YEAR 0" as="h1" />
+  <SectionHeader label="PROJECTS" right="SAMPLE DATA · YEAR 0" as={h1 ? "h1" : "span"} />
   <div class="projects-toolbar">
     <Tabs active="all" items={tabs} />
     <label class="search-wrap">

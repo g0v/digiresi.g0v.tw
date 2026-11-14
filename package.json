@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist && node scripts/seo/check.mjs",
     "preview": "astro preview",
     "sync": "node scripts/sync-content.mjs",
     "assets": "node scripts/fetch-assets.mjs",
@@ -17,7 +17,9 @@
     "test:e2e": "playwright test",
     "check:budget": "node scripts/check-budget.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "check": "astro check"
+    "check": "astro check",
+    "check:seo": "node scripts/seo/check.mjs",
+    "seo:inventory": "node scripts/seo/inventory.mjs --json docs/seo/inventory.json --md docs/seo/inventory-table.md"
   },
   "dependencies": {
     "astro": "^5.12.0"
