@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
-import { byNewest, eventCode, featuredEvent, loadEvents } from "../lib/events";
+import { byNewest, eventCode, featuredEvent, loadEvents, roundCount } from "../lib/events";
 import type { SessionTag } from "../lib/events";
 
 const events = loadEvents();
@@ -121,7 +121,7 @@ const shortName = (name: string) =>
     </div>
 
     <div class="archive-head">
-      <SectionHeader label="歷次活動" right={`ARCHIVE · ${archive.length} ROUNDS`} />
+      <SectionHeader label="歷次活動" right={`ARCHIVE · ${roundCount(archive)} ROUNDS`} />
     </div>
     <div class="archive" role="list">
       {archive.map((e, i) => (

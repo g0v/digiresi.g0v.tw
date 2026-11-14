@@ -6,7 +6,7 @@ import Marquee from "../components/Marquee.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import NextEvent from "../components/NextEvent.astro";
 import Px from "../components/Px.astro";
-import { loadEvents, upcomingEvent } from "../lib/events";
+import { loadEvents, roundCount, upcomingEvent } from "../lib/events";
 import { withBase } from "../lib/base";
 
 const events = loadEvents();
@@ -53,12 +53,12 @@ const tracks = [
   },
 ];
 
-// Verified facts: 16 rounds Th0n–Th15n (master doc); 55 archive pads under the
+// Verified facts: 18 rounds Th0n–Th17n (master doc; Th16n RE is a rerun, not a round); 55 archive pads under the
 // digital-resilience tag (design-spec background index); 20 synced handbook
 // pages (sync.config.yaml); 0 CLOUDS is the brand fact and stays. The round
-// count is DERIVED from events.length so it tracks events.yaml automatically.
+// count is DERIVED via roundCount(events) so it tracks events.yaml automatically.
 const stats = [
-  { n: String(events.length), label: "場次 ROUNDS", accent: false },
+  { n: String(roundCount(events)), label: "場次 ROUNDS", accent: false },
   { n: "55+", label: "共筆 PADS", accent: false },
   { n: "0", label: "CLOUDS", accent: true },
   { n: "20", label: "頁離線手冊 PAGES", accent: false },
@@ -66,7 +66,7 @@ const stats = [
 
 const marqueeItems = [
   "SIGNAL LOST",
-  `${events.length} ROUNDS`,
+  `${roundCount(events)} ROUNDS`,
   "台北 TAIPEI",
   "NO CLOUD",
   "斷網也能查",
@@ -84,7 +84,7 @@ const marqueeItems = [
     <div class="container hero-grid">
       <div>
         <div class="kicker-row">
-          <span class="kicker">[ G0V 社群黑客松 ]</span>
+          <span class="kicker">[ g0v 數位韌性松 ]</span>
           <span class="kicker-meta">{heroMeta}</span>
         </div>
         <h1 class="pixel-h-tc pixel-h-tc--3 hero-title">

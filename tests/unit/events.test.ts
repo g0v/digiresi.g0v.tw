@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   byNewest,
   eventCode,
+  roundCount,
   featuredEvent,
   loadEvents,
   upcomingEvent,
@@ -66,6 +67,18 @@ describe("byNewest / eventCode", () => {
   it("renders the code without a suffix when none is set", () => {
     expect(eventCode(ev(3, null))).toBe("Th3n");
     expect(eventCode({ ...ev(3, null), suffix: null })).toBe("Th3n");
+  });
+});
+
+describe("roundCount", () => {
+  it("counts a rerun as the same round", () => {
+    const events = [ev(16, "2026-07-25"), { ...ev(16, "2026-09-13"), suffix: "RE" }, ev(15, null)];
+    expect(roundCount(events)).toBe(2);
+    expect(roundCount([])).toBe(0);
+  });
+
+  it("counts 18 rounds (Th0n..Th17n) in events.yaml", () => {
+    expect(roundCount(loadEvents())).toBe(18);
   });
 });
 

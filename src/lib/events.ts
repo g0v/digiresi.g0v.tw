@@ -44,6 +44,11 @@ export function eventCode(e: EventEntry): string {
   return e.suffix ? `Th${e.number}n ${e.suffix}` : `Th${e.number}n`;
 }
 
+/** Distinct rounds: a rerun (same number, e.g. Th16n RE) is not a new round. */
+export function roundCount(events: EventEntry[]): number {
+  return new Set(events.map((e) => e.number)).size;
+}
+
 /**
  * Newest-first comparator: round number desc, then (for a rerun sharing the
  * number) date desc, undated last.
