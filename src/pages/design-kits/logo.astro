@@ -8,7 +8,7 @@ const base = withBase("/design/assets/logo");
 ---
 <BaseLayout
   title="Logo — Design Kits — DigiResiThon"
-  description="Logo mark, wordmark, and lockup — dark and light previews, downloads, and YellowOne CC BY-SA 4.0 attribution."
+  description="Logo lockup and mark — dark and light previews, downloads, and YellowOne CC BY-SA 4.0 attribution."
   lang="en"
 >
   <DesignKitsNav />
@@ -18,7 +18,7 @@ const base = withBase("/design/assets/logo");
     <!-- TODO(yellowone-url): link to YellowOne canonical profile -->
     <div class="attribution-block">
       <p class="attr-line">
-        Logo mark, wordmark, and lockup &copy; YellowOne &mdash;
+        Logo lockup and mark &copy; YellowOne &mdash;
         Licensed <strong>CC BY-SA 4.0</strong>.
         Derivative works must be released under the same license.
       </p>
@@ -26,6 +26,22 @@ const base = withBase("/design/assets/logo");
         Source: DigiResiTh0n Design System (Claude Design project).
         See <code>design/assets/logo/LICENSE.md</code>.
       </p>
+    </div>
+
+    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">LOCKUP</h2>
+    <DesignSpecimen label="lockup" viewport="AUTO">
+      <div class="logo-row">
+        <div class="theme-panel" aria-label="dark theme">
+          <img src={`${base}/lockup-dark.png`} alt="DigiResiThon lockup — dark theme" height="80" />
+        </div>
+        <div class="theme-panel theme-panel--light" data-theme="light" aria-label="light theme">
+          <img src={`${base}/lockup.png`} alt="DigiResiThon lockup — light theme" height="80" />
+        </div>
+      </div>
+    </DesignSpecimen>
+    <div class="dl-row">
+      <a class="btn btn-sm" href={`${base}/lockup-dark.png`} download="lockup-dark.png">DOWNLOAD DARK</a>
+      <a class="btn btn-sm" href={`${base}/lockup.png`} download="lockup.png">DOWNLOAD LIGHT</a>
     </div>
 
     <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">MARK</h2>
@@ -44,22 +60,6 @@ const base = withBase("/design/assets/logo");
       <a class="btn btn-sm" href={`${base}/mark.png`} download="mark.png">DOWNLOAD LIGHT</a>
     </div>
 
-    <h2 class="label" style="margin-top: var(--sp-7); margin-bottom: var(--sp-5);">WORDMARK</h2>
-    <DesignSpecimen label="wordmark" viewport="AUTO">
-      <div class="logo-row">
-        <div class="theme-panel" aria-label="dark theme">
-          <img src={`${base}/wordmark-dark.png`} alt="DigiResiThon wordmark — dark theme" height="40" />
-        </div>
-        <div class="theme-panel theme-panel--light" data-theme="light" aria-label="light theme">
-          <img src={`${base}/wordmark.png`} alt="DigiResiThon wordmark — light theme" height="40" />
-        </div>
-      </div>
-    </DesignSpecimen>
-    <div class="dl-row">
-      <a class="btn btn-sm" href={`${base}/wordmark-dark.png`} download="wordmark-dark.png">DOWNLOAD DARK</a>
-      <a class="btn btn-sm" href={`${base}/wordmark.png`} download="wordmark.png">DOWNLOAD LIGHT</a>
-    </div>
-
     <div class="usage-notes">
       <h2 class="label" style="margin-bottom: var(--sp-3);">USAGE RULES</h2>
       <ul class="rules-list">
@@ -67,7 +67,7 @@ const base = withBase("/design/assets/logo");
         <li>Use <code>-dark</code> variants on dark surfaces (the default theme); red stays red in both.</li>
         <li>Do not recolor, skew, round, or add effects to the mark.</li>
         <li>Raster only — ask the community for vector originals.</li>
-        <li>Min height: mark 48px, wordmark 32px.</li>
+        <li>Min height: 48px for both the lockup and the mark (the mark fills the lockup's full height).</li>
       </ul>
     </div>
   </div>

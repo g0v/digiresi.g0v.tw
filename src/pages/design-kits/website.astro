@@ -7,6 +7,7 @@ import SectionHeader from "../../components/SectionHeader.astro";
 import Marquee from "../../components/Marquee.astro";
 import StatusDot from "../../components/StatusDot.astro";
 import Button from "../../components/Button.astro";
+import { withBase } from "../../lib/base";
 ---
 <BaseLayout
   title="Website — Design Kits — DigiResiThon"
@@ -26,7 +27,8 @@ import Button from "../../components/Button.astro";
     <DesignSpecimen label="ui_kits/website — SiteHeader" viewport="1440">
       <div class="ws-header-demo">
         <nav class="ws-nav" aria-label="Website specimen navigation">
-          <span class="ws-wordmark t-dim">DigiResiThon</span>
+          <img class="ws-lockup only-dark" src={withBase("/brand/lockup-dark.png")} alt="DigiResiThon" height="48" />
+          <img class="ws-lockup only-light" src={withBase("/brand/lockup.png")} alt="DigiResiThon" height="48" />
           <div class="ws-nav-links">
             <a class="ws-nav-link ws-nav-active">HOME</a>
             <a class="ws-nav-link">SCHEDULE</a>
@@ -103,14 +105,10 @@ import Button from "../../components/Button.astro";
     padding: 0 var(--gutter);
     border-bottom: var(--border);
   }
-  .ws-wordmark {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    flex: none;
-  }
+  .ws-lockup { display: block; width: auto; flex: none; }
+  .ws-lockup.only-light { display: none; }
+  :global(html[data-theme="light"]) .ws-lockup.only-light { display: block; }
+  :global(html[data-theme="light"]) .ws-lockup.only-dark { display: none; }
   .ws-nav-links {
     display: flex;
     gap: var(--sp-1);

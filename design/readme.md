@@ -78,9 +78,9 @@ Supporting: `--stripe-caution` for alert zones, `--checker` (8px) for image plac
 - ⚠ For the static site, `npm i pixelarticons` and serve locally instead of unpkg.
 
 **Logo assets** (`assets/logo/`, transparent PNGs from the provided file):
-- `lockup.png` / `lockup-dark.png` — mark + DIGI RESITHON wordmark
+- `lockup.png` / `lockup-dark.png` — the full logo: mark + DIGI RESITHON wordmark (use ≥ 48px tall — the mark fills its full height). The primary logo.
 - `mark.png` / `mark-dark.png` — wifi-off mark alone (use ≥ 48px tall)
-- `wordmark.png` / `wordmark-dark.png` — pixel wordmark alone
+- No standalone wordmark: the "R" of RESITHON lives inside the mark, so the wordmark alone reads "DIGI ESITHON". Use the lockup.
 `-dark` = paper-white ink for dark surfaces (the default theme!); red stays red. Clear space = height of the "0". Don't recolor, skew, round, or add effects. ⚠ Raster only — ask the community for vector originals.
 
 ---

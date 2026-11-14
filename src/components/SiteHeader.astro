@@ -30,10 +30,8 @@ const isActive = (href: string) =>
 <header class="site-header">
   <div class="container inner">
     <a class="brand" href={withBase("/")} aria-label="DigiResiThon 首頁">
-      <img class="only-dark" src={withBase("/brand/mark-dark.png")} alt="" height="32" />
-      <img class="only-dark wordmark" src={withBase("/brand/wordmark-dark.png")} alt="DIGIRESITHON" height="16" />
-      <img class="only-light" src={withBase("/brand/mark.png")} alt="" height="32" />
-      <img class="only-light wordmark" src={withBase("/brand/wordmark.png")} alt="DIGIRESITHON" height="16" />
+      <img class="only-dark" src={withBase("/brand/lockup-dark.png")} alt="DigiResiThon" height="48" />
+      <img class="only-light" src={withBase("/brand/lockup.png")} alt="DigiResiThon" height="48" />
     </a>
     <nav aria-label="主選單">
       {nav.map((n) => (
@@ -103,8 +101,10 @@ const isActive = (href: string) =>
     background: none;
   }
   .brand:hover { background: none; }
+  /* No `display` here: flex items are already blockified, and a display value
+     on this (more specific) selector would override `.only-light { display: none }`
+     and show both theme variants of the lockup at once. */
   .brand img {
-    display: block;
     width: auto;
   }
   nav {
@@ -134,7 +134,6 @@ const isActive = (href: string) =>
   :global(html[data-theme="light"]) img.only-light { display: block; }
   :global(html[data-theme="light"]) img.only-dark { display: none; }
   @media (max-width: 760px) {
-    .wordmark { display: none; }
     .nav-link { padding: 8px 8px; }
   }
 </style>

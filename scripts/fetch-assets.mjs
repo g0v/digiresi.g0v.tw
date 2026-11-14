@@ -22,7 +22,7 @@ const ICONS = [
   "sun", "cellular-signal-off", "battery-1", "chat", "code",
 ];
 
-const BRAND = ["mark.png", "mark-dark.png", "wordmark.png", "wordmark-dark.png"];
+const BRAND = ["mark.png", "mark-dark.png", "lockup.png", "lockup-dark.png"];
 
 async function exists(p) {
   try {
