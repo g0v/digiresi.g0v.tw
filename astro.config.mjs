@@ -1,6 +1,9 @@
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
+import fs from "node:fs";
+import path from "node:path";
+import sitemap from "@astrojs/sitemap";
 import AstroPWA from "@vite-pwa/astro";
 import { precacheGlobs } from "./scripts/precache-globs.mjs";
 import rehypeBaseUrl from "./scripts/rehype-base-url.mjs";
@@ -28,6 +31,26 @@ const pagefindBeforeServiceWorker = {
   },
 };
 
+// Must equal `site` below (tests/unit/deployment.test.mjs pins that literal).
+const SITE = "https://digiresi.g0v.tw/";
+
+// Sitemap lastmod for handbook pages = their HackMD sync date (frontmatter
+// `syncedAt`, written by `npm run sync`), the same value as dateModified.
+function handbookSyncDates() {
+  const root = "src/content/handbook";
+  const dates = new Map();
+  for (const rel of fs.readdirSync(root, { recursive: true })) {
+    if (!rel.endsWith(".md")) continue;
+    const m = /^syncedAt:\s*"?(\d{4}-\d{2}-\d{2})"?\s*$/m.exec(fs.readFileSync(path.join(root, rel), "utf8"));
+    if (m) dates.set(`${SITE}handbook/${rel.replace(/\.md$/, "").split(path.sep).join("/")}/`, m[1]);
+  }
+  return dates;
+}
+const syncDates = handbookSyncDates();
+
+// zh-Hant <-> en-US pairs (same as the HTML hreflang in SeoHead.astro).
+const TRANSLATIONS = [{ "zh-Hant": `${SITE}`, "en-US": `${SITE}en/` }];
+
 export default defineConfig({
   site: "https://digiresi.g0v.tw/",
   base: BASE,
@@ -41,6 +64,22 @@ export default defineConfig({
     rehypePlugins: [[rehypeBaseUrl, { base: BASE }], rehypeDemoteHeadings],
   },
   integrations: [
+    sitemap({
+      // /offline/ is the service worker's fallback page (noindex).
+      filter: (page) => !page.endsWith("/offline/"),
+      serialize(item) {
+        const lastmod = syncDates.get(item.url);
+        if (lastmod) item.lastmod = lastmod;
+        const pair = TRANSLATIONS.find((t) => Object.values(t).includes(item.url));
+        if (pair) {
+          item.links = [
+            ...Object.entries(pair).map(([lang, url]) => ({ lang, url })),
+            { lang: "x-default", url: pair["zh-Hant"] },
+          ];
+        }
+        return item;
+      },
+    }),
     pagefindBeforeServiceWorker,
     AstroPWA({
       registerType: "autoUpdate",

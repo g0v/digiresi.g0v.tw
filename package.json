@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@astrojs/sitemap": "^3.7.5",
     "@fontsource/ibm-plex-mono": "^5.2.0",
     "@fontsource/noto-sans-tc": "^5.2.0",
     "@fontsource/press-start-2p": "^5.2.0",

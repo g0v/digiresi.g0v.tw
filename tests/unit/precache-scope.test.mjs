@@ -39,6 +39,16 @@ describe.skipIf(!hasBuild)("service worker precache scope", () => {
     expect(manifestUrls().filter((u) => u.startsWith("og/") || u.endsWith(".png") && u.includes("/og/"))).toEqual([]);
   });
 
+  it("keeps crawler and AI files out of the precache", () => {
+    // robots.txt, the sitemaps and llms*.txt are for crawlers and agents, not
+    // for offline visitors; llms-full.txt alone is ~50 KB of handbook text.
+    const urls = manifestUrls();
+    for (const file of ["robots.txt", "llms.txt", "llms-full.txt", "sitemap-index.xml", "sitemap-0.xml"]) {
+      expect(fs.existsSync(`dist/${file}`), file).toBe(true);
+      expect(urls.filter((u) => u.endsWith(file)), file).toEqual([]);
+    }
+  });
+
   it("keeps design-kits out of the precache", () => {
     // Contributor-facing specimen tree, deliberately excluded (2026-07-25
     // captain ruling). Excluding it is also what keeps /offline/ reachable.

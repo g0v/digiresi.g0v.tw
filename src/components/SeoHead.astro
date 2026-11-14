@@ -80,6 +80,7 @@ const serialize = (o: unknown) => JSON.stringify(o).replace(/</g, "\\u003c");
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 <meta name="robots" content={robots} />
+<link rel="sitemap" type="application/xml" href={absoluteUrl("/sitemap-index.xml")} />
 {hreflangs.map((h) => <link rel="alternate" hreflang={h.hreflang} href={h.href} />)}
 {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 <meta property="og:site_name" content={SITE_NAME[lang]} />
