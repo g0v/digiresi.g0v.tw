@@ -4,6 +4,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import yaml from "js-yaml";
+import { expectedTypes, validateJsonLd } from "./jsonld.mjs";
 import { inspectDist } from "./lib.mjs";
 
 export const ORIGIN = "https://digiresi.g0v.tw";
@@ -19,7 +21,7 @@ export function pngSize(buf) {
 }
 
 /** Problems found in the parsed pages; [] means every page passes. */
-export function checkPages(pages, dist) {
+export function checkPages(pages, dist, { eventCount } = {}) {
   const problems = [];
   const fail = (p, msg) => problems.push(`${p.path}: ${msg}`);
   const byTitle = new Map();
@@ -65,6 +67,11 @@ export function checkPages(pages, dist) {
       }
     }
     if (p.h1 !== 1) fail(p, `${p.h1} <h1> elements (want exactly 1)`);
+    if (!noindex) {
+      problems.push(
+        ...validateJsonLd(p, { expect: expectedTypes(p.path), eventCount: p.path === "/schedule/" ? eventCount : undefined }),
+      );
+    }
     // hreflang: self-referencing, reciprocal, x-default present.
     if (p.hreflang.length) {
       const links = new Map(p.hreflang.map((h) => h.split(/=(.*)/s).slice(0, 2)));
@@ -83,6 +90,89 @@ export function checkPages(pages, dist) {
   return problems;
 }
 
+const read = (dist, rel) => {
+  const file = path.join(dist, rel);
+  return fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+};
+/** dist/ file a same-origin URL resolves to (directory URLs -> index.html). */
+const distFileFor = (dist, url) => {
+  const p = decodeURIComponent(new URL(url).pathname);
+  return path.join(dist, p.endsWith("/") ? `${p}index.html` : p);
+};
+
+/** robots.txt, sitemap, llms.txt and llms-full.txt. */
+export function checkSiteFiles(pages, dist) {
+  const problems = [];
+  const fail = (msg) => problems.push(msg);
+
+  const robots = read(dist, "robots.txt");
+  if (!robots) fail("robots.txt: missing");
+  else {
+    if (!/^User-agent: \*$/m.test(robots)) fail("robots.txt: no `User-agent: *` group");
+    if (/^Disallow: \/\s*$/m.test(robots)) fail("robots.txt: a group disallows the whole site");
+    const groups = robots.split(/\n\s*\n/).filter((g) => /^User-agent:/m.test(g));
+    for (const g of groups) if (!/^Content-Signal: /m.test(g)) fail(`robots.txt: group without Content-Signal: ${g.split("\n")[0]}`);
+    for (const ua of robots.matchAll(/^User-agent: (.*)$/gm)) if (/\s/.test(ua[1].trim())) fail(`robots.txt: token with a space: ${ua[1]}`);
+    const sm = /^Sitemap: (\S+)$/m.exec(robots)?.[1];
+    if (!sm || !sm.startsWith(`${ORIGIN}/`)) fail("robots.txt: no absolute Sitemap line");
+    else if (!fs.existsSync(distFileFor(dist, sm))) fail(`robots.txt: Sitemap ${sm} not in dist/`);
+  }
+
+  const index = read(dist, "sitemap-index.xml");
+  if (!index) fail("sitemap-index.xml: missing");
+  else {
+    const urlset = [...index.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    const locs = new Map();
+    for (const sm of urlset) {
+      const xml = fs.existsSync(distFileFor(dist, sm)) ? fs.readFileSync(distFileFor(dist, sm), "utf8") : null;
+      if (!xml) { fail(`sitemap: ${sm} not in dist/`); continue; }
+      for (const u of xml.split("<url>").slice(1)) {
+        const loc = /<loc>([^<]+)<\/loc>/.exec(u)?.[1];
+        const links = [...u.matchAll(/hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => `${m[1]}=${m[2]}`);
+        if (loc) locs.set(loc, links);
+      }
+    }
+    for (const p of pages) {
+      const url = `${ORIGIN}${p.path}`;
+      const indexable = !/noindex/.test(p.robots ?? "");
+      if (indexable && !locs.has(url)) fail(`sitemap: ${p.path} missing`);
+      if (!indexable && locs.has(url)) fail(`sitemap: noindex page ${p.path} listed`);
+      if (locs.has(url)) {
+        const html = [...p.hreflang].sort().join(" ");
+        const xml = [...locs.get(url)].sort().join(" ");
+        if (html !== xml) fail(`sitemap: ${p.path} hreflang (${xml || "none"}) differs from the HTML (${html || "none"})`);
+      }
+    }
+    for (const loc of locs.keys()) if (!pages.some((p) => `${ORIGIN}${p.path}` === loc)) fail(`sitemap: ${loc} is not a built page`);
+  }
+
+  const llms = read(dist, "llms.txt");
+  if (!llms) fail("llms.txt: missing");
+  else {
+    if (!/^# \S/.test(llms)) fail("llms.txt: does not start with an H1");
+    if (!/^> \S/m.test(llms)) fail("llms.txt: no blockquote summary");
+    for (const m of llms.matchAll(/\]\((https:\/\/digiresi\.g0v\.tw\/[^)]*)\)/g)) {
+      if (!fs.existsSync(distFileFor(dist, m[1]))) fail(`llms.txt: link ${m[1]} not in dist/`);
+    }
+    for (const p of pages.filter((x) => x.path.startsWith("/handbook/") && x.path !== "/handbook/")) {
+      if (!llms.includes(`${ORIGIN}${p.path}`)) fail(`llms.txt: handbook page ${p.path} not listed`);
+    }
+  }
+  const full = read(dist, "llms-full.txt");
+  if (!full) fail("llms-full.txt: missing");
+  else {
+    for (const p of pages.filter((x) => x.path.startsWith("/handbook/") && x.path !== "/handbook/")) {
+      if (!full.includes(`${ORIGIN}${p.path}`)) fail(`llms-full.txt: handbook page ${p.path} missing`);
+    }
+  }
+  return problems;
+}
+
+/** Dated events with a venue in src/data/events.yaml (one Event node each). */
+export function datedEventCount(file = "src/data/events.yaml") {
+  return (yaml.load(fs.readFileSync(file, "utf8")) ?? []).filter((e) => e.date && e.venue).length;
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   const dist = path.resolve("dist");
   if (!fs.existsSync(dist)) {
@@ -90,11 +180,15 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     process.exit(1);
   }
   const pages = inspectDist(dist);
-  const problems = checkPages(pages, dist);
+  const problems = [...checkPages(pages, dist, { eventCount: datedEventCount() }), ...checkSiteFiles(pages, dist)];
   if (problems.length) {
     console.error(`check-seo: FAIL — ${problems.length} problem(s) across ${pages.length} pages:`);
     for (const line of problems) console.error(`  ${line}`);
     process.exit(1);
   }
-  console.log(`check-seo: PASS — ${pages.length} pages have title, description, canonical, robots, og:*, twitter:card, a 1200x630 og:image and one <h1>; titles and descriptions are unique.`);
+  console.log(
+    `check-seo: PASS — ${pages.length} pages have title, description, canonical, robots, og:*, twitter:card, ` +
+      "a 1200x630 og:image, one <h1> and valid JSON-LD; titles and descriptions are unique; " +
+      "robots.txt, sitemap (with hreflang), llms.txt and llms-full.txt are consistent with the pages.",
+  );
 }

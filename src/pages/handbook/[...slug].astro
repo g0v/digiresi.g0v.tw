@@ -7,6 +7,7 @@ import { withBase } from "../../lib/base";
 import { ogImagePath } from "../../lib/seo";
 import { handbookSeo } from "../../lib/seo/handbook";
 import { ogAlt } from "../../lib/seo/pages";
+import { handbookJsonLd } from "../../lib/seo/jsonld";
 
 export async function getStaticPaths() {
   const pages = await getCollection("handbook");
@@ -38,6 +39,7 @@ const path = `/handbook/${page.id}/`;
   ogImageAlt={ogAlt(seo.og, "zh")}
   section={seo.sectionName}
   modified={seo.modified}
+  jsonLd={handbookJsonLd({ path, title: page.data.title, description: seo.description, sectionName: seo.sectionName, modified: seo.modified, sourceUrl: page.data.sourceUrl })}
 >
   <div class="handbook-page">
     <nav class="handbook-breadcrumb" aria-label="breadcrumb">

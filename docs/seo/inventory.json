@@ -27,7 +27,48 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「關於 ABOUT」，白色像素字標題「為什麼辦斷網黑客松」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "AboutPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "AboutPage",
+            "@id": "https://digiresi.g0v.tw/about/#webpage",
+            "url": "https://digiresi.g0v.tw/about/",
+            "name": "關於我們：為什麼辦斷網黑客松｜數位韌性松 DigiResiThon",
+            "description": "數位韌性松為什麼要辦「假設網路斷光光」的黑客松？從馬祖海纜被切斷談起，說明活動緣起、我們正在做的備援通訊與離線手冊、第一次參加怎麼加入，以及網站內容的授權方式。",
+            "inLanguage": "zh-Hant-TW",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/about.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "為什麼辦斷網黑客松",
+                "item": "https://digiresi.g0v.tw/about/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -58,7 +99,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Colors&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/colors/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/colors/",
+            "name": "Colors — Design Kits | DigiResiThon",
+            "description": "DigiResiThon's base palette and semantic color tokens, side by side in the dark blackout theme and the light paper theme, so each token can be checked in both.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/colors.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Colors",
+                "item": "https://digiresi.g0v.tw/design-kits/colors/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -89,7 +178,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Components&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/components/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/components/",
+            "name": "Components — Design Kits | DigiResiThon",
+            "description": "Live component specimens: Button, Card, Badge, Alert, form fields, SignalBars, StatusDot, TerminalBlock, Marquee and Tabs, in DigiResiThon's real styles.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/components.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Components",
+                "item": "https://digiresi.g0v.tw/design-kits/components/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -120,7 +257,48 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN SYSTEM&#34;, white pixel-font heading &#34;Design Kits&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/",
+            "name": "Design Kits: the DigiResiThon Design System | DigiResiThon",
+            "description": "DigiResiThon's design-system reference: color tokens, pixel type, logo files, patterns, live components and a full website specimen, in dark and light themes.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -151,7 +329,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Logo&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/logo/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/logo/",
+            "name": "Logo — Design Kits | DigiResiThon",
+            "description": "The DigiResiThon logo lockup and mark with dark and light previews, PNG downloads, and the attribution for YellowOne's design under the CC BY-SA 4.0 license.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/logo.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Logo",
+                "item": "https://digiresi.g0v.tw/design-kits/logo/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -182,7 +408,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Patterns&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/patterns/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/patterns/",
+            "name": "Patterns — Design Kits | DigiResiThon",
+            "description": "DigiResiThon's visual patterns with live specimens: CRT scanlines, box-drawing frames, the logo slash, caution stripes, checkerboards and the motion tokens.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/patterns.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Patterns",
+                "item": "https://digiresi.g0v.tw/design-kits/patterns/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -213,7 +487,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Typography&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/typography/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/typography/",
+            "name": "Typography — Design Kits | DigiResiThon",
+            "description": "DigiResiThon type specimens: Press Start 2P set on its pixel grid for Latin headings, Cubic 11 for Traditional Chinese, and IBM Plex Mono for body text.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/typography.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Typography",
+                "item": "https://digiresi.g0v.tw/design-kits/typography/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -244,7 +566,55 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;DESIGN KITS&#34;, white pixel-font heading &#34;Website&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/design-kits/website/#webpage",
+            "url": "https://digiresi.g0v.tw/design-kits/website/",
+            "name": "Website — Design Kits | DigiResiThon",
+            "description": "The DigiResiThon website UI kit in one specimen: header, landing hero, schedule timetable, project board and registration dialog, built from the design tokens.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/design-kits/website.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Design Kits",
+                "item": "https://digiresi.g0v.tw/design-kits/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Website",
+                "item": "https://digiresi.g0v.tw/design-kits/website/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -280,7 +650,77 @@
       "zh-Hant=https://digiresi.g0v.tw/",
       "x-default=https://digiresi.g0v.tw/"
     ],
-    "jsonld": [],
+    "jsonld": [
+      "WebSite",
+      "Organization",
+      "Organization",
+      "WebPage"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://digiresi.g0v.tw/#website",
+            "name": "數位韌性松 DigiResiThon",
+            "alternateName": "DigiResiThon",
+            "url": "https://digiresi.g0v.tw/",
+            "inLanguage": [
+              "zh-Hant-TW",
+              "en-US"
+            ],
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://digiresi.g0v.tw/#organization",
+            "name": "數位韌性松 DigiResiThon",
+            "alternateName": [
+              "DigiResiThon",
+              "數位韌性松",
+              "Digital Resilience Hackathon"
+            ],
+            "url": "https://digiresi.g0v.tw/",
+            "logo": "https://digiresi.g0v.tw/icons/icon-512.png",
+            "parentOrganization": {
+              "@id": "https://g0v.tw/#organization"
+            },
+            "sameAs": [
+              "https://github.com/g0v/digiresi.g0v.tw",
+              "https://g0v-digiresi.kktix.cc/"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://g0v.tw/#organization",
+            "name": "g0v 零時政府",
+            "alternateName": "g0v",
+            "url": "https://g0v.tw/",
+            "sameAs": [
+              "https://github.com/g0v"
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/en/#webpage",
+            "url": "https://digiresi.g0v.tw/en/",
+            "name": "DigiResiThon — Digital Resilience Hackathon | g0v",
+            "description": "A g0v community hackathon prototyping what still works when Taiwan's internet goes dark: mesh networks, an offline handbook, shutdown scenario mapping.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/en.png",
+            "about": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -311,7 +751,48 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 HANDBOOK」，白色像素字標題「數位韌性手冊」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "CollectionPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://digiresi.g0v.tw/handbook/#collection",
+            "url": "https://digiresi.g0v.tw/handbook/",
+            "name": "數位韌性手冊：斷網也能查的防災與通訊指南｜DigiResiThon",
+            "description": "數位韌性手冊收錄 g0v 數位韌性松整理的斷網準備、災害應變、Meshtastic 通訊網、斷網情境分級與自架服務指南，可以安裝成 App，離線時也能搜尋與閱讀全文。",
+            "inLanguage": "zh-Hant-TW",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/handbook.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -342,7 +823,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「如何購買 Meshtastic 裝置」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/buying/#article",
+            "headline": "如何購買 Meshtastic 裝置",
+            "description": "Meshtastic 使用的是 LoRa 的傳輸技術，而 LoRa 的特色是，在可以直視目標物且沒有阻礙物的狀況下，傳輸距離可以達到數十甚至數百公里。但一旦中間有建築物阻擋，訊號傳輸的距離就會大幅下降到十公里以下。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/buying/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/buying/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/rW7Kbi7AR1uTMtuy8YAahA",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/buying.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "如何購買 Meshtastic 裝置",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/buying/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -373,7 +909,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「購買後如何設定與刷韌體」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/firmware/#article",
+            "headline": "購買後如何設定與刷韌體",
+            "description": "收到 Meshtastic 開發板之後怎麼開始：先接上天線再通電，以免損壞無線電晶片；再用 Chrome 開啟官方刷機網頁，把韌體刷進開發板，最後附上常見問題 Q&A。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/firmware/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/firmware/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/BCNqWGEeRJms5A77oGewaw",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/firmware.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "購買後如何設定與刷韌體",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/firmware/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -404,7 +995,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「g0mesh 快速上手」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/g0mesh-quickstart/#article",
+            "headline": "g0mesh 快速上手",
+            "description": "加入 g0mesh 社群鏈網的英文快速上手指南：需要哪些相容的 Meshtastic 硬體、基本設定、頻道與加密設定、節點驗證與身分管理，以及中繼點的擺放位置與訊號品質監測。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/g0mesh-quickstart/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/g0mesh-quickstart/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/2p681378QaypIOy1NVj2aw",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/g0mesh-quickstart.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "g0mesh 快速上手",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/g0mesh-quickstart/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -435,7 +1081,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「g0mesh 介紹」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/g0mesh/#article",
+            "headline": "g0mesh 介紹",
+            "description": "g0mesh 是 g0v 社群規劃的 Meshtastic 骨幹網路。本頁整理現有 Meshtastic 網路缺乏協調與備援的問題、社群骨幹的構想與 LoRa 管理員，以及中繼點移動、金鑰更新等待解問題。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/g0mesh/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/g0mesh/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/_WnRRY4sRZOIBxgAMpz1-w",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/g0mesh.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "g0mesh 介紹",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/g0mesh/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -466,7 +1167,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「寫給還不熟悉 Meshtastic 的朋友」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/intro/#article",
+            "headline": "寫給還不熟悉 Meshtastic 的朋友",
+            "description": "寫給還不熟悉 Meshtastic 的朋友：這個開放原始碼專案低耗電、不需電信基地台、傳輸距離長、價格便宜又不用執照，適合大停電後基地台斷訊時傳遞訊息；附作者在陽台實測 535 公尺仍收得到訊號的心得。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/intro/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/intro/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/V8ozO9RQS4ieWC1th3fleg",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/intro.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "寫給還不熟悉 Meshtastic 的朋友",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/intro/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -497,7 +1253,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 通訊網」，白色像素字標題「台灣鏈網」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/mesh/taiwan-mesh/#article",
+            "headline": "台灣鏈網",
+            "description": "Meshtastic Taiwan 臺灣鏈網的入口頁：連到臺灣鏈網 Facebook 社團，並整理手冊裡的 Meshtastic 文章，從入門介紹、如何購買裝置，到購買後如何設定與刷韌體。",
+            "url": "https://digiresi.g0v.tw/handbook/mesh/taiwan-mesh/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/mesh/taiwan-mesh/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "通訊網",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/ZGuA7fUZQi-fbD06EenmGQ",
+            "image": "https://digiresi.g0v.tw/og/handbook/mesh/taiwan-mesh.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "台灣鏈網",
+                "item": "https://digiresi.g0v.tw/handbook/mesh/taiwan-mesh/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -528,7 +1339,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「民防/防災相關證照」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/certifications/#article",
+            "headline": "民防/防災相關證照",
+            "description": "想在災害時幫得上忙，可以先考哪些證照？本頁整理民防與防災相關的證照與課程，例如初級救護技術員 EMT-1 的課程時數與內容、防災士培訓，並附上各課程的說明連結。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/certifications/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/certifications/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/B-ky08JbR4-HD3lFDwynLQ",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/certifications.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "民防/防災相關證照",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/certifications/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -559,7 +1425,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「預防通訊中斷」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/comms-backup/#article",
+            "headline": "預防通訊中斷",
+            "description": "預防通訊中斷要提早準備的事，是數位韌性手冊「準備」篇的一頁。目前先收錄下載離線防災資訊的參考連結，內容仍在 HackMD 原始共筆上持續補充。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/comms-backup/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/comms-backup/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/kh_Qh0WEQQ6kAbaFhvuEjQ",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/comms-backup.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "預防通訊中斷",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/comms-backup/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -590,7 +1511,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「學習急救資訊」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/first-aid/#article",
+            "headline": "學習急救資訊",
+            "description": "災害發生時，基本急救知識可能救人一命。數位韌性手冊「準備」篇的這一頁，目前收錄內政部消防署消防防災館的急救教學連結，內容仍在 HackMD 原始共筆上持續補充。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/first-aid/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/first-aid/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/vbliKPdyQ12V7QfoR8YJPg",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/first-aid.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "學習急救資訊",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/first-aid/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -621,7 +1597,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「準備救難包」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/go-bag/#article",
+            "headline": "準備救難包",
+            "description": "準備救難包是數位韌性手冊「準備」篇的第一頁。這一頁目前還沒有正文，內容仍在 HackMD 原始共筆中整理，可以從頁面上的原始共筆連結追蹤更新，或一起補充。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/go-bag/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/go-bag/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/Ojw57urwQ1O8Bs9NJH_NfA",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/go-bag.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "準備救難包",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/go-bag/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -652,7 +1683,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「家庭常備物資清單」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/household-supplies/#article",
+            "headline": "家庭常備物資清單",
+            "description": "以四口之家（每人 65 公斤）約三個月存量為準的家庭常備物資清單：先列出熱量、碳水、蛋白質、脂肪與維生素的最低需求，再逐項整理食物等物資的建議數量、保存期限與購買地點。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/household-supplies/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/household-supplies/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/bpj79hk8TamOdG4PaYXh1A",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/household-supplies.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "家庭常備物資清單",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/household-supplies/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -683,7 +1769,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 準備」，白色像素字標題「了解避難位置」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/prepare/shelter-locations/#article",
+            "headline": "了解避難位置",
+            "description": "不同類型的災害要前往不同的避難場所。本頁依水災、地震、防空分類，並附上消防署公開的避難收容處所點位資料，以及隨時查詢附近避難場所的 WaytoSafety 地圖。",
+            "url": "https://digiresi.g0v.tw/handbook/prepare/shelter-locations/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/prepare/shelter-locations/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "準備",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/nRcyyTFNQLqIk1dYwccLCg",
+            "image": "https://digiresi.g0v.tw/og/handbook/prepare/shelter-locations.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "了解避難位置",
+                "item": "https://digiresi.g0v.tw/handbook/prepare/shelter-locations/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -714,7 +1855,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 應變」，白色像素字標題「災難時的通訊」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/respond/communication/#article",
+            "headline": "災難時的通訊",
+            "description": "災難時要有正確的資訊來源，才不會被錯誤訊息或戰時假訊息誤導。本頁按廣播、電話、網路與 App 分段，整理各管道的正確資訊來源與通訊中斷時的應變，內容仍在共筆補充中。",
+            "url": "https://digiresi.g0v.tw/handbook/respond/communication/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/respond/communication/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "應變",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/dxFHfKK-Rj2BXd_J1gx1aQ",
+            "image": "https://digiresi.g0v.tw/og/handbook/respond/communication.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "災難時的通訊",
+                "item": "https://digiresi.g0v.tw/handbook/respond/communication/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -745,7 +1941,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 應變」，白色像素字標題「災害時保健」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/respond/health/#article",
+            "headline": "災害時保健",
+            "description": "災害發生時的保健與就醫資訊：本頁連到手冊「準備」篇的急救知識，並附上衛生福利部公布的緊急醫療網位置資料，方便在災害當下快速找到最近的醫療資源。",
+            "url": "https://digiresi.g0v.tw/handbook/respond/health/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/respond/health/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "應變",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/VXWnM_jqQMqPdd_H2HmzVw",
+            "image": "https://digiresi.g0v.tw/og/handbook/respond/health.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "災害時保健",
+                "item": "https://digiresi.g0v.tw/handbook/respond/health/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -776,7 +2027,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 應變」，白色像素字標題「災害時的交通」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/respond/transport/#article",
+            "headline": "災害時的交通",
+            "description": "災害時的交通是數位韌性手冊「應變」篇的一頁。這一頁目前還沒有正文，內容仍在 HackMD 原始共筆中整理，可以從頁面上的原始共筆連結追蹤更新，或一起補充。",
+            "url": "https://digiresi.g0v.tw/handbook/respond/transport/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/respond/transport/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "應變",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/jxLUGcNUTwm0qNHl6GZvLg",
+            "image": "https://digiresi.g0v.tw/og/handbook/respond/transport.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "災害時的交通",
+                "item": "https://digiresi.g0v.tw/handbook/respond/transport/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -807,7 +2113,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 情境」，白色像素字標題「數位韌性情境分級」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/scenarios/levels/#article",
+            "headline": "數位韌性情境分級",
+            "description": "數位韌性有很多面向，從海纜不通、導彈洗地、到解放軍上門請你投下光榮的回歸公投，不同的情境各有不同的需求與因應方向。今天我們將收集並歸納大家對於「災難」的不同想像，並且 mapping 公民社會 / g0v 現有的數位韌性相關提案。",
+            "url": "https://digiresi.g0v.tw/handbook/scenarios/levels/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/scenarios/levels/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "情境",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/SYTBWVohTyuCgPGUqfAl9g",
+            "image": "https://digiresi.g0v.tw/og/handbook/scenarios/levels.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "數位韌性情境分級",
+                "item": "https://digiresi.g0v.tw/handbook/scenarios/levels/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -838,7 +2199,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 情境」，白色像素字標題「台灣全國性斷網災害風險」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/scenarios/outage-risks/#article",
+            "headline": "台灣全國性斷網災害風險",
+            "description": "台灣可能發生全國性斷網的災害風險盤點：回顧 921 集集大地震、美濃地震、2024 年花蓮地震與桃芝、莫拉克、小犬等颱風對電力與通訊設施的影響，並討論火山爆發與戰爭情境。",
+            "url": "https://digiresi.g0v.tw/handbook/scenarios/outage-risks/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/scenarios/outage-risks/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "情境",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/xs79Cd6QTBefX8zoxhesOg",
+            "image": "https://digiresi.g0v.tw/og/handbook/scenarios/outage-risks.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "台灣全國性斷網災害風險",
+                "item": "https://digiresi.g0v.tw/handbook/scenarios/outage-risks/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -869,7 +2285,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 情境」，白色像素字標題「海纜斷光會怎樣？」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/scenarios/submarine-cables/#article",
+            "headline": "海纜斷光會怎樣？",
+            "description": "海纜全斷時，台灣常用的網路服務還能用嗎？整理自 Irvin Chen 在 g0v hackath67n 的分享：連接台灣的國際與境內海纜、台日之間怎麼連線，並逐一列出 Google、Gmail、Yahoo 等服務沒有海纜時能否運作。",
+            "url": "https://digiresi.g0v.tw/handbook/scenarios/submarine-cables/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/scenarios/submarine-cables/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "情境",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/vN3UkdeyS7KqUw1QneQVRw",
+            "image": "https://digiresi.g0v.tw/og/handbook/scenarios/submarine-cables.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "海纜斷光會怎樣？",
+                "item": "https://digiresi.g0v.tw/handbook/scenarios/submarine-cables/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -900,7 +2371,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 自架服務」，白色像素字標題「數位服務離線替代品」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/selfhost/alternatives/#article",
+            "headline": "數位服務離線替代品",
+            "description": "斷網時還能用的數位服務離線替代品：依行事曆、大型語言模型等類別，對照現在依賴網路的產品（如 Google Calendar、ChatGPT）與不需連網就能運作的替代品（如 Ollama），附測試心得。",
+            "url": "https://digiresi.g0v.tw/handbook/selfhost/alternatives/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/selfhost/alternatives/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "自架服務",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/vMiVU4G2RqqbY0tVJ9YaRg",
+            "image": "https://digiresi.g0v.tw/og/handbook/selfhost/alternatives.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "數位服務離線替代品",
+                "item": "https://digiresi.g0v.tw/handbook/selfhost/alternatives/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -931,7 +2457,62 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「手冊 · 自架服務」，白色像素字標題「SaaS 韌性產品 self-host 指南」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "TechArticle",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "@id": "https://digiresi.g0v.tw/handbook/selfhost/saas-guide/#article",
+            "headline": "SaaS 韌性產品 self-host 指南",
+            "description": "把常用的 SaaS 換成自己架的服務：整理自架基本服務的參考資料，例如 COSCUP 2023 議程〈遠離大手會社，自架基本服務〉與〈如何逃離 Google〉系列，以及 LM Studio、LlamaGPT 等可在本機執行的 AI 工具。",
+            "url": "https://digiresi.g0v.tw/handbook/selfhost/saas-guide/",
+            "mainEntityOfPage": "https://digiresi.g0v.tw/handbook/selfhost/saas-guide/",
+            "inLanguage": "zh-Hant-TW",
+            "articleSection": "自架服務",
+            "dateModified": "2026-07-17",
+            "isBasedOn": "https://g0v.hackmd.io/9Z2EhRAFQq-jfsoixrwD5A",
+            "image": "https://digiresi.g0v.tw/og/handbook/selfhost/saas-guide.png",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/handbook/#collection"
+            },
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "數位韌性手冊",
+                "item": "https://digiresi.g0v.tw/handbook/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "SaaS 韌性產品 self-host 指南",
+                "item": "https://digiresi.g0v.tw/handbook/selfhost/saas-guide/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -967,7 +2548,77 @@
       "en-US=https://digiresi.g0v.tw/en/",
       "x-default=https://digiresi.g0v.tw/"
     ],
-    "jsonld": [],
+    "jsonld": [
+      "WebSite",
+      "Organization",
+      "Organization",
+      "WebPage"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://digiresi.g0v.tw/#website",
+            "name": "數位韌性松 DigiResiThon",
+            "alternateName": "DigiResiThon",
+            "url": "https://digiresi.g0v.tw/",
+            "inLanguage": [
+              "zh-Hant-TW",
+              "en-US"
+            ],
+            "publisher": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://digiresi.g0v.tw/#organization",
+            "name": "數位韌性松 DigiResiThon",
+            "alternateName": [
+              "DigiResiThon",
+              "數位韌性松",
+              "Digital Resilience Hackathon"
+            ],
+            "url": "https://digiresi.g0v.tw/",
+            "logo": "https://digiresi.g0v.tw/icons/icon-512.png",
+            "parentOrganization": {
+              "@id": "https://g0v.tw/#organization"
+            },
+            "sameAs": [
+              "https://github.com/g0v/digiresi.g0v.tw",
+              "https://g0v-digiresi.kktix.cc/"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://g0v.tw/#organization",
+            "name": "g0v 零時政府",
+            "alternateName": "g0v",
+            "url": "https://g0v.tw/",
+            "sameAs": [
+              "https://github.com/g0v"
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/#webpage",
+            "url": "https://digiresi.g0v.tw/",
+            "name": "數位韌性松 DigiResiThon｜斷網情境的 g0v 公民黑客松",
+            "description": "數位韌性松是 g0v 社群的公民黑客松：假設台灣網路斷光光，一起實作備援通訊、Meshtastic 鏈網、離線手冊與斷網情境盤點。這裡有下一場活動的時間地點、報名連結與歷次共筆。",
+            "inLanguage": "zh-Hant-TW",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/index.png",
+            "about": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -999,6 +2650,7 @@
     },
     "hreflang": [],
     "jsonld": [],
+    "jsonldData": [],
     "h1": 1
   },
   {
@@ -1029,7 +2681,48 @@
       "twitter:image:alt": "DigiResiThon share card: black scanlined background, red label &#34;SAMPLE DATA · YEAR 0&#34;, white pixel-font heading &#34;Projects&#34;, a green terminal prompt and the DigiResiThon logo."
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/projects/#webpage",
+            "url": "https://digiresi.g0v.tw/projects/",
+            "name": "Projects: Sample Hackathon Prototypes | DigiResiThon",
+            "description": "Sample project board from DigiResiThon Year 0: comms, data, info and civic prototypes to filter by track or search, each with its sync status and team size.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/projects.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://digiresi.g0v.tw/projects/"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "h1": 1
   },
   {
@@ -1060,7 +2753,406 @@
       "twitter:image:alt": "數位韌性松分享圖：黑底掃描線背景，紅色標籤「時程 SCHEDULE」，白色像素字標題「活動時程」，綠色終端提示字與數位韌性松標誌。"
     },
     "hreflang": [],
-    "jsonld": [],
+    "jsonld": [
+      "WebPage",
+      "BreadcrumbList",
+      "ListItem",
+      "ListItem",
+      "EventSeries",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place",
+      "Event",
+      "Place"
+    ],
+    "jsonldData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://digiresi.g0v.tw/schedule/#webpage",
+            "url": "https://digiresi.g0v.tw/schedule/",
+            "name": "活動時程與歷次小松紀錄｜數位韌性松 DigiResiThon",
+            "description": "數位韌性松下一場活動的日期、場地與報名連結，以及歷次小松的日期、場地與當天的 HackMD 共筆。想知道過去討論過什麼、下一次在哪裡見面，看這一頁就好。",
+            "inLanguage": "zh-Hant-TW",
+            "isPartOf": {
+              "@id": "https://digiresi.g0v.tw/#website"
+            },
+            "primaryImageOfPage": "https://digiresi.g0v.tw/og/schedule.png"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首頁",
+                "item": "https://digiresi.g0v.tw/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "活動時程",
+                "item": "https://digiresi.g0v.tw/schedule/"
+              }
+            ]
+          },
+          {
+            "@type": "EventSeries",
+            "@id": "https://digiresi.g0v.tw/schedule/#series",
+            "name": "數位韌性松 DigiResiThon",
+            "url": "https://digiresi.g0v.tw/schedule/",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh17n 第拾柒次數位韌性松",
+            "startDate": "2026-11-29",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "description": "邀請自 2022 年起長居基輔的台灣記者曹雨昕，分享烏克蘭戰時生活的一週樣貌。",
+            "url": "https://g0v.hackmd.io/ZY-JjtljRdqsunoqRmztCg",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh16n 第拾陸次數位韌性松（RE）",
+            "startDate": "2026-09-13",
+            "location": {
+              "@type": "Place",
+              "name": "g0v 台北社群空間"
+            },
+            "description": "7/25 併入大松後的重辦場，分享 OCF 海纜入口網站與 App 韌性檢測、手機不能上網演習的 OONI 觀測與 Meshtastic 實驗心得。",
+            "url": "https://g0v.hackmd.io/umNnSGqAT5mfc_gfAaBH-g",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh16n 第拾陸次數位韌性松",
+            "startDate": "2026-07-25",
+            "location": {
+              "@type": "Place",
+              "name": "屯屯書店"
+            },
+            "description": "併入 g0v 黑客松特別場「屯屯黑客松」，在大松現場揪桌進行。",
+            "url": "https://g0v.hackmd.io/M6fQaaveSfiz7epbrETQxw",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh15n 第拾伍次數位韌性松",
+            "startDate": "2026-06-21",
+            "location": {
+              "@type": "Place",
+              "name": "摩茲工寮 MozTW Space"
+            },
+            "url": "https://g0v.hackmd.io/II9U3fe8RcqNWqpIfz8qpA",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh14n 第拾肆次數位韌性松",
+            "startDate": "2026-03-08",
+            "location": {
+              "@type": "Place",
+              "name": "g0v 台北社群空間"
+            },
+            "url": "https://g0v.hackmd.io/aoUgv0mUQL-pPQVHVh5tvQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh13n 第拾參次數位韌性松",
+            "startDate": "2026-01-18",
+            "location": {
+              "@type": "Place",
+              "name": "g0v 台北社群空間"
+            },
+            "url": "https://g0v.hackmd.io/dzEjfFD_RLe9DJzOMQ2C8A",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh12n 第拾貳次數位韌性松",
+            "startDate": "2025-12-21",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/iuYFrLclS0CQKczvnZWDPQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh11n 第拾壹次數位韌性松",
+            "startDate": "2024-10-31",
+            "location": {
+              "@type": "Place",
+              "name": "線上（Jitsi 視訊）"
+            },
+            "description": "線上場，透過 Jitsi 視訊進行。",
+            "url": "https://g0v.hackmd.io/3GFbzMscScSYuuRsVshbaw",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh10n 第拾次數位韌性松",
+            "startDate": "2024-09-21",
+            "location": {
+              "@type": "Place",
+              "name": "摩茲工寮 MozTW Space"
+            },
+            "url": "https://g0v.hackmd.io/uLwn1o0AQ-qikfUdyPVbrw",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh9n 第玖次數位韌性松",
+            "startDate": "2024-08-31",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/MouuawY4S5SRLtBYG1QIbQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh8n 第捌次數位韌性松",
+            "startDate": "2024-07-27",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/H3ffGKZKSrmAAShdc2Cx9Q",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh7n 第柒次數位韌性松",
+            "startDate": "2024-06-15",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/_WHs9N0eS3mzFHn5QzjvRg",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh6n 第陸次數位韌性松",
+            "startDate": "2024-05-25",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/CLbAeY3wTZCaLr-YCYqafw",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh5n 第伍次數位韌性松",
+            "startDate": "2024-04-27",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/ugNkTFLARwK4rmH7jCdO-g",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh4n 第肆次數位韌性松",
+            "startDate": "2024-03-23",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/qcDX1C5mTE24UcCUkfTthQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh3n 第參次數位韌性松",
+            "startDate": "2024-02-24",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/Xt7FoiZgTYq-7x20iNGN4A",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh2n 第貳次數位韌性松",
+            "startDate": "2024-01-20",
+            "location": {
+              "@type": "Place",
+              "name": "國立臺灣大學霖澤館 1701 研討室"
+            },
+            "description": "場地由 IORG 台灣資訊環境研究中心贊助。",
+            "url": "https://g0v.hackmd.io/iC-7ZtqJTqG75GxUY3aiAQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh1n 第壹次數位韌性松",
+            "startDate": "2023-12-30",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "url": "https://g0v.hackmd.io/mKkOC9PLSXi0GZg7uGm1xA",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          },
+          {
+            "@type": "Event",
+            "name": "DigiResiTh0n 第零次數位韌性松",
+            "startDate": "2023-11-04",
+            "location": {
+              "@type": "Place",
+              "name": "NPO HUB Taipei 台北NPO聚落"
+            },
+            "description": "一切的起點：第一場「假設網路斷光光」的黑客松。",
+            "url": "https://g0v.hackmd.io/oyNRfe4lTuaZ5RbcPSS7TQ",
+            "organizer": {
+              "@id": "https://digiresi.g0v.tw/#organization"
+            },
+            "superEvent": {
+              "@id": "https://digiresi.g0v.tw/schedule/#series"
+            }
+          }
+        ]
+      }
+    ],
     "h1": 1
   }
 ]

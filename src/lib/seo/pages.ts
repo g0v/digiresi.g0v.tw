@@ -3,6 +3,7 @@
 // per entry, so the two can never drift. Copy: zh-TW (Taiwan usage); pages
 // whose <html lang> is English (/en/, /projects/, /design-kits/*) use English.
 import { composeTitle, ogImagePath, type Lang } from "./index";
+import { pageJsonLd } from "./jsonld";
 
 export interface OgCard {
   /** Large pixel-font line on the card. */
@@ -137,5 +138,6 @@ export function seoProps(path: string) {
     ogImageAlt: ogAlt(s.og, s.lang),
     alternates: s.alternates,
     noindex: s.noindex,
+    jsonLd: pageJsonLd(path, s),
   };
 }

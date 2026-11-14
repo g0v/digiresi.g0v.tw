@@ -35,6 +35,7 @@ export function inspect(dist, file) {
     twitter: {},
     hreflang: [],
     jsonld: [],
+    jsonldData: [],
     h1: (html.match(/<h1[\s>]/gi) || []).length,
   };
   for (const m of head.matchAll(/<meta\b[^>]*>/gi)) {
@@ -54,6 +55,7 @@ export function inspect(dist, file) {
   for (const m of html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
       const data = JSON.parse(m[1]);
+      page.jsonldData.push(data);
       const types = [];
       const visit = (n) => {
         if (Array.isArray(n)) n.forEach(visit);
