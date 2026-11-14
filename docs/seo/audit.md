@@ -142,10 +142,10 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 
 | # | 問題 | 影響 | 修正 |
 | --- | --- | --- | --- |
-| G17 | 圖片沒有 `width`／`height`、沒有 lazy loading | CLS 與 LCP；手冊圖片 5.5 MB | 後續：在渲染手冊時補尺寸與 `loading="lazy"`（不屬本次範圍） |
-| G18 | 沒有自訂 404 | 低：狀態碼正確，但使用者與代理沒有導回路徑 | 後續：加 `404.astro` |
+| G17 | 圖片沒有 `width`／`height`、沒有 lazy loading | CLS 與 LCP；手冊圖片 5.5 MB | 已完成（見§九） |
+| G18 | 沒有自訂 404 | 低：狀態碼正確，但使用者與代理沒有導回路徑 | 已完成（見§九） |
 | G19 | 沒有搜尋引擎驗證、IndexNow、Bing Webmaster、Brave 提交 | 中：Copilot 只看 Bing 索引，Claude 走 Brave | owner 後續事項（部署屬於 g0v） |
-| G20 | 沒有 feed | 低：活動與手冊更新沒有訂閱管道 | 可選：時程 Atom feed |
+| G20 | 沒有 feed | 低：活動與手冊更新沒有訂閱管道 | 已完成（見§九） |
 
 ## 五、Top 10（依優先序）
 
@@ -199,7 +199,7 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 - 字型轉換在建置時進行（`wawoff2`），不把 Cubic 11 TTF 提交進 repo。
 - Event JSON-LD 只用 `events.yaml` 已有的欄位；場地沒有地址資料，就只輸出場地名稱。
 
-## 九、完成狀況與 owner 後續事項（2026-11-14，turn 3）
+## 九、完成狀況與 owner 後續事項（2026-11-14，turn 3；2026-11-15 後續）
 
 ### 已完成
 
@@ -219,8 +219,11 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 | G14 JSON-LD | 完成 | 首頁與 `/en/`：WebSite＋Organization（數位韌性松，上層組織 g0v）＋WebPage；`/schedule/`：EventSeries＋每場有日期與場地的活動各一個 Event；手冊頁：TechArticle＋BreadcrumbList；`/handbook/`：CollectionPage；`/about/`：AboutPage；其他頁 WebPage＋BreadcrumbList |
 | G15 新鮮度 | 完成 | 手冊頁顯示「最後同步：YYYY-MM-DD」，同一個值用在 `article:modified_time`、JSON-LD `dateModified`、sitemap `lastmod` |
 | G16 探索檔案連結 | 完成 | 頁尾 llms.txt 連結、`<link rel="sitemap">`、robots.txt `Sitemap:` |
+| G17 圖片尺寸與 lazy loading | 完成 | `scripts/rehype-image-dimensions.mjs`：建置時用 sharp 讀 `public/` 下的圖檔，替手冊每張 `<img>` 補上實際的 `width`／`height`，第二張起加 `loading="lazy" decoding="async"`；每頁第一張維持 eager（可能是 LCP 圖）。外部或讀不到的圖不加尺寸，也不讓建置失敗；不改 `src/content/handbook/`。目前手冊 10 張圖全部有尺寸。 |
+| G18 自訂 404 | 完成 | `src/pages/404.astro` 產生 `dist/404.html`（GitHub Pages 對找不到的網址回應這個檔）：沿用 BaseLayout／SeoHead，`noindex, follow`、不輸出 canonical 與 `og:url`；中文說明加一行英文，連到首頁、手冊、時程。不在 sitemap 與 llms 檔；`check-seo` 認得這一頁。 |
+| G20 活動 Atom feed | 完成 | `/schedule/feed.xml`（`src/lib/seo/feed.ts`）：由 `src/data/events.yaml` 產生，每場有日期的活動一筆（目前 19 筆），連到 `/schedule/#th17n` 這類錨點，摘要只用日期、場地、活動說明與共筆網址。每一頁的 `<head>` 都有 `rel="alternate" type="application/atom+xml"` 連結；不在 PWA 預快取；`check-seo` 檢查 XML 格式、每場有日期的活動都在、錨點存在、每個可索引頁面都有連結。 |
 
-把關：`scripts/seo/check.mjs`（`check-seo`）在 `npm run build` 最後執行，任一頁缺標籤、標題或描述重複、OG 圖不存在或尺寸不對、H1 數量不對、JSON-LD 無法解析或缺必要欄位，或 robots.txt、sitemap、llms 檔與頁面不一致，建置就失敗。新產物（`/og/**`、`robots.txt`、`sitemap-*.xml`、`llms*.txt`）都在預快取之外，預算檢查照常通過。
+把關：`scripts/seo/check.mjs`（`check-seo`）在 `npm run build` 最後執行，任一頁缺標籤、標題或描述重複、OG 圖不存在或尺寸不對、H1 數量不對、JSON-LD 無法解析或缺必要欄位，或 robots.txt、sitemap、llms 檔與頁面不一致，建置就失敗。新產物（`/og/**`、`robots.txt`、`sitemap-*.xml`、`llms*.txt`）都在預快取之外，預算檢查照常通過。`check-seo` 現在也會驗證 404 頁（`noindex`、不輸出 canonical）與 Atom feed。
 
 ### Owner 後續事項
 
@@ -228,4 +231,4 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 2. **Search Console 與 Bing Webmaster Tools**：驗證網域、提交 `https://digiresi.g0v.tw/sitemap-index.xml`；Bing 的 AI Performance 報表可看 Copilot 引用。另可到 Brave Search 提交網址（Claude 的搜尋來源）。
 3. **CI**：`.github/workflows/ci.yml` 會跑 `npm run build`，因此 PR 的 CI 會自動跑到 `check-seo`。
 4. **robots.txt 的訓練政策**：目前預設 `ai-train=yes` 並允許訓練爬蟲（同 crcolab），如果社群決定不開放訓練，改 `src/pages/robots.txt.ts` 的訊號與訓練群組即可。
-5. 仍未處理（範圍外）：手冊圖片尺寸與 lazy loading（G17）、自訂 404 頁（G18）、活動 Atom feed（G20）、`go-bag` 與 `transport` 兩頁在 HackMD 上還沒有正文。
+5. **`go-bag` 與 `transport` 兩頁**：2026-11-15 重新執行 `npm run sync`，兩份共筆（準備救難包 https://g0v.hackmd.io/Ojw57urwQ1O8Bs9NJH_NfA 、災害時的交通 https://g0v.hackmd.io/jxLUGcNUTwm0qNHl6GZvLg ）仍然沒有正文，同步只更新了 `sourceCommit` 與 `syncedAt`，所以沒有提交。網站上這兩頁目前只顯示標題、「本頁同步自 HackMD 共筆」、最後同步日期與上下頁連結，描述來自 `src/data/handbook-seo.yaml`。正文要寫在 HackMD 上，本 repo 不手動編輯手冊內容。
