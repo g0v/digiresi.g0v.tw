@@ -33,6 +33,12 @@ describe.skipIf(!hasBuild)("service worker precache scope", () => {
     }
   });
 
+  it("keeps OG share images out of the precache", () => {
+    // dist/og/** (one 1200x630 PNG per page) is for link previews only; it must
+    // not count against the 10 MB offline budget.
+    expect(manifestUrls().filter((u) => u.startsWith("og/") || u.endsWith(".png") && u.includes("/og/"))).toEqual([]);
+  });
+
   it("keeps design-kits out of the precache", () => {
     // Contributor-facing specimen tree, deliberately excluded (2026-07-25
     // captain ruling). Excluding it is also what keeps /offline/ reachable.
