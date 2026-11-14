@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { seoProps } from "../lib/seo/pages";
 import TerminalBlock from "../components/TerminalBlock.astro";
 import SignalBars from "../components/SignalBars.astro";
 import Marquee from "../components/Marquee.astro";
@@ -74,10 +75,7 @@ const marqueeItems = [
   "自己的網路自己架",
 ];
 ---
-<BaseLayout
-  title="數位韌性松 DigiResiThon｜g0v"
-  description="g0v 數位韌性松：假設網路斷光光，我們還能怎麼傳遞資訊？備援通訊、離線手冊、斷網情境盤點。"
->
+<BaseLayout {...seoProps("/")}>
   <section class="hero">
     <div class="scanlines" aria-hidden="true"></div>
     <div class="slash" aria-hidden="true" style="left:62%;"></div>

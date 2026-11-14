@@ -8,21 +8,32 @@ import "@fontsource/noto-sans-tc/400.css";
 import "@fontsource/noto-sans-tc/700.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import SeoHead, { type Alternate } from "../components/SeoHead.astro";
 import { withBase } from "../lib/base";
+import { langOf } from "../lib/seo";
 
 interface Props {
   title: string;
-  description?: string;
+  description: string;
+  /** <html lang>; "en" pages get English og:locale and site name. */
   lang?: string;
+  path?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: "website" | "article";
+  alternates?: Alternate[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  section?: string;
+  modified?: string;
 }
-const { title, description, lang = "zh-Hant-TW" } = Astro.props;
+const { title, description, lang = "zh-Hant-TW", ogType, ...seo } = Astro.props;
 ---
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <SeoHead title={title} description={description} lang={langOf(lang)} type={ogType} {...seo} />
     <meta name="theme-color" content="#0c0c0b" />
     <link rel="icon" href={withBase("/icons/icon-64.png")} />
     <script is:inline>

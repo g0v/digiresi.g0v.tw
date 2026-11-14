@@ -1,13 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import { withBase } from "../../lib/base";
 ---
-<BaseLayout
-  title="Design Kits — DigiResiThon"
-  description="Self-hosted design-system reference: tokens, components, and patterns."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/")}>
   <DesignKitsNav />
   <div class="container dk-overview" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">DESIGN KITS</h1>

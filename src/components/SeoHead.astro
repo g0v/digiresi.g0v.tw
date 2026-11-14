@@ -1,0 +1,104 @@
+---
+// One place for every search/social/AI-facing <head> tag (see docs/seo/audit.md).
+// BaseLayout renders it; pages pass their props through BaseLayout.
+import {
+  OG_DEFAULT,
+  OG_HEIGHT,
+  OG_WIDTH,
+  SITE_NAME,
+  absoluteUrl,
+  hreflangOf,
+  ogLocale,
+  type Lang,
+} from "../lib/seo";
+
+export interface Alternate {
+  lang: Lang;
+  /** Site-absolute path of the translated page, e.g. "/en/". */
+  path: string;
+}
+
+export interface Props {
+  /** Full <title> (compose it with composeTitle()). */
+  title: string;
+  description: string;
+  /** Site-absolute path; defaults to the current route. */
+  path?: string;
+  /** Site-absolute path of the 1200x630 PNG; defaults to /og/default.png. */
+  ogImage?: string;
+  ogImageAlt?: string;
+  type?: "website" | "article";
+  lang?: Lang;
+  /** Translations of this page (the page itself is added automatically). */
+  alternates?: Alternate[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** article:section (handbook section name). */
+  section?: string;
+  /** ISO date of the last content change (article:modified_time). */
+  modified?: string;
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogImage = OG_DEFAULT,
+  ogImageAlt,
+  type = "website",
+  lang = "zh",
+  alternates = [],
+  noindex = false,
+  jsonLd,
+  section,
+  modified,
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const image = absoluteUrl(ogImage);
+const imageAlt =
+  ogImageAlt ??
+  (lang === "en"
+    ? "DigiResiThon share card: pixel-font title on a black, scanlined background with red and green accents."
+    : "數位韌性松分享圖：黑底掃描線，像素字標題，紅色與綠色點綴。");
+const robots = noindex
+  ? "noindex, follow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+const hreflangs = alternates.length
+  ? [
+      { hreflang: hreflangOf(lang), href: canonical },
+      ...alternates.map((a) => ({ hreflang: hreflangOf(a.lang), href: absoluteUrl(a.path) })),
+    ]
+  : [];
+const xDefault = alternates.length
+  ? (lang === "zh" ? canonical : absoluteUrl(alternates.find((a) => a.lang === "zh")?.path ?? path))
+  : null;
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const serialize = (o: unknown) => JSON.stringify(o).replace(/</g, "\\u003c");
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+{hreflangs.map((h) => <link rel="alternate" hreflang={h.hreflang} href={h.href} />)}
+{xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
+<meta property="og:site_name" content={SITE_NAME[lang]} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={ogLocale(lang)} />
+{alternates.map((a) => <meta property="og:locale:alternate" content={ogLocale(a.lang)} />)}
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content={String(OG_WIDTH)} />
+<meta property="og:image:height" content={String(OG_HEIGHT)} />
+<meta property="og:image:alt" content={imageAlt} />
+{type === "article" && section && <meta property="article:section" content={section} />}
+{type === "article" && modified && <meta property="article:modified_time" content={modified} />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
+{jsonLdBlocks.map((block) => <script type="application/ld+json" set:html={serialize(block)} />)}

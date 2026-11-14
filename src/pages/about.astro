@@ -1,12 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { seoProps } from "../lib/seo/pages";
 import SectionHeader from "../components/SectionHeader.astro";
 import { withBase } from "../lib/base";
 ---
-<BaseLayout
-  title="關於｜數位韌性松 DigiResiThon"
-  description="為什麼要辦「假設網路斷光光」的黑客松：數位韌性松的緣起、正在做的事、參加方式。"
->
+<BaseLayout {...seoProps("/about/")}>
   <div class="container page">
     <SectionHeader label="關於" right="ABOUT" />
     <article class="prose-mono">

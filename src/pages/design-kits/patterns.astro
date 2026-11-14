@@ -1,14 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import DesignSpecimen from "../../components/DesignSpecimen.astro";
 import SectionHeader from "../../components/SectionHeader.astro";
 ---
-<BaseLayout
-  title="Patterns — Design Kits — DigiResiThon"
-  description="Scanlines, box-drawing, slash, motion tokens, stripe-caution, and checker patterns."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/patterns/")}>
   <DesignKitsNav />
   <div class="container dk-patterns" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">PATTERNS</h1>

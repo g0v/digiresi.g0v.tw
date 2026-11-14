@@ -1,16 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import DesignSpecimen from "../../components/DesignSpecimen.astro";
 import { withBase } from "../../lib/base";
 
 const base = withBase("/design/assets/logo");
 ---
-<BaseLayout
-  title="Logo — Design Kits — DigiResiThon"
-  description="Logo lockup and mark — dark and light previews, downloads, and YellowOne CC BY-SA 4.0 attribution."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/logo/")}>
   <DesignKitsNav />
   <div class="container dk-logo" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">LOGO</h1>

@@ -1,10 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { seoProps } from "../lib/seo/pages";
 import TerminalBlock from "../components/TerminalBlock.astro";
 import { withBase } from "../lib/base";
 ---
-<BaseLayout title="OFFLINE — DigiResiThon" description="目前離線。網站已存在裝置上，只有設計元件庫需要連線。">
+<BaseLayout {...seoProps("/offline/")}>
   <div class="offline-page">
+    <h1 class="pixel-h-tc pixel-h-tc--2 offline-title">目前離線</h1>
     <TerminalBlock
       title="digiresithon@tw:~"
       lines={[
@@ -32,6 +34,10 @@ import { withBase } from "../lib/base";
     flex-direction: column;
     align-items: flex-start;
     gap: var(--sp-5);
+  }
+  .offline-title {
+    margin: 0;
+    color: var(--ink);
   }
   .offline-links {
     display: flex;

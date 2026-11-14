@@ -53,12 +53,12 @@ test("the landing page renders offline", async ({ page, context }) => {
 });
 
 // Each assertion names copy that only this route carries. A bare "an h1 is
-// visible" check would not do — and in fact the /offline/ fallback has no h1 at
-// all, so such a check would pass for a different reason than the one claimed.
+// visible" check would not do: the /offline/ fallback has its own h1 ("目前離線"),
+// so such a check would pass for a different reason than the one claimed.
 const PORTAL_ROUTES: Array<{ path: string; text: string; title: RegExp }> = [
-  { path: "about/", text: "IG 不能動", title: /關於｜數位韌性松/ },
-  { path: "schedule/", text: "OFFLINE SURVIVAL KIT", title: /時程｜數位韌性松/ },
-  { path: "projects/", text: "MESHBOX", title: /Projects — DigiResiThon/ },
+  { path: "about/", text: "IG 不能動", title: /為什麼辦斷網黑客松｜數位韌性松/ },
+  { path: "schedule/", text: "OFFLINE SURVIVAL KIT", title: /活動時程與歷次小松紀錄｜數位韌性松/ },
+  { path: "projects/", text: "MESHBOX", title: /Projects: Sample Hackathon Prototypes/ },
   { path: "en/", text: "WHEN THE NET", title: /Digital Resilience Hackathon/ },
 ];
 
@@ -95,9 +95,9 @@ test("the offline page leads back to a route that works offline", async ({ page,
   await page.goto("design-kits/");
   await expect(page.getByText("目前離線").first()).toBeVisible();
   await page.locator(".offline-page a.btn").first().click();
-  // The handbook index carries no heading element at all — assert its own
-  // content and title rather than a role that is not there.
-  await expect(page).toHaveTitle(/手冊 HANDBOOK/);
+  // Assert the handbook index's own title and content, not a bare heading
+  // role that the /offline/ page would satisfy too.
+  await expect(page).toHaveTitle(/數位韌性手冊：斷網也能查/);
   await expect(page.getByText("開始閱讀").first()).toBeVisible();
   expect(await page.evaluate(() => navigator.onLine)).toBe(false);
 });

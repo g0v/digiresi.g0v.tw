@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { seoProps } from "../lib/seo/pages";
 import SectionHeader from "../components/SectionHeader.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
 import { byNewest, eventCode, featuredEvent, loadEvents, roundCount } from "../lib/events";
@@ -30,12 +31,9 @@ const tagDot = (tag: SessionTag) =>
 const shortName = (name: string) =>
   name.replace(/^DigiResiTh\d+n\s*/, "").replace(/數位韌性松(（[^）]*）)?$/, "");
 ---
-<BaseLayout
-  title="時程｜數位韌性松 DigiResiThon"
-  description="數位韌性松的活動時程與歷次小松紀錄，每場都連到當天的 HackMD 共筆。"
->
+<BaseLayout {...seoProps("/schedule/")}>
   <div class="container page">
-    <SectionHeader label="時程" right="ALL TIMES GMT+8" />
+    <SectionHeader label="時程" right="ALL TIMES GMT+8" as="h1" />
 
     {featured && (
       <div class="featured">

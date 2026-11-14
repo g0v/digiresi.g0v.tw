@@ -28,6 +28,7 @@
     "@fontsource/noto-sans-tc": "^5.2.0",
     "@fontsource/press-start-2p": "^5.2.0",
     "@playwright/test": "^1.54.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.1.1",
     "@vite-pwa/astro": "^1.1.0",
@@ -36,10 +37,12 @@
     "pixelarticons": "^1.8.1",
     "rehype-parse": "^9.0.1",
     "rehype-stringify": "^10.0.1",
+    "satori": "^0.63.2",
     "sharp": "^0.34.0",
     "typescript": "^5.6.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
-    "vitest": "^3.2.0"
+    "vitest": "^3.2.0",
+    "wawoff2": "^2.0.1"
   }
 }

@@ -1,12 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import { withBase } from "../../lib/base";
 ---
-<BaseLayout
-  title="DigiResiThon — Digital Resilience Hackathon | g0v"
-  description="A g0v community hackathon prototyping what still works when Taiwan's internet goes dark: mesh networks, an offline handbook, shutdown scenario mapping."
-  lang="en"
->
+<BaseLayout {...seoProps("/en/")}>
   <div class="container page">
     <div class="kicker">[ G0V COMMUNITY HACKATHON ]</div>
     <h1 class="pixel-h pixel-h--2">

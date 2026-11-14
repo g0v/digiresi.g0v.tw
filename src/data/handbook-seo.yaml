@@ -1,0 +1,40 @@
+# 手冊頁的 SEO 覆寫（description 等）。src/content/handbook/ 由 `npm run sync`
+# 從 HackMD 同步，不能手改；建置時預設從內文開頭的段落推導 description，
+# 推導不出 70 字以上的頁面才在這裡補寫。key 為頁面 id（= 網址 /handbook/<id>/）。
+# 規則：只描述共筆裡實際有的內容，不改原意；70–160 字，台灣正體中文。
+mesh/firmware:
+  description: 收到 Meshtastic 開發板之後怎麼開始：先接上天線再通電，以免損壞無線電晶片；再用 Chrome 開啟官方刷機網頁，把韌體刷進開發板，最後附上常見問題 Q&A。
+mesh/g0mesh-quickstart:
+  description: 加入 g0mesh 社群鏈網的英文快速上手指南：需要哪些相容的 Meshtastic 硬體、基本設定、頻道與加密設定、節點驗證與身分管理，以及中繼點的擺放位置與訊號品質監測。
+mesh/g0mesh:
+  description: g0mesh 是 g0v 社群規劃的 Meshtastic 骨幹網路。本頁整理現有 Meshtastic 網路缺乏協調與備援的問題、社群骨幹的構想與 LoRa 管理員，以及中繼點移動、金鑰更新等待解問題。
+mesh/intro:
+  description: 寫給還不熟悉 Meshtastic 的朋友：這個開放原始碼專案低耗電、不需電信基地台、傳輸距離長、價格便宜又不用執照，適合大停電後基地台斷訊時傳遞訊息；附作者在陽台實測 535 公尺仍收得到訊號的心得。
+mesh/taiwan-mesh:
+  description: Meshtastic Taiwan 臺灣鏈網的入口頁：連到臺灣鏈網 Facebook 社團，並整理手冊裡的 Meshtastic 文章，從入門介紹、如何購買裝置，到購買後如何設定與刷韌體。
+prepare/certifications:
+  description: 想在災害時幫得上忙，可以先考哪些證照？本頁整理民防與防災相關的證照與課程，例如初級救護技術員 EMT-1 的課程時數與內容、防災士培訓，並附上各課程的說明連結。
+prepare/comms-backup:
+  description: 預防通訊中斷要提早準備的事，是數位韌性手冊「準備」篇的一頁。目前先收錄下載離線防災資訊的參考連結，內容仍在 HackMD 原始共筆上持續補充。
+prepare/first-aid:
+  description: 災害發生時，基本急救知識可能救人一命。數位韌性手冊「準備」篇的這一頁，目前收錄內政部消防署消防防災館的急救教學連結，內容仍在 HackMD 原始共筆上持續補充。
+prepare/go-bag:
+  description: 準備救難包是數位韌性手冊「準備」篇的第一頁。這一頁目前還沒有正文，內容仍在 HackMD 原始共筆中整理，可以從頁面上的原始共筆連結追蹤更新，或一起補充。
+prepare/household-supplies:
+  description: 以四口之家（每人 65 公斤）約三個月存量為準的家庭常備物資清單：先列出熱量、碳水、蛋白質、脂肪與維生素的最低需求，再逐項整理食物等物資的建議數量、保存期限與購買地點。
+prepare/shelter-locations:
+  description: 不同類型的災害要前往不同的避難場所。本頁依水災、地震、防空分類，並附上消防署公開的避難收容處所點位資料，以及隨時查詢附近避難場所的 WaytoSafety 地圖。
+respond/communication:
+  description: 災難時要有正確的資訊來源，才不會被錯誤訊息或戰時假訊息誤導。本頁按廣播、電話、網路與 App 分段，整理各管道的正確資訊來源與通訊中斷時的應變，內容仍在共筆補充中。
+respond/health:
+  description: 災害發生時的保健與就醫資訊：本頁連到手冊「準備」篇的急救知識，並附上衛生福利部公布的緊急醫療網位置資料，方便在災害當下快速找到最近的醫療資源。
+respond/transport:
+  description: 災害時的交通是數位韌性手冊「應變」篇的一頁。這一頁目前還沒有正文，內容仍在 HackMD 原始共筆中整理，可以從頁面上的原始共筆連結追蹤更新，或一起補充。
+scenarios/outage-risks:
+  description: 台灣可能發生全國性斷網的災害風險盤點：回顧 921 集集大地震、美濃地震、2024 年花蓮地震與桃芝、莫拉克、小犬等颱風對電力與通訊設施的影響，並討論火山爆發與戰爭情境。
+scenarios/submarine-cables:
+  description: 海纜全斷時，台灣常用的網路服務還能用嗎？整理自 Irvin Chen 在 g0v hackath67n 的分享：連接台灣的國際與境內海纜、台日之間怎麼連線，並逐一列出 Google、Gmail、Yahoo 等服務沒有海纜時能否運作。
+selfhost/alternatives:
+  description: 斷網時還能用的數位服務離線替代品：依行事曆、大型語言模型等類別，對照現在依賴網路的產品（如 Google Calendar、ChatGPT）與不需連網就能運作的替代品（如 Ollama），附測試心得。
+selfhost/saas-guide:
+  description: 把常用的 SaaS 換成自己架的服務：整理自架基本服務的參考資料，例如 COSCUP 2023 議程〈遠離大手會社，自架基本服務〉與〈如何逃離 Google〉系列，以及 LM Studio、LlamaGPT 等可在本機執行的 AI 工具。

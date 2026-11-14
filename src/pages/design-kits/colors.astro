@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import DesignSpecimen from "../../components/DesignSpecimen.astro";
 
@@ -24,11 +25,7 @@ const semanticTokens = [
   { token: "--status-offline",  desc: "Red — offline / error status" },
 ];
 ---
-<BaseLayout
-  title="Colors — Design Kits — DigiResiThon"
-  description="Base palette and semantic tokens, dark and light side-by-side."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/colors/")}>
   <DesignKitsNav />
   <div class="container dk-colors" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">COLORS</h1>

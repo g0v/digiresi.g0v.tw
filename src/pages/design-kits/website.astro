@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import DesignSpecimen from "../../components/DesignSpecimen.astro";
 import Projects from "../../components/Projects.astro";
@@ -9,11 +10,7 @@ import StatusDot from "../../components/StatusDot.astro";
 import Button from "../../components/Button.astro";
 import { withBase } from "../../lib/base";
 ---
-<BaseLayout
-  title="Website — Design Kits — DigiResiThon"
-  description="Full ui_kits/website specimen: header, landing, schedule, projects, register dialog."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/website/")}>
   <DesignKitsNav />
   <div class="container dk-website" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">WEBSITE</h1>

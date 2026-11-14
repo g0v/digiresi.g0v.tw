@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import DesignKitsNav from "../../components/DesignKitsNav.astro";
 import DesignSpecimen from "../../components/DesignSpecimen.astro";
 import Alert from "../../components/Alert.astro";
@@ -15,11 +16,7 @@ import TerminalBlock from "../../components/TerminalBlock.astro";
 import Marquee from "../../components/Marquee.astro";
 import Tabs from "../../components/Tabs.astro";
 ---
-<BaseLayout
-  title="Components — Design Kits — DigiResiThon"
-  description="Live component specimens: Button, Card, Badge, Alert, forms, SignalBars, StatusDot, TerminalBlock, Marquee, Tabs."
-  lang="en"
->
+<BaseLayout {...seoProps("/design-kits/components/")}>
   <DesignKitsNav />
   <div class="container dk-components" data-pagefind-ignore="all">
     <h1 class="pixel-h pixel-h--2" style="margin-top: var(--sp-7);">COMPONENTS</h1>

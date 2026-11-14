@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { seoProps } from "../../lib/seo/pages";
 import SectionHeader from "../../components/SectionHeader.astro";
 import SignalBars from "../../components/SignalBars.astro";
 import { SECTION_NAMES, SECTION_ORDER } from "../../lib/sections";
@@ -30,12 +31,9 @@ const sections = SECTION_ORDER.map((section) => {
   };
 });
 ---
-<BaseLayout
-  title="手冊 HANDBOOK — DigiResiThon"
-  description="數位韌性手冊：斷網也能查的準備、應變、通訊網指南。"
->
+<BaseLayout {...seoProps("/handbook/")}>
   <div class="handbook-index">
-    <SectionHeader label="手冊" right="OFFLINE-FIRST" />
+    <SectionHeader label="手冊" right="OFFLINE-FIRST" as="h1" />
     <Search />
     <div class="handbook-grid">
       {sections.map(({ section: _section, name, blurb, items }) => (

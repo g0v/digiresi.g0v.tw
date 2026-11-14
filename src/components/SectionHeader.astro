@@ -5,12 +5,14 @@
 interface Props {
   label: string;
   right?: string;
+  /** Render the label as the page's <h1> (same look) on pages without another H1. */
+  as?: "h1" | "span";
 }
-const { label, right } = Astro.props;
+const { label, right, as: Label = "span" } = Astro.props;
 ---
 <div class="section-header">
   <span class="sh-corner">┌─</span>
-  <span class="sh-label pixel-h-tc pixel-h-tc--1">{label}</span>
+  <Label class="sh-label pixel-h-tc pixel-h-tc--1">{label}</Label>
   <span class="sh-rule" aria-hidden="true"></span>
   {right && <span class="sh-right">{right}</span>}
   <span class="sh-corner">┐</span>
@@ -24,6 +26,11 @@ const { label, right } = Astro.props;
     color: var(--ink-2);
   }
   .sh-corner { font-size: var(--text-sm); }
+  h1.sh-label {
+    margin: 0;
+    font-weight: inherit;
+    line-height: inherit;
+  }
   .sh-label {
     color: var(--ink);
     letter-spacing: 0.04em;

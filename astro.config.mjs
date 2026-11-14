@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import AstroPWA from "@vite-pwa/astro";
 import { precacheGlobs } from "./scripts/precache-globs.mjs";
 import rehypeBaseUrl from "./scripts/rehype-base-url.mjs";
+import rehypeDemoteHeadings from "./scripts/rehype-demote-headings.mjs";
 
 // Single source of truth for the deployment base path.
 //   "/"                    → custom domain (needs public/CNAME)
@@ -37,7 +38,7 @@ export default defineConfig({
   // fails at SW startup. All internal links already use trailing slashes.
   trailingSlash: "always",
   markdown: {
-    rehypePlugins: [[rehypeBaseUrl, { base: BASE }]],
+    rehypePlugins: [[rehypeBaseUrl, { base: BASE }], rehypeDemoteHeadings],
   },
   integrations: [
     pagefindBeforeServiceWorker,
