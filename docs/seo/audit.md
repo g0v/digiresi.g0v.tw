@@ -1,7 +1,7 @@
 # 數位韌性松網站 SEO 與 AI 搜尋（AEO／GEO）稽核
 
 - 稽核日期：2026-11-14
-- 稽核對象：`seo-aieo` 分支，起點為上游 g0v/digiresi.g0v.tw `4baa8a70369c8949abddde8b0c01a8ef0f6c947b`（本私有副本移除 `.github/workflows` 後為 `63e6ff2`）
+- 稽核對象：`seo-aieo` 分支，起點為上游 g0v/digiresi.g0v.tw `4baa8a70369c8949abddde8b0c01a8ef0f6c947b`
 - 依據：coreyhaines31/marketingskills 的 `seo-audit`（v2.2.5）與 `ai-seo`（v2.12.3）兩個 skill，及其參考文件 `title-tags`、`international-seo`、`agent-readiness`、`content-patterns`、`multilingual-and-commerce`、`platform-ranking-factors`
 - 標竿：https://crcolab.art（公開 repo crcolab/crccolab.github.io）
 - 方法：`npm ci && npm run build` 後以 `node scripts/seo/inventory.mjs` 掃描 `dist/` 全部 34 個 HTML 頁面；另以 curl 檢查正式站 https://digiresi.g0v.tw 的探索檔案。本輪只做稽核與規劃，不改網站行為。
@@ -190,7 +190,6 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 - 決定 robots.txt 的模型訓練政策（預設全開，同 crcolab）。
 - 決定手冊內文多個 H1 是否在渲染時降級、是否在頁面顯示「最後同步日期」、頁尾是否加 llms.txt 連結。
 - 圖片尺寸與 lazy loading、自訂 404 頁、活動 Atom feed。
-- 把 `.github.template/workflows/` 移回 `.github/workflows/`。
 
 ## 八、本輪決定（供 owner 檢視）
 
@@ -199,3 +198,34 @@ crcolab.art 是 Jekyll 靜態站，所有 SEO 標記集中在一個 partial（`_
 - sitemap 用 `@astrojs/sitemap`（產生 `sitemap-index.xml`），不另寫 `sitemap.xml`。
 - 字型轉換在建置時進行（`wawoff2`），不把 Cubic 11 TTF 提交進 repo。
 - Event JSON-LD 只用 `events.yaml` 已有的欄位；場地沒有地址資料，就只輸出場地名稱。
+
+## 九、完成狀況與 owner 後續事項（2026-11-14，turn 3）
+
+### 已完成
+
+| 缺口 | 狀態 | 實作 |
+| --- | --- | --- |
+| G1 robots.txt | 完成 | `src/pages/robots.txt.ts`：仿 crcolab.art，`User-agent: *` 全開，Content Signals（`search=yes, ai-input=yes, ai-train=yes`，每個群組重複），依用途分組列出 AI 爬蟲（搜尋索引、使用者觸發、模型訓練、網頁封存），最後是 `Sitemap:` |
+| G2 sitemap | 完成 | `@astrojs/sitemap` 產生 `/sitemap-index.xml`；排除 `/offline/`；`/`↔`/en/` 有 `xhtml:link`（zh-Hant、en-US、x-default），與 HTML hreflang 一致；手冊 `lastmod` 為 HackMD 同步日期；`<head>` 有 `<link rel="sitemap">` |
+| G3 canonical | 完成 | `SeoHead.astro` 每頁輸出自我 canonical（絕對網址） |
+| G4 `/offline/` | 完成 | `noindex, follow`，不在 sitemap |
+| G5 og／twitter | 完成 | 每頁 `og:site_name/type/url/title/description/locale(+alternate)/image(+type/width/height/alt)`、`twitter:card=summary_large_image` 等 |
+| G6 OG 圖 | 完成 | 建置時每頁產生 1200×630 PNG（最大約 7.5 KB），blackout 深色、Cubic 11、紅綠雙 accent；缺字改用 Noto Sans TC，兩者都缺就讓建置失敗 |
+| G7／G8 描述 | 完成 | 靜態頁描述重寫（70–160 字）；手冊頁依序取 `src/data/handbook-seo.yaml`、frontmatter、內文首段；全站唯一 |
+| G9 hreflang | 完成 | `/`↔`/en/`，含自己與 x-default |
+| G10 標題規則 | 完成 | 寬度預算（CJK 算 2，上限 60），有單元測試 |
+| G11 H1 | 完成 | 每頁剛好一個 H1：HackMD 內文 H1 在渲染時下移一級；4 頁補上 H1 |
+| G12／G13 llms | 完成 | `/llms.txt`（網站摘要、各區段、下一場活動、每篇手冊與描述）、`/llms-full.txt`（手冊全文，附網址、原始共筆、同步日期）；頁尾有 llms.txt 連結 |
+| G14 JSON-LD | 完成 | 首頁與 `/en/`：WebSite＋Organization（數位韌性松，上層組織 g0v）＋WebPage；`/schedule/`：EventSeries＋每場有日期與場地的活動各一個 Event；手冊頁：TechArticle＋BreadcrumbList；`/handbook/`：CollectionPage；`/about/`：AboutPage；其他頁 WebPage＋BreadcrumbList |
+| G15 新鮮度 | 完成 | 手冊頁顯示「最後同步：YYYY-MM-DD」，同一個值用在 `article:modified_time`、JSON-LD `dateModified`、sitemap `lastmod` |
+| G16 探索檔案連結 | 完成 | 頁尾 llms.txt 連結、`<link rel="sitemap">`、robots.txt `Sitemap:` |
+
+把關：`scripts/seo/check.mjs`（`check-seo`）在 `npm run build` 最後執行，任一頁缺標籤、標題或描述重複、OG 圖不存在或尺寸不對、H1 數量不對、JSON-LD 無法解析或缺必要欄位，或 robots.txt、sitemap、llms 檔與頁面不一致，建置就失敗。新產物（`/og/**`、`robots.txt`、`sitemap-*.xml`、`llms*.txt`）都在預快取之外，預算檢查照常通過。
+
+### Owner 後續事項
+
+1. **IndexNow**：仿 crcolab 在根目錄放金鑰檔，部署後提交新增或 `lastmod` 有變的網址（Bing、Yandex 等）。需要 g0v 的部署權限，本 PR 沒有加金鑰。
+2. **Search Console 與 Bing Webmaster Tools**：驗證網域、提交 `https://digiresi.g0v.tw/sitemap-index.xml`；Bing 的 AI Performance 報表可看 Copilot 引用。另可到 Brave Search 提交網址（Claude 的搜尋來源）。
+3. **CI**：`.github/workflows/ci.yml` 會跑 `npm run build`，因此 PR 的 CI 會自動跑到 `check-seo`。
+4. **robots.txt 的訓練政策**：目前預設 `ai-train=yes` 並允許訓練爬蟲（同 crcolab），如果社群決定不開放訓練，改 `src/pages/robots.txt.ts` 的訊號與訓練群組即可。
+5. 仍未處理（範圍外）：手冊圖片尺寸與 lazy loading（G17）、自訂 404 頁（G18）、活動 Atom feed（G20）、`go-bag` 與 `transport` 兩頁在 HackMD 上還沒有正文。

@@ -31,7 +31,9 @@ Claude Design 專案唯讀匯入（匯入紀錄與缺漏清單見 `design/IMPORT
 |---|---|
 | `npm install` | 安裝相依套件 |
 | `npm run dev` | 本機開發伺服器（http://localhost:4321） |
-| `npm run build` | 建置靜態網站到 `dist/`，並建立 Pagefind 搜尋索引 |
+| `npm run build` | 建置靜態網站到 `dist/`，建立 Pagefind 搜尋索引，最後執行 SEO 檢查（`check:seo`） |
+| `npm run check:seo` | 檢查 `dist/` 每頁的 title、description、canonical、OG／Twitter、JSON-LD，以及 robots.txt、sitemap、llms.txt |
+| `npm run seo:inventory` | 重新產生 `docs/seo/inventory.*` 逐頁 SEO 盤點表 |
 | `npm run preview` | 預覽 `dist/` 建置結果 |
 | `npm run sync` | 從 HackMD 封存庫同步手冊內容（寫入 `src/content/handbook/`） |
 | `npm run assets` | 一次性抓取 Cubic 11 字型、pixelarticons 圖示、logo（產物已 commit，平常不需重跑） |
