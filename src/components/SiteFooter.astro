@@ -54,8 +54,10 @@ const { lang = "zh-Hant-TW" } = Astro.props;
     flex-wrap: wrap;
     padding-block: 28px;
   }
+  /* No `display` here: flex items are already blockified, and a display value
+     on this (more specific) selector would override `.only-light { display: none }`
+     and show both theme variants of the mark at once. */
   .inner img {
-    display: block;
     width: auto;
   }
   .lines {
